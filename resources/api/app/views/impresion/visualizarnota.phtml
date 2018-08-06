@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    width: 265mm;
+    height: 200mm;
+  
+  }/* ... the rest of the rules ... */
+}
+
+.documento_bordes{
+    padding: 100px 30px 5px 30px;/* 150px */
+    font-size: 12px;
+    
+  }
+  .documento_superior{
+    height: 100px;
+
+  }
+  .documento_espacios_persona {
+    padding-top: 5px;
+    padding-left: 115px;
+    text-align:left;
+  }
+  .documento_fecha_espacios{
+    padding-left: 70%;
+  }
+  .documento_row_cantidad{
+    width: 120px;
+    padding-left: 90px;
+    padding-top: 5px;
+  }
+  .documento_row_descripcion{
+    width: 1200px;
+    padding-left: 9px;
+    padding-top: 5px;
+  }
+  .documento_row_pu{
+    width: 130px;
+    padding-left: 9px;
+    padding-top: 5px;
+  }
+  .documento_espacios_tabla {
+    padding-top: 10px;
+    width: 100%;
+  }
+
+body{
+  border:solid 0px red;
+}
+</style>
+ <link rel='stylesheet' type='text/css' href='css/style.css' />
+</head>
+<body>
+
+<body class="documento_bordes">
+     
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;letter-spacing: 3pt;">
+            <?php 
+               
+                foreach ((array)$cliente->data as $row)
+                  {
+                    $mes     = $row->mes;
+                    $dia     = $row->dia;
+                    $anio    = $row->anio;
+                    $nombrecliente = $row->nomcompleto;
+                    $direccion =  $row->domiciper;
+                    $dni       = $row->numdocper;
+                    $ruc       = $row->numrucper;
+
+                  }           
+            
+            ?>
+            <tr class="top">
+                <td colspan="4" class="documento_fecha_espacios" >
+                    <table border="0"  >
+                        <tr>
+                            <td style="width:100px;height: 30px;text-align:center;">
+                             <?php echo $dia; ?>
+                            </td>
+                            <td style="width:100px;text-align:center;">
+                            <?php echo $mes; ?>
+                            </td>
+                            <td style="width:70px;text-align:right;">
+                            <?php echo $anio; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr >
+                <td >
+                    <table border="0" style="width:100%;" >
+
+                              <tr>
+                                  <td class="documento_espacios_persona" colpspand="2">
+                                    <?php echo  $nombrecliente;  ?>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td class="documento_espacios_persona">
+                                  <?php echo  $direccion;  ?>
+                                 </td>
+                                 <td class="documento_espacios_persona" style="text-align:right" >
+                                  <?php echo  $dni;  ?>
+                                 </td>
+                                 
+                              </tr>
+                             
+                            </tr>
+                          
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                  <td style="height:30px;"></td>
+            </tr>
+            <tr>
+            <td>
+                    <table border="0" style="width:100%;font-size:10px;">
+                    <?php 
+                          $item=0;
+                          $total=0;
+                          foreach ((array)$detalle->data as $row)
+                            { ?>
+                                <tr>
+                                  <td style="width:60px;text-align:center;height:25px;"><?php echo number_format($row->cantidad, 2, '.', ' ');   ?></td>
+                                  <td style="width:250px;text-align:left;height:25px;"><?php echo $row->producto;  ?></td>
+                                  <td style="width:50px;text-align:center;border:0px solid;height:25px;"><?php echo number_format($row->precio, 2, '.', ' ');  ?></td>
+                                  <td style="width:50px;text-align:right;padding-right:10px;border:0px solid;height:25px;"><?php echo number_format($row->total, 2, '.', ' ');  ?></td>
+                                </tr>
+
+                          <?php  
+                            $total = $total + $row->total;
+                            $item = $item+1;
+                            }       
+                            
+                            if($item < 19){
+                                for($i=$item;$i<19;$i++){
+                            ?>
+                                <tr>
+                                  <td style="width:60px;text-align:center;height:25px;"> </td>
+                                  <td style="width:250px;text-align:left;height:25px;"> </td>
+                                  <td style="width:50px;text-align:center;border:0px solid;height:25px;"> </td>
+                                  <td style="width:50px;text-align:right;padding-right:10px;border:0px solid;height:25px;"> </td>
+                                </tr>
+
+                            <?php
+                                  $item = $item + 1;
+                                }
+                            }
+
+                            if($item == 19){ ?>
+                                <tr>
+                                  <td style="width:60px;text-align:center;height:25px;"> </td>
+                                  <td style="width:250px;text-align:left;height:25px;"> </td>
+                                  <td style="width:50px;text-align:center;border:0px solid;height:25px;"> </td>
+                                  <td style="width:50px;text-align:right;padding-right:10px;border:0px solid;height:25px;"><?php echo number_format($total,2,'.',' '); ?> </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                   </table>
+            </td>
+            </tr>
+        </table>
+    </body>
+</html>
+
+
+

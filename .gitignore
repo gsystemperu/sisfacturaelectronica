@@ -1,0 +1,5 @@
+.git
+.sencha
+resources/api/app/cache
+resources/api/public/files
+resources/api/app/files

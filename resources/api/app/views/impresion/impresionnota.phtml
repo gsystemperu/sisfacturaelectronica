@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+
+@page {
+  size: A4;
+  margin: 5;
+}
+
+@media print {
+  html, body {
+    width: 265mm;
+    height: 368mm;
+    /*border: solid 2px;
+    display: block;*/
+    font-family:"Calibri";
+    margin: 0;
+    padding : 10px;
+    font-size:20px;
+    letter-spacing: 3px;
+
+  }/* ... the rest of the rules ... */
+}
+
+body{
+    width: 265mm;
+    height: 368mm;
+    border: solid 0px;
+    /*display: block;*/
+    font-family:"Calibri";
+    margin: 0;
+    padding : 10px;
+    font-size:14px;
+    letter-spacing: 3px;
+}
+</style>
+ 
+</head>
+  <body>
+    <?php
+     $h = new FuncionesHelpers();
+     foreach ($cliente->data as $row)
+     {
+       $mes     =  $h->nombreMes($row->mes);
+       $dia     = $row->dia;
+       $anio    = $row->anio;
+       $nombrecliente = $row->nomcompleto;
+       $direccion =  $row->domiciper;
+	    $dni       = $row->numdocper;
+       $ruc       = $row->numrucper;
+       $formapago       = $row->formapago;
+       $numeroguia       = $row->numeroguia;
+       $incluyeigv       = $row->incluyeigv;
+//      echo $row->idmoneda;die();
+
+        switch( $row->idmoneda){
+                case 1 : $moneda='S/  ';break;
+                case 2 : $moneda='$  ';break;
+                case 3 : $moneda='€  ';break;
+        }
+
+     }
+
+     ?>
+     <div style="width:100%;height:293px;"> <!-- 289 -->
+     </div>
+     <table border="0">
+       <tr>
+         <td style="width:120px;"></td>
+         <td style="width:550px;height:25px;"><?php echo $nombrecliente; ?></td>
+         <td style="width:80px;"><?php echo $dia; ?></td>
+         <td style="width:90px;text-align:center;"><?php echo $mes; ?></td>
+         <td style="width:80px;text-align:right;"><?php echo $anio; ?></td>
+       </tr>
+       <tr>
+         <td style="width:120px;height:40px"></td>
+         <td colspan="4"><?php echo $direccion; ?></td>
+       </tr>
+       <tr>
+          <td colspan="5" style="width:100%;">
+              <table style="width:99%;" border="0">
+                <tr style="height:38px;">
+                  <td style="width:98px;" ></td>
+                  <td style="width:400px;"><?php echo $ruc; ?></td>
+                  <td style="width:200px;"><?php echo $numeroguia; ?></td>
+                  <td style="text-align:right;"><?php
+                      if(substr(trim($formapago),0,6) == 'CHEQUE')
+                        echo  substr($formapago,0,20);
+                      else
+                        echo  $formapago;
+                    ?></td>
+
+                </tr>
+
+              </table>
+          </td>
+	 </tr>
+     </table>
+     <div style="width:100%;height:19px;border:0px solid;"></div>
+      <table style="width:95%;border:0px solid;" border="0">
+      <?php
+          $i=0;
+          $total=0;
+          foreach ($detalle->data as $row2)
+          {
+            $p = ($row2->precio / 1.18);
+            $t = ($p * $row2->cantidad);
+
+
+
+            $i++;
+      ?>   <tr style="height:24.75px;">
+             <td style="width:40px;"></td>
+             <td style="width:43px;text-align:center;   vertical-align: text-top;">
+               <?php echo $row2->cantidad;  ?></td>
+             <td style="width:60px;text-align:center;   vertical-align: text-top;">
+               <?php echo $row2->um;  ?></td>
+             <td style="width:400px; letter-spacing: 1.4px;  vertical-align: text-top;text-align:left;">
+               &nbsp;<?php echo substr(trim($row2->producto),0,63);  ?></td>
+             <td style="text-align:right;width:80px;  vertical-align: text-top;">
+               <?php echo number_format($p, 2, '.',' ');  ?></td>
+             <td style="text-align:right;width:80px;  vertical-align: text-top;">
+               <?php echo number_format($t, 2, '.',' ');  ?></td>
+           </tr>
+      <?php
+               $total = $total + $t;
+          }
+         if($i<33){
+           for($i;$i<33;$i++){
+       ?>
+             <tr style="height:24.75px;">
+               <td style="width:40px;"></td>
+               <td style="width:43px;text-align:center;   vertical-align: text-top;"></td>
+               <td style="width:60px;text-align:center;   vertical-align: text-top;"></td>
+               <td style="width:400px;text-align:center;   vertical-align: text-top;"></td>
+               <td style="text-align:right;width:80px;  vertical-align: text-top;"></td>
+               <td style="text-align:right;width:80px;  vertical-align: text-top;"></td>
+             </tr>
+       <?php
+           }
+         }
+      ?>
+      <tr style="height:0px;">
+         <td style="width:30px;">                  </td>
+         <td colspan="5" style="padding:0px;">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php 
+		 $t1 = $total + ($total *0.18);
+                  echo strtoupper( pinta(convertir_a_letras($t1)));
+	   ?>
+         </td>
+      </tr>
+     <!-- <tr style="height:33px;">
+         <td style="width:400;"></td>
+         <td colspan="5" style="text-align:right;"><?php echo $moneda . number_format($total / 1.18 , 2, '.',' '); ?> &nbsp;&nbsp; </td>
+      </tr>
+      <tr style="height:33px;">
+         <td style="width:20px;"></td>
+         <td colspan="4" style="width:20px;text-align:right;">18%&nbsp;&nbsp;&nbsp;&nbsp; </td>
+         <td colspan="1" style="text-align:right;"><?php echo $moneda . number_format($total - ($total / 1.18), 2, '.',' ');  ?>&nbsp;&nbsp;&nbsp; </td>
+      </tr>
+      <tr style="height:33px;">
+         <td  style="width:400;"></td>
+         <td colspan="5"  style="text-align:right;"><?php echo $moneda . number_format($total , 2, '.',' ');  ?>&nbsp;&nbsp;&nbsp;  </td>
+      </tr>-->
+
+       <tr style="height:33px;">
+         <td style="width:400;"></td>
+         <td colspan="5" style="text-align:right;"><?php echo $moneda . number_format($total , 2, '.',' '); ?> &nbsp; </td>
+      </tr>
+      <tr style="height:33px;">
+         <td style="width:20px;"></td>
+         <td colspan="3" style="width:20px;text-align:right;"><!--18%&nbsp;&nbsp;&nbsp;&nbsp; --></td>
+         <td colspan="2" style="text-align:right;">
+              <table style="width:100%" border="0">
+		<tr>
+		   <td>18%</td>
+		   <td><?php echo $moneda . number_format($total * 0.18, 2, '.',' ');  ?>&nbsp;&nbsp;</td>
+
+		</tr>
+	      </table>
+              
+          </td>
+      </tr>
+      <tr style="height:33px;">
+         <td  style="width:400;"></td>
+         <td colspan="5"  style="text-align:right;"><?php echo $moneda . number_format($total + ($total * 0.18), 2, '.',' ');  ?>&nbsp;&nbsp;  </td>
+      </tr>
+     
+
+      </table>
+      <script>
+        print();
+      </script>
+   </body>
+ <html>
+ 
