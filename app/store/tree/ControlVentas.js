@@ -4,7 +4,7 @@ Ext.define('sisfacturaelectronica.store.tree.ControlVentas', {
         expanded: true,
         children: [
              { text: 'Clientes', leaf: true, itemId: "wContenedorCliente", titulo :'Clientes',  glyph : 'xf022'},
-             { text: 'Cotizaciones', leaf: true, itemId: "wContenedorCotizaciones", titulo :'Cotizaciones',  glyph : 'xf022'  },
+            // { text: 'Cotizaciones', leaf: true, itemId: "wContenedorCotizaciones", titulo :'Cotizaciones',  glyph : 'xf022' },
              { text: 'Productos', leaf: true, itemId: "wContenedorProducto", titulo :'Productos',  glyph : 'xf022'},
              {
                text: 'Facturación',
@@ -27,7 +27,8 @@ Ext.define('sisfacturaelectronica.store.tree.ControlVentas', {
                 },
               
                ]
-             },
+             }
+             /*,
              {
                text: 'Punto Venta',
                expanded: true,
@@ -39,7 +40,6 @@ Ext.define('sisfacturaelectronica.store.tree.ControlVentas', {
                    titulo: ".:. Botica .:. ",
                    glyph : 'xf0fa' 
                  }
-                 
                ]
              },
              {
@@ -48,7 +48,7 @@ Ext.define('sisfacturaelectronica.store.tree.ControlVentas', {
               itemId: "wconfigpuntoventa",
               titulo: ".:. Configuracón .:. ",
               glyph : 'xf013' 
-            }
+             }*/
         ]
     }
 });

@@ -27,7 +27,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
         xtype: 'wListadoCotizacionesFacturar'
       },
       {
-        xtype:'wRegistroCotizacionFacturar',
+         xtype: 'wRegistrarFacturaBoleta',
+        //xtype:'wRegistroCotizacionFacturar',
       },
       {
         xtype:'wGuiaRemision',
@@ -60,7 +61,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
             handler:'onClickGuiasRemisionImpresion'
           },
           {
-            text :'ENVIAR A SUNAT',
+            text :'PUBLICAR WEB',
             handler:'onClickEnviarSunatFacturas'
           },
          /* '->',

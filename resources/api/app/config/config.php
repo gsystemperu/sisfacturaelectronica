@@ -8,7 +8,7 @@ return new \Phalcon\Config(array(
         'host'        => '127.0.0.1',
         'username'    => 'postgres',
         'password'    => '64y4.634##',
-        'dbname'      => 'dbbotica_ss',
+        'dbname'      => 'dbfacturacion',
         'schema'      => 'public',
 	    'port'          => 5432
     ),

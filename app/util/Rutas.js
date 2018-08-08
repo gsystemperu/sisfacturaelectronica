@@ -121,8 +121,9 @@ Ext.define('sisfacturaelectronica.util.Rutas', {
     usuarioEliminar: 'resources/api/usuario_eliminar',
     //@ Configuracion
     confInventario: 'resources/api/conf_inventario',
-    confPuntoVenta: 'resources/api/conf_punto_venta'
-
+    confPuntoVenta: 'resources/api/conf_punto_venta',
+    rptImprimirFacElec: 'resources/api/imprimirfacturaelectronica?',
+    
 
   }
 

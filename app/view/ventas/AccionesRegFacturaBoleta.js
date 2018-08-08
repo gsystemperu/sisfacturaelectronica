@@ -184,8 +184,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
     },
 
     onClickNuevoCliente: function (btn) {
-        var _win = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCliente');
-        _win.show(btn, function () {}, this);
+        w = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCliente');
+        w.show(btn, function () {}, this);
     },
     onClickNuevoProductoPorCotizacion: function (btn) {
         var _win = Ext.create('Ext.window.Window', {
@@ -256,17 +256,24 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         __objIgv      = this.lookupReference('igvventas');
         __objSubTotal = this.lookupReference('Subtotalventas');
         __objTotal    = this.lookupReference('TotalGeneral');
-
-        store = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
-        _tot = 0;
-        store.each(function (record) {
-            _tot = _tot + record.get('total');
+        console.log("debug.....");
+        s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
+        t = 0;
+        s.each(function (r) {
+            t = t + r.get('total');
         });
-        s = _tot / 1.18;
-        i = _tot -(_tot / 1.18);
+        console.log(__objChk.getValue());
+        if(__objChk.getValue()){
+            s = t / 1.18;
+            i = t -(t / 1.18);
+        }else{            
+            s = t ;
+            i = t * 0.18;
+            t = s + i;
+        }
         __objSubTotal.setValue(s.toFixed(2));
         __objIgv.setValue(i.toFixed(2));
-        __objTotal.setValue(_tot.toFixed(2));
+        __objTotal.setValue(t.toFixed(2));
     },
     onCalcularTotalVentaPorBusqueda: function () {
         me = this;
@@ -307,9 +314,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         if (_form.isValid()) {
 
             var _dataDetalle = [];
-            var _store = this.lookupReference('dgvDetalleVentaFacturaBoleta').getStore();
+            var s = this.lookupReference('dgvDetalleVentaFacturaBoleta').getStore();
             me = this;
-            _store.each(function (record) {
+            s.each(function (record) {
                 if (record.get('cantidad') != 0) {
                     _reg = {
                         "idprod": record.get('idprod'),
@@ -329,10 +336,19 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {
                     if(action.result.error!=0){
-                        _form.reset();
-                        _store.removeAll();
-                        var objrpt = window.open( sisfacturaelectronica.util.Rutas.rptImprimirNota+ 'id='+ action.result.error, "", "width=700,height=900");
-                              //setTimeout(function(){ objrpt.close(); }, 1000);
+                       sisfacturaelectronica.util.Util.showToast("Documento Guardado");
+                       f=Ext.ComponentQuery.query("#frmRegFacturaBoleta")[0];
+                       if(f){
+                           f.reset();
+                           s.removeAll();
+                            c = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0];
+                            if(c){
+                                sf = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore();
+                                sf.reload();
+                                l = c.getLayout();
+                                l.setActiveItem(0);
+                            }
+                       }
                     } 
                 },
                 failure: function () {
@@ -737,5 +753,10 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
     onClickCancelarFacturaBoleta:function(btn){
         _panel = btn.up('tabpanel');
         _panel.getChildByElement('wRegistrarFacturaBoleta').close();
+    },
+    onClickNuevoProductoPopup:function(b){
+        Ext.create('Ext.window.Window',{title:'Nuevo Producto',modal:true,width:1100,height:700,autoShow:true,
+           layout:'fit', itemId:'frmprodpopup', items:[ {xtype:'wContenedorProducto'} ]}
+        );
     }
 });

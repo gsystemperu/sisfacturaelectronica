@@ -71,6 +71,7 @@ Ext.define('sisfacturaelectronica.Application', {
         'almacen.ProductoExistenciasEditar',
         'almacen.ReportesProducto',
         'puntoventa.ConfigPuntoVenta',
+        'almacen.FormProductoPopup',
 
         //@Conf views
         'conf.configEmpresa',

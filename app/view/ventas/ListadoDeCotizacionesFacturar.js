@@ -279,7 +279,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                     value: new Date(),
                     reference: 'dfDesdeCotizacionesFactura',
                     itemId: 'dfDesde',
-                    width: 100
+                    width: 110
                 },
                 {
                     xtype: 'label',
@@ -300,7 +300,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                     value: new Date(),
                     reference: 'dfHastaCotizacionesFactura',
                     itemId: 'dfHasta',
-                    width: 100
+                    width: 110
                 },
                 {
                     xtype: 'button',

@@ -4,9 +4,11 @@ include __DIR__ .'/../library/funciones.php';
 include __DIR__ .'/../library/fpdf/fpdf.php';
 include __DIR__ .'/../library/fpdf/exfpdf.php';
 include __DIR__ .'/../library/fpdf/jspdf.php';
+include __DIR__ .'/../library/phpqrcode/qrlib.php';
+
 //use Greenter\Ws\Services\SunatEndpoints;
 //$serializer = 
-use JMS\Serializer\SerializerBuilder; //::create()->build();
+//use JMS\Serializer\SerializerBuilder; //::create()->build();
 class ImpresionController extends Controller
 {
   
@@ -1020,9 +1022,18 @@ class ImpresionController extends Controller
       $pdf->Cell(5,$textypos,number_format($total,2,".",","),0,0,"R");
       $pdf->output();
     }
+
+
+
     public function imprimirfacturaelectronicaAction(){
       
-       //#Ruta del Facturador Sunat
+       //PHPQRCode::png('PHP QR Code :)');
+      
+       
+
+      // QRcode::png('PHP QR Code :)');
+      // die();
+      //#Ruta del Facturador Sunat
        $rutaFacturadorSunat = "C:\\facturador\sunat_archivos\sfs\FIRMA";
        $hp                  = new FuncionesHelpers();
        $request             = new Phalcon\Http\Request();
@@ -1145,83 +1156,25 @@ class ImpresionController extends Controller
       $pdf->Cell(25,7,pinta('TOTAL VENTA'),0,0,'L');
       $pdf->Cell(10,7,pinta('S/.'),0,0,'R');
       $pdf->Cell(0,7,pinta(number_format($totalVenta , 2, ".", ",")),0,1,'R');
+      $filaqr = $pdf->getY();
       $pdf->setY($fila);
       $pdf->MultiCell(130,7,pinta('SON : '.$dataFacturacion->totalletras),0,'L');
       $tam = 9;
       $pdf->Ln(7);
-
-      /*$pdf->SetFont($font,'B',20);
-      $pdf->MultiCell(186,$in,pinta("COTIZACIÓN: ".$dataCotizacion->ctcodigo),0,'C');
-      $pdf->Ln(5);
-
-      $fila = $pdf->GetY();
-      $pdf->SetFont($font,'B',$tam);
-      //$pdf->Cell(40,$in,pinta("FECHA DE COTIZACIÓN: "),0,0,'L');
-      $pdf->Cell(0,$in,pinta($dataCotizacion->fechacoti),0,1,'R');
-      $pdf->Cell(20,$in,"CLIENTE: ",0,0,'L');
-      $pdf->Cell(0,$in,pinta($dataCotizacion->nomcompleto),0,1,'L');
-      $pdf->Cell(20,$in,"DIRECCION: ",0,0,'L');
-      $pdf->Cell(0,$in,pinta($dataCotizacion->domiciper),0,1,'L');
-      $pdf->Cell(20,$in,"RUC: ",0,0,'L');
-      $pdf->Cell(0,$in,pinta($dataCotizacion->numrucper),0,1,'L');
-      $pdf->Cell(20,$in,"TELEFONO: ",0,0,'L');
-      $pdf->Cell(108,$in,pinta($dataCotizacion->telefper),0,0,'L');
-
-      $pdf->Cell(47,6,pinta('COTIZACIÓN VALIDA HASTA : '),0,0,'L');
-      $pdf->Cell(0,6,pinta($dataCotizacion->validohasta),0,1,'L');
-      $pdf->Ln(4);
-        $pdf->Cell(10,5,pinta('Item'),1,0,'C');
-        $pdf->Cell(110,5,pinta('Descripción'),1,0,'C');
-        $pdf->Cell(10,5,pinta('Cant.'),1,0,'C');
-        $pdf->Cell(15,5,pinta('Unidad'),1,0,'C');
-        //$pdf->Cell(16,5,pinta('P. sin igv'),1,0,'C');
-        $pdf->Cell(16,5,pinta('P. con igv'),1,0,'C');
-        $pdf->Cell(32,5,pinta('Total'),1,1,'C');
-          $item = 1;
-           foreach($dataDetalle as $row){
-            $pdf->SetFont($font,'',7);
-            $pdf->Cell(10,5,pinta($item++),1,0,'C'); 
-            $pdf->Cell(110,5,pinta($row->descripcion),1,0,'L');
-            
-            $pdf->Cell(10,5,pinta($row->cantidad),1,0,'C');
-            $pdf->Cell(15,5,pinta($row->um),1,0,'C');
-            //$pdf->Cell(16,5,pinta(number_format($row->precio / 1.18 , 2, '.',' ')),1,0,'R');
-            $pdf->Cell(16,5,pinta(number_format($row->precio, 2, '.',' ')),1,0,'R');
-            $pdf->Cell(32,5,pinta(number_format($row->total , 2, '.',' ')),1,1,'R');
-            $total_sin_imp += $row->total;
-           }
-
-        $pdf->Ln(4);
-        //$impuestos = $total_sin_imp * $impuestos;
-        $total_cotizacion = $total_sin_imp; // $total_sin_imp + $impuestos;
-     
-      $pdf->SetFont($font,'',$tam);       
-      if($dataCotizacion->incluyeigv == 1){
-            $pdf->Cell(165,5,pinta('TOTAL'),0,0,'R');
-            $pdf->Cell(22,5,pinta(number_format($total_cotizacion, 2, '.',' ')),'T',1,'R');
-          }else{
-            $pdf->Cell(168,5,pinta('SUB TOTAL'),0,0,'R');
-            $pdf->Cell(22,5,pinta(number_format($total_cotizacion / 1.18 , 2, '.',' ')),'T',1,'R');
-            $pdf->Cell(168,5,pinta('IGV'),0,0,'R');
-            $pdf->Cell(22,5,pinta(number_format($total_cotizacion - ($total_cotizacion / 1.18 ) , 2, '.',' ')),'T',1,'R');
-            $pdf->Cell(168,5,pinta('TOTAL'),0,0,'R');
-            $pdf->Cell(22,5,pinta(number_format($total_cotizacion, 2, '.',' ')),'T',1,'R');
-          }
-
-      //$pdf->Ln();      
-      //- Observaciones
-      $pdf->SetFont($font,'',$tam);
-      $pdf->Cell(0,6,pinta(''),'B',1,'L');
-      $pdf->Cell(35,6,'LUGAR DE ENTREGA :',0,0,'L');
-      $pdf->Cell(0,6,pinta($dataCotizacion->lugarentrega),0,1,'L');
-      $pdf->MultiCell($wg,6,'OBSERVACIONES :',0,'L');
-      $pdf->SetFont($font,'',$tam);
-      $pdf->MultiCell($wg,6,pinta($dataCotizacion->comentario),0,'L');
-      
-      $pdf->Cell(35,6,pinta('CREDITOS Y COBRANZAS : '),0,1,'L');
-      $pdf->MultiCell(0,4,pinta($dataCotizacion->creditoscobranzas),0,'J');
-
-      $pdf->AutoPrint();*/
+      $tempDir = '../public/img/';
+      $codeContents = $dataFacturacion->codigogr; 
+      $fileName = 'qr'.md5($codeContents).'.png'; 
+      $pngAbsoluteFilePath = $tempDir.$fileName; 
+      if (!file_exists($pngAbsoluteFilePath)) { 
+          QRcode::png($codeContents, $pngAbsoluteFilePath,QR_ECLEVEL_M); 
+          $pdf->Image($pngAbsoluteFilePath, 10, $filaqr + 2, 25,25);
+          unlink($pngAbsoluteFilePath);
+      }else{
+           unlink($pngAbsoluteFilePath);
+      }
+      $pdf->setY($filaqr + 30);
+      $pdf->Cell(0,6,pinta('Ha sido aceptada con el Hash :  ' . $firmaDoc));
+      $pdf->AutoPrint();
       $pdf->Output();
     }
   

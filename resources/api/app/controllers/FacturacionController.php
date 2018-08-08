@@ -19,14 +19,13 @@ class FacturacionController extends Controller
            $vFormaPago    =  $request->getPost('idfopag');
            $vModoEntrega  =  $request->getPost('idmodo');
            $vDocVenta     =  $request->getPost('documentoventa');
-           $vIncluyeIgv   = ($request->getPost('incluyeigv')==1? 1:0);
+           $vIncluyeIgv   = ($request->getPost('incluyeigv')=='on'? 1:0);
            $vFechaValidoHasta  = ( $request->getPost('validohasta')==''? $request->getPost('fechavalidohasta') : $request->getPost('validohasta'));
            $vSerieDoc     = $request->getPost('seriedoc');
            $vNumeroDoc    = $request->getPost('numerodoc');
            $vPagoAcuenta  = $request->getPost('pagoacuenta');
            $vIdmoneda     = $request->getPost('idmoneda');
            $data = array($vId,$vIdCoti,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle, $vFormaPago,$vModoEntrega,$vDocVenta,$vIncluyeIgv,$vFechaValidoHasta,$vSerieDoc,$vNumeroDoc,$vPagoAcuenta,$vIdmoneda);
-          // print_r($data);die();
            $jsonData             = Facturacion::actualizar($data);
            $response->setContentType('application/json', 'UTF-8');
            $response->setContent(json_encode($jsonData[0], JSON_NUMERIC_CHECK));

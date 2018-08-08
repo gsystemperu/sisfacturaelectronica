@@ -107,7 +107,11 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProductoFB', {
                     xtype:'button',
                     glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
                     handler :'onClickBuscarProductoPorNombre'
-
+                },
+                {
+                    xtype: 'button',
+                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                    handler: 'onClickNuevoProductoPopup'
                 }
             ]
 

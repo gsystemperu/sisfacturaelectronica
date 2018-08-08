@@ -53,7 +53,8 @@ Ext.define('sisfacturaelectronica.view.almacen.Producto', {
                 flex: 1,
                 align: 'left',
                 hidden: true,
-              }, {
+              }, 
+              {
                 text: 'Presentacion',
                 dataIndex: 'presentacion',
                 flex: 1,
@@ -62,7 +63,7 @@ Ext.define('sisfacturaelectronica.view.almacen.Producto', {
                   if(record.data.cantidadunidadmedida>1)
                     return record.data.presentacion + ' DE ' +record.data.cantidadunidadmedida.toString();
                   else
-                    return record.data.presentacion.toString();
+                    return record.data.presentacion;
                 }
               },
               {
@@ -77,7 +78,7 @@ Ext.define('sisfacturaelectronica.view.almacen.Producto', {
                 flex: 1,
                 align: 'left'
               },
-              {
+             {
                 text: 'A Mano',
                 dataIndex: 'existencias',
                 flex: 1,
@@ -101,8 +102,8 @@ Ext.define('sisfacturaelectronica.view.almacen.Producto', {
                 flex: 1,
                 align: 'right',
                 renderer: Ext.util.Format.numberRenderer('0.00')
-              }
-              , {
+              },
+               {
                 xtype: 'widgetcolumn',
                 flex: 0.5,
                 widget: {

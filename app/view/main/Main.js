@@ -78,6 +78,7 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
           title: 'Control de Almacen',
           itemId: 'panControlAlmacen', //'panGestionCliente',
           iconCls: 'fa fa-dropbox fa-2x',
+          hidden:true,
           bodyPadding: 0,
           items: [{
             xtype: 'menutree',
@@ -156,7 +157,7 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
           items: [
             {
               xtype: 'image',
-              //src: 'resources/images/lgsis.png',
+              src: 'resources/images/lgsis.png',
               width: 100,
               height: 30,
               hidden:false
@@ -202,17 +203,16 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
           items: [
             {
               xtype: 'image',
-             // src: 'resources/images/lgsis.png',
+              src: 'resources/images/lgsis.png',
               width: 300,
               height: 80,
               hidden: false
-
             },
             {
               xtype: 'label',
               text: '       Asesoria en tecnologíca para tu negocio       '
             },
-             {
+            {
               xtype: 'label',
               text: 'Sr. : Cesar Leyva'
             },
