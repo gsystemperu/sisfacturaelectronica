@@ -156,6 +156,33 @@
 			$xml->getName() => $propertiesArray
 		);
 	}
+	//Archivos 
+	public function estado_xml_facturador($nombrearchivo){
+		$ef = 0;
+		$ee = 0;
+		// Firma
+		$rutaFacturadorSunatFirma = "C:\\facturador\sunat_archivos\sfs\FIRMA";
+		// Rpta
+		$rutaFacturadorSunatRpt   = "C:\\facturador\sunat_archivos\sfs\RPTA";
+
+		if(file_exists($rutaFacturadorSunatFirma.'\\'.$nombrearchivo. '.xml')){
+		  $ef = 1;
+		}else{
+		  $ef = 0;
+		}
+		if(file_exists($rutaFacturadorSunatRpt.'\\'.'R'.$nombrearchivo. '.zip')){
+			$ee = 1;
+		}else{
+			$ee = 0;
+		}
+		if($ef == 1 && $ee == 0){
+			return 1;
+		}else if($ef == 1 && $ee == 1){
+			return 2;
+		}else{
+			return 0;
+		}
+	}
 
 
- 	}
+}

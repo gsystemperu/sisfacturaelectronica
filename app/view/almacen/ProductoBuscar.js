@@ -2,6 +2,7 @@ Ext.define('sisfacturaelectronica.view.almacen.ProductoBuscar', {
     extend: 'Ext.window.Window',
     xtype: 'wRegProductoBuscar',
     alias: 'widget.wRegProductoBuscar',
+    itemId:'wRegProductoBuscar',
     requires: [
         'Ext.layout.container.HBox',
         'sisfacturaelectronica.view.compras.AccionesOrdenCompra',

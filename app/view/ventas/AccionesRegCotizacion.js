@@ -409,19 +409,22 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
     //@ Acciones Clientes
     //@ Accion en la ventana de registro de usuario por el formulario de cotizaciones
     onClickGuardarCliente: function () {
-        var _form = this.lookupReference('myFormCliente');
-        var _store = Ext.ComponentQuery.query('#cboDatosCliente')[0].getStore();
-        if (_form.isValid()) {
-            var _view = this.getView();
-            _form.submit({
+        f = this.lookupReference('myFormCliente');
+        st = Ext.ComponentQuery.query('#cboDatosCliente')[0].getStore();
+        if (f.isValid()) {
+            var v = this.getView();
+            f.submit({
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {
-                    _store.load();
-                    _view.close();
+                    c=Ext.ComponentQuery.query('#cboDatosCliente')[0];
+                    st.load();
+                    c.setValue(action.result.error);
+                    c.setRawValue(action.result.persona);
+                    v.close();
                 },
                 failure: function (error) {
                     Ext.Msg.alert("AkinetFarma", "Error al guardar");
-                    _view.close();
+                    v.close();
                 }
             });
         } else {

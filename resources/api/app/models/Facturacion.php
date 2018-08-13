@@ -115,6 +115,22 @@ class Facturacion extends \Phalcon\Mvc\Model
         $sql     =  $obj->executarJson('ventas','SP_RESUMEN_VENTAS_TICKETERA',$param);
         return $sql;
     } 
+    public static function actualizarEstadosFacturador($data)
+    {
+       // print_r($data);die();
+        $obj     = new SQLHelpers();
+        $param   = $data;
+        $sql     =  $obj->executarQuery('SELECT * FROM ventas.sp_facturacion_actualizar_estado_facturador ('.$param.')');
+        return $sql;
+    } 
+    public static function volverGenerarDataFacturador($data)
+    {
+        $obj     = new SQLHelpers();
+        $param   = $data;
+        $sql     =  $obj->executar('catalogos','sp_generar_cab_y_det_facturador_version_1_1',$param);
+        return $sql;
+    } 
+    
     
 
      

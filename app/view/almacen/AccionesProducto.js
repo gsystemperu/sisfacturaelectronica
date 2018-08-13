@@ -42,6 +42,13 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProducto', {
                           var l  = me.getLayout();
                           l.setActiveItem(0);
                           Ext.ComponentQuery.query('#dgvProductos')[0].getStore().reload();
+                          p=Ext.ComponentQuery.query('#frmprodpopup')[0];
+                          if(p){
+                            tb = Ext.ComponentQuery.query('#txtProductoNombre')[0];
+                            tb.setValue(action.result.producto);
+                            tb.fireEvent('keypress')
+                            p.close(); 
+                          }
                         } catch (e) {
                           Ext.ComponentQuery.query('#frmprodpopup')[0].close();
                           Ext.Msg.alert("Producto","Producto Guardado");

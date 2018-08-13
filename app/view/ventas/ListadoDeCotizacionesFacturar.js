@@ -76,47 +76,60 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 hideGroupedHeader: true,
                 enableGroupingMenu: false
             }],
+            viewConfig: {
+                getRowClass: function(record, index, rowParams, ds) {
+
+                    if(record.get('estado') == 7){
+                        return "red-row"; 
+                    }else{
+                        return "black-row";
+                    }
+                   
+                }
+             },
             columns: [
                {xtype: 'rownumberer'},
               {
                     text: 'F.Cotizacion',
                     dataIndex: 'fechacoti',
                     flex: 0.5,
-                    align: 'center'
+                    align: 'center',
+                    hidden:true
                 },
                 {
                         text: 'F.Facturado',
                         dataIndex: 'fechafact',
                         flex: 0.5,
-                        align: 'center'
+                        align: 'center',
+                        hidden:true
                 },
                 {
-                        text: 'Doc. Interno',
+                    text: 'Doc.Serie',
+                    dataIndex: 'seriedoc',
+                    flex: 0.3,
+                    align: 'center'
+                },
+                {
+                        text: 'Doc. Numero',
                         dataIndex: 'docinterno',
                         flex: 0.5,
                         align: 'center'
                 },
                 {
-                        text: 'Tipo',
-                        dataIndex: 'tipodoc',
-                        flex: 0.3,
-                        align: 'center'
-                },
-                {
                     text: 'Nombre / Razon Social',
                     dataIndex: 'nomcompleto',
-                    flex: 1.5
+                    flex: 2
                 },
                 {
                     text: 'Estado',
-                    hidden:false,
                     dataIndex: 'descripcion',
                     flex: 0.7,
                     align: 'center',
-                    renderer : function(value,meta){
+                    hidden:true,
+                    renderer : function(value,meta, rec, rowIndex, colIndex, store){
                         r = meta.record.data;
                        if(value=='CT ANULADA' || value=='VD ANULADO'){
-                          return '<span style="color:red;">'+value.toString()+'</span>'
+                          return '<span style="color:red;">'+value.toString()+'</span>';
                        }else if(value=='CT CONFIRMADA'){
                           return '<span style="color:#FF9800;">'+value.toString()+'</span>'
                        }else{
@@ -209,20 +222,14 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                     }]
                 },
                 {
-                    xtype:'checkcolumn',
-                    flex : 0.3,
-                    text: 'Sunat',
-                    name : 'enviarsunat',
-                    hidden:true
-                    /*editor:{
-                        xtype:'checkboxfield'
-                    }*/
+                    flex : 1,
+                    text: 'Est.Sunat',
+                    dataIndex : 'estadosunat',
                 },
                 {
                     flex : 0.5,
-                    text: 'Est.Sunat',
-                    name : 'estadosunat',
-                    hidden:true
+                    text: 'Publicado',
+                    dataIndex : 'publicado',
                 },
                 {
                     xtype: 'widgetcolumn',
@@ -317,6 +324,18 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                         text:'Resumen',
                         handler : 'onClickResumenVentasAdmin'
                     }]
+                },
+                {
+                    xtype:'button',
+                    text : 'Enviar a Facturador',
+                    tooltip : 'Se vuelve a generar el TXT o XML para enviar al facturador sunat',
+                    handler : 'onClickGenTxtfact'
+                },
+                {
+                    xtype:'button',
+                    text : 'Actualizar estado sunat',
+                    tooltip : 'Actualiza los estados de los documentos en el facturador',
+                    handler : 'onClickActEstado'
                 }
 
             ]

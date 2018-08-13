@@ -2,6 +2,7 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProductoFB', {
     extend: 'Ext.window.Window',
     alias: 'widget.wBuscarProductoFB',
     xtype: 'wBuscarProductoFB',
+    itemId: 'wBuscarProductoFB',
     requires: [
       'sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta'
     ],
@@ -96,6 +97,7 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProductoFB', {
                     xtype:'textfield',
                     fieldLabel :'<b>Producto</b>',
                     reference : 'txtProductoNombre',
+                    itemId: 'txtProductoNombre',
                     flex: 1,
                     selectOnFocus:true,
                     enableKeyEvents : true,

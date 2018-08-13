@@ -63,23 +63,30 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
       {
         sisfacturaelectronica.util.Util.showErrorMsg('No se puede eliminar, está con la marca de cierre de caja!'); return false; 
       }
-      Ext.MessageBox.confirm('Aviso','Desea eliminar el producto ?',function(btn){
+      Ext.MessageBox.confirm('Aviso','Desea anular el documento seleccionado ?',function(btn){
         if(btn=='yes'){
           if (rec) {
-              Ext.Ajax.request({
-                 url :sisfacturaelectronica.util.Rutas.facturacionAnular,
-                 params:{
-                   idfacturacion : rec.get('idfacturacion'),
-                   idcotizacion   : rec.get('idcoti')
-                 },
-                 success:function(response){
-                    data = Ext.JSON.decode(response.responseText);
-                   Ext.each(data,function(r){
-                     if(r.error != 0)
-                         Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore().reload();
-                  });
-                 }
-             });
+                Ext.Msg.prompt('Motivo de anulación', 'Ingresar el motivo de la anulación del documento seleccionado!',function(b,t){ 
+                    if(b=='ok'){ 
+                        Ext.Ajax.request({
+                            url :sisfacturaelectronica.util.Rutas.facturacionAnular,
+                            params:{
+                              idfacturacion : rec.get('idfacturacion'),
+                              idcotizacion  : rec.get('idcoti'),
+                              motivo        : t
+                            },
+                            success:function(response){
+                              data = Ext.JSON.decode(response.responseText);
+                              Ext.each(data,function(r){
+                                if(r.error != 0)
+                                    Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore().reload();
+                             });
+                            }
+                        });
+                    }
+                });
+
+             
           }
         }
       });
@@ -113,10 +120,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
                 
           }
           Ext.Ajax.request({
-              //url :(record.get('estado')!=3?sisfacturaelectronica.util.Rutas.cotizacionDetalle:sisfacturaelectronica.util.Rutas.facturacionDetalle),
               url : u,
               params:{
-                vIdCotizacion :  v  //(record.get('estado')!=3?record.get('idcoti') : record.get('idfacturacion')) 
+                vIdCotizacion :  v  
               },
               method : 'GET',
               success:function(response){
@@ -144,12 +150,18 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
                       _t =_t + record.total
                 });
                 Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0].unmask();
-                _s = _t / 1.18;
-                _i = _t - (_t / 1.18);
-                Ext.ComponentQuery.query('#SubtotalventasfacturacionVi')[0].setValue(_s.toFixed(2));
-                Ext.ComponentQuery.query('#igvventasfacturacionVi')[0].setValue(_i.toFixed(2));
-                Ext.ComponentQuery.query('#TotalGeneralfacturacionVi')[0].setValue(_t.toFixed(2));
-                
+                if(record.get('incluyeigv')){
+                   s = _t / 1.18;
+                   i = _t -(_t / 1.18);
+                   t = _t;
+                }else{            
+                   s = _t ;
+                   i = _t * 0.18;
+                   t = s + i;
+                }
+                Ext.ComponentQuery.query('#SubtotalventasfacturacionVi')[0].setValue(s.toFixed(2));
+                Ext.ComponentQuery.query('#igvventasfacturacionVi')[0].setValue(i.toFixed(2));
+                Ext.ComponentQuery.query('#TotalGeneralfacturacionVi')[0].setValue(t.toFixed(2));
               }
           });
 
@@ -332,7 +344,26 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
         h = Ext.ComponentQuery.query('#dfHasta')[0].getRawValue();
         objrpt = window.open( sisfacturaelectronica.util.Rutas.listadoVentasAdmin+ 
         '?desde='+ d.toString() +'&hasta='+ h.toString(), "", "width=700,height=900");  
-  
+    },
+    onClickGenTxtfact:function(b){
+        st= Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore();
+        r = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
+        if(r){
+            Ext.Ajax.request({
+                url :sisfacturaelectronica.util.Rutas.generarTxtFacturador,
+                params:{
+                  idfact : r.get('idfacturacion')
+                },
+                success:function(response){
+                    rp = Ext.JSON.encode(response.responseText);
+                    st.reload();
+                    sisfacturaelectronica.util.Util.showToast('Generado el TXT');
+                }
+              });
+        }
+    },
+    onClickActEstado:function(b){
+        Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore().reload();
     }
 
 });

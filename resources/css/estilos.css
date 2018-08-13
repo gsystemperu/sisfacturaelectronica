@@ -38,7 +38,10 @@
   padding: 1px;
 }
 
-
+.red-row{ color: rgb(252, 101, 101) !important;  } 
+.yellow-row{ background-color: #FBF8BF !important; } 
+.green-row{ background-color: #99CC99 !important; }
+.black-row {color: #5e5e5e !important};
 
 
 

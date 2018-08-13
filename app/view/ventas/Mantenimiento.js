@@ -45,7 +45,8 @@ Ext.define('sisfacturaelectronica.view.ventas.Mantenimiento', {
         var _obj = [{
             xtype: 'tabpanel',
             activeTab: 0,
-            items: [{
+            items: [
+                /*{
                     xtype: 'panel',
                     hidden:false,
                     title: 'Unidad de Medida',
@@ -120,7 +121,7 @@ Ext.define('sisfacturaelectronica.view.ventas.Mantenimiento', {
                             }]
                         }
                     ]
-                },
+                },*/                
                 {
                     xtype: 'panel',
                     title: 'Forma de Pago',

@@ -11,7 +11,8 @@ $loader->registerDirs(
         $config->application->controllersDir,
         $config->application->modelsDir,
         $config->application->helpersDir,
-        $config->application->libraryDir.'phpexcel/'
+        //$config->application->libraryDir.'phpexcel/',
+        $config->application->entityDir
         
     )
 );

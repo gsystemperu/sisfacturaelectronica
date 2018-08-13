@@ -411,31 +411,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
                     sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos para la cotización!');
                 }
           }
-          /*else{
-              var _form =   Ext.ComponentQuery.query('#wFormClienteListado')[0];
-              var _store =  Ext.ComponentQuery.query('#dgvClientes')[0].getStore();
-              if (_form.isValid()) {
-                  _form.submit({
-                      waitMsg: 'Guardando informacion...',
-                      success: function (form, action) {
-                          _store.getProxy().extraParams = {
-                              vDocumento: null,
-                              vRuc: null,
-                              query: null
-                          };
-                          _store.load(1);
-                          var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    //this;
-                          var l = me.getLayout();
-                          l.setActiveItem(0);
-                      },
-                      failure: function () {
-                          sisfacturaelectronica.util.Util.showErrorMsg("Error al momento de grabar la informacion");
-                      }
-                  });
-              } else {
-                  sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos para la cotización!');
-              }
-          }  */
+         
         } catch (error) {
             var _form =   Ext.ComponentQuery.query('#wFormClienteListado')[0];
             var _store =  Ext.ComponentQuery.query('#dgvClientes')[0].getStore();
@@ -465,12 +441,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
     },
 
     onClickRowProducto: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-      /*
-          precioprod   = 1
-          precioprodlocalespecial = 2
-          precioprodprovincia  = 3
-          precioprodprovinciaespecial = 4
-      */
+ 
         me = this;
         var _store         = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
         var _precio         = 0;
@@ -528,12 +499,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         _store.load(1);
     },
 
-    /*onClickRefrescarListadoCotizaciones: function () {
-        me = this;
-        _store = me.lookupReference('dgvVentas').getStore();
-        _store.load(1);
-    },*/
-
     onClickBuscarCotizacionesPorFechas: function () {
 
         me = this;
@@ -551,51 +516,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         _storeDet.load(1);
 
     },
-    /*onClickImprimirPDFCotizacionFormato:function(){
 
-      //var _record = this.lookupReference('dgvVentas').getSelectionModel().getSelection()[0];
-      var _record = Ext.ComponentQuery.query('#dgvVentas')[0].getSelectionModel().getSelection()[0];
-      var _ori    = Ext.ComponentQuery.query('#cboOrientacion')[0].getValue();
-      var _for    = Ext.ComponentQuery.query('#cboFormato')[0].getValue();
-      var _firma  = Ext.ComponentQuery.query('#cboFirma')[0].getValue();
-
-      if(_ori == 1){
-          var _url = 'resources/api/pdf_cotizacion_vertical?id=' + _record.get("idcoti")+"&ori="+ _ori +"&for="+ _for +"&firma="+ _firma;
-      }else{
-          var _url = 'resources/api/pdf_cotizacion_horizontal?id=' + _record.get("idcoti")+"&ori="+ _ori +"&for="+ _for+"&firma="+ _firma;
-      }
-
-      _panel = Ext.ComponentQuery.query("#tabPrincipal")[0];
-      if (_panel.getChildByElement('pdfcotizacion')) {
-          _panel.remove('pdfcotizacion');
-      }
-      if (!_panel.getChildByElement('pdfcotizacion')) {
-          _panel.add({
-              xtype: 'panel',
-              closable: true,
-              id: 'pdfcotizacion',
-              title: 'PDF: Cotizacion',
-              layout: 'fit',
-              bodyPadding: '5px 5px 5px 5px',
-              items: [{
-                  xtype: 'component',
-                  itemId: 'xiframe',
-                  autoScroll: true,
-                  autoEl: {
-                      tag: 'iframe',
-                      style: 'height: 100%; width: 100%;',
-                      src: _url
-                  }
-              }]
-          });
-      }
-      _panel.setActiveTab('pdfcotizacion');
-
-    },*/
-    /*onSelectedCliente: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-        var form = this.lookupReference('myFormClienteListado');
-        form.loadRecord(record);
-    },*/
     //@Cliente  Nuevo
     onClickNuevoClienteLista: function (btn) {
         var form = this.lookupReference('myFormClienteListado');
@@ -739,20 +660,31 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
       if(e.charCode == 13){this.onClickBuscarProductoCodigo();}
     },
     onKeyPressTextoDeBusquedaProducto2:function(texto, e, eOpts){
-      if(e.charCode == 13){this.onClickBuscarProductoPorNombre();}
+        try {
+            if(e.charCode == 13){this.onClickBuscarProductoPorNombre();}
+        } catch (error) {
+            this.onClickBuscarProductoPorNombre();
+        }
+      
     },
 
     //-----------------------------------------------------------
     onClickBuscarCotizacionesAnteriores:function(btn){
         var _codcliente = this.lookupReference('cboDatosCliente').getValue();
-        console.log(_codcliente);
         if(_codcliente)
             Ext.create('sisfacturaelectronica.view.ventas.CotizacionesClienteBuscar',{ codigo : _codcliente });
 
     },
     onClickCancelarFacturaBoleta:function(btn){
-        _panel = btn.up('tabpanel');
-        _panel.getChildByElement('wRegistrarFacturaBoleta').close();
+        try {
+            c = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0];
+            if(c){
+                l = c.getLayout();
+                l.setActiveItem(0);
+            }   
+        } catch (error) {
+            return false;   
+        }
     },
     onClickNuevoProductoPopup:function(b){
         Ext.create('Ext.window.Window',{title:'Nuevo Producto',modal:true,width:1100,height:700,autoShow:true,

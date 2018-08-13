@@ -1,8 +1,6 @@
 <?php
-
+use Karriere\JsonDecoder\JsonDecoder;
 use \Phalcon\Mvc\Controller as Controller;
-
-
 class CotizacionController extends Controller
 {
 
@@ -956,7 +954,8 @@ class CotizacionController extends Controller
        }
   }
 
-  public function categoriaeliminarAction(){
+  public function categoriaeliminarAction()
+  {
       $request        = new Phalcon\Http\Request();
       $response       = new \Phalcon\Http\Response();
       if($request->isPost() ==true)
@@ -968,7 +967,7 @@ class CotizacionController extends Controller
            $response->setContent(json_encode($jsonData, JSON_NUMERIC_CHECK));
            return $response;
       }
- }
+  }
 
 
   //
@@ -979,10 +978,10 @@ class CotizacionController extends Controller
         $response       = new \Phalcon\Http\Response();
         if($request->isPost() ==true)
         {
-            $vId            =  $request->getPost('idpres');
-            $vDescripcion   =  $request->getPost('despres');
-            $vAbreviatura   =  $request->getPost('abrepres');
-            $data = array($vId,$vDescripcion,$vAbreviatura);
+             $vId            =  $request->getPost('idpres');
+             $vDescripcion   =  $request->getPost('despres');
+             $vAbreviatura   =  $request->getPost('abrepres');
+             $data = array($vId,$vDescripcion,$vAbreviatura);
              $jsonData      = Cotizacion::actualizarPresentacion($data);
              $response->setContentType('application/json', 'UTF-8');
              $response->setContent(json_encode($jsonData[0], JSON_NUMERIC_CHECK));
@@ -1028,13 +1027,29 @@ class CotizacionController extends Controller
        {
             $vDesde  = $request->get('vDesde');
             $vHasta  = $request->get('vHasta');
+           
+            if( strlen($vDesde)!=0 && strlen($vHasta) !=0)
+            {
+                $datax = array($vDesde,$vHasta);
+                $jsonDatax     = json_decode(Cotizacion::listarCotizacionesParaFacturarPorFechas($datax))->data;
+            }else{
+                $datax = array();
+                $jsonDatax     = json_decode(Cotizacion::listarCotizacionesParaFacturar($datax))->data;
+            }
+            $af = array();
+            $hp   = new FuncionesHelpers();
+            if($jsonDatax !=''){
+              foreach ($jsonDatax as $r) {
+                  $af[] = array("idfact" => $r->idfacturacion,"estsunat"=>$hp->estado_xml_facturador($r->nomarchivo));
+               }
+              if(!empty($af)){ $rs = Facturacion::actualizarEstadosFacturador($hp->esCadenaNulo(json_encode($af)));}
+            }
             if( strlen($vDesde)!=0 && strlen($vHasta) !=0)
             {
                 $data = array($vDesde,$vHasta);
                 $jsonData     = Cotizacion::listarCotizacionesParaFacturarPorFechas($data);
             }else{
                 $data = array();
-
                 $jsonData     = Cotizacion::listarCotizacionesParaFacturar($data);
             }
             $response->setContentType('application/json', 'UTF-8');
@@ -1043,8 +1058,6 @@ class CotizacionController extends Controller
 
        }
   }
-
-
   public function listardocumentosventaAction(){
        $request        = new Phalcon\Http\Request();
        $response       = new \Phalcon\Http\Response();
@@ -1057,6 +1070,7 @@ class CotizacionController extends Controller
             return $response;
        }
   }
+ 
 
 
 }

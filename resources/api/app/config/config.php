@@ -22,6 +22,7 @@ return new \Phalcon\Config(array(
         'cacheDir'       => APP_PATH . '/app/cache/',
         'helpersDir'     => APP_PATH . '/app/helpers/',
         'baseUri'        => '/api/', 
-        'vendor'         => APP_PATH . '/vendor/'
+        'vendor'         => APP_PATH . '/vendor/',
+        'entityDir'      => APP_PATH . '/app/entity/'
     )
 ));

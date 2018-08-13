@@ -15,14 +15,12 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
-
         var storeClientes       = Ext.create('sisfacturaelectronica.store.Clientes');
         var storeDetCotizacion  = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
         var storeFormaPago      = Ext.create('sisfacturaelectronica.store.FormaPago');
         var storeModoEntrega    = Ext.create('sisfacturaelectronica.store.ModoEntrega');
         var storeDocumentoVenta = Ext.create('sisfacturaelectronica.store.DocumentoVenta');
         var storeMonedas        = Ext.create('sisfacturaelectronica.store.Monedas');
-
         me = this;
         Ext.applyIf(me, {
             items: [{
@@ -57,17 +55,22 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                     defaultType: 'textfield',
                                     title: 'Datos Generales',
                                     layout: 'fit',
-                                    items: [{
+                                    items: [
+                                         {
                                             xtype: 'container',
                                             layout: 'hbox',
                                             margin: '0 0 5 6',
                                             columnWidth: 0.5,
+                                            defaults:{
+                                                labelWidth:100,
+                                                labelAlign: 'right'
+                                            },
                                             items: [{
                                                     xtype: 'combobox',
                                                     itemId: 'cboDatosClienteFact',
                                                     name : 'idper',
                                                     fieldLabel: 'Nombre / Razon Social',
-                                                    flex: 2,
+                                                    flex: 3,
                                                     fieldStyle: 'text-transform:uppercase',
                                                     labelWidth: 150,
                                                     allowBlank: false,
@@ -85,8 +88,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                     xtype: 'datefield',
                                                     fieldLabel: 'Fecha Venta',
                                                     value: new Date(),
-                                                    labelAlign: 'right',
-                                                    flex: 0.8,
+                                                    flex: 1,
                                                     itemId: 'dtFechaVenta',
                                                     name: 'fechacoti',
                                                     allowBlank:false
@@ -99,7 +101,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                   editable:false,
                                                   name : 'fechavalidohasta',
                                                   value : new Date(),
-                                                  flex: 0.8,
+                                                  flex: 1,
                                                   readOnly:true,
                                                   name :'validohasta'
                                                 },
@@ -117,135 +119,155 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
 
 
                                             ]
+                                        },//fin panel
+                                        {
+                                            xtype: 'container',
+                                            layout: 'hbox',
+                                            defaults: {
+                                                labelWidth: 155,
+                                                labelAlign:'right'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'combo',
+                                                    fieldLabel: 'Documento',
+                                                    store: storeDocumentoVenta,
+                                                    displayField: 'descripcion',
+                                                    valueField: 'id',
+                                                    queryMode: 'local',
+                                                    allowBlank: false,
+                                                    name: 'documentoventa',
+                                                   
+                                                    editable:false,
+                                                    itemId:'documentoventa',
+                                                    value : 2,
+                                                    flex:1
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                                    handler: 'onClickMantenimiento'
+                                                },
+                                                {
+                                                  xtype:'textfield',
+                                                  fieldLabel :'Serie/Número',
+                                                  labelAlign :'right',
+                                                  name : 'seriedoc',
+                                                  value : '001',
+                                                  flex : 0.5,
+                                                  allowBlank:false
+                                                },
+                                                {
+                                                  xtype:'textfield',
+                                                  labelAlign :'right',
+                                                  name : 'numerodoc',
+                                                  flex : 0.5,
+                                                  allowBlank:false
+                                                },
+                                            ]
+        
+        
                                         },
-
+                                        {
+                                            xtype: 'container',
+                                            layout: 'hbox',
+                                            defaults: {
+                                                labelAlign:'right'
+                                                
+                                            },
+                                            items: [{
+                                                    xtype: 'combo',
+                                                    fieldLabel: 'Forma Pago',
+                                                    store: storeFormaPago,
+                                                    displayField: 'descripcion',
+                                                    valueField: 'idfopag',
+                                                    queryMode: 'local',
+                                                    allowBlank: false,
+                                                    name: 'idfopag',
+                                                    editable:false,
+                                                    itemId:'idfopag',
+                                                    value : 1,
+                                                    flex:1.05,
+                                                    labelWidth: 155
+        
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                                    handler: 'onClickMantenimiento'
+                                                },
+                                                {
+                                                    xtype: 'combo',
+                                                    fieldLabel: 'Modo de Entrega',
+                                                    store: storeModoEntrega,
+                                                    displayField: 'descripcion',
+                                                    valueField: 'idmodo',
+                                                    queryMode: 'local',
+                                                    allowBlank: false,
+                                                    name: 'idmodo',
+                                                    editable:false,
+                                                    itemId:'vmodoentrega',
+                                                    value : 1,
+                                                    flex:1,
+                                                    labelWidth: 155
+                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                                    handler: 'onClickMantenimiento'
+                                                }
+                                            ]
+        
+        
+                                        },
+                                        {
+                                            xtype: 'container',
+                                            layout: 'hbox',
+                                            defaults: {
+                                                labelWidth: 155,
+                                                labelAlign:'right'
+                                            },
+                                            items: [
+                                                  {
+                                                      xtype: 'combo',
+                                                      fieldLabel: 'Moneda',
+                                                      store: storeMonedas,
+                                                      displayField: 'descripcion',
+                                                      valueField: 'id',
+                                                      queryMode: 'local',
+                                                      allowBlank: false,
+                                                      name: 'idmoneda',
+                                                      editable:false,
+                                                      itemId:'idmoneda',
+                                                      value : 1,
+                                                      flex: 1
+                                                  },
+                                                  {
+                                                    xtype: 'checkboxfield',
+                                                    boxLabel: 'Precio incluye el I.G.V.',
+                                                    hidden : false,
+                                                    labelStyle :'font-size:15px;',
+                                                    name: 'incluyeigv',
+                                                    reference: 'incluyeigv',
+                                                    itemId: 'incluyeigvfacturacion',
+                                                    readOnly:false,
+                                                    value: 0,
+                                                },
+                                                  {
+                                                    xtype:'numberfield',
+                                                    fieldLabel :'A Cuenta',
+                                                    name : 'pagoacuenta',
+                                                    value : 0,
+                                                    labelWidth : 95,flex :1
+                                                  }
+                                            ]
+                                        },
+        
                                     ]
-
-                                },
-                                {
-                                    xtype: 'container',
-                                    layout: 'hbox',
-                                    defaults: {
-                                        labelWidth: 80,
-                                        //  padding:'0 5 0 0'
-                                    },
-                                    items: [{
-                                            xtype: 'combo',
-                                            fieldLabel: 'Forma Pago',
-                                            store: storeFormaPago,
-                                            displayField: 'descripcion',
-                                            valueField: 'idfopag',
-                                            queryMode: 'local',
-                                            allowBlank: false,
-                                            name: 'idfopag',
-                                            editable:false,
-                                            itemId:'idfopag',
-                                            value : 1,
-                                            flex:1
-
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                            handler: 'onClickMantenimiento'
-                                        },
-                                        {
-                                            xtype: 'combo',
-                                            fieldLabel: 'Mod. Entrega',
-                                            store: storeModoEntrega,
-                                            displayField: 'descripcion',
-                                            valueField: 'idmodo',
-                                            queryMode: 'local',
-                                            allowBlank: false,
-                                            name: 'idmodo',
-                                            labelAlign:'right',
-                                            editable:false,
-                                            itemId:'vmodoentrega',
-                                            value : 1,
-                                            flex:1
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                            handler: 'onClickMantenimiento'
-                                        },
-                                        {
-                                            xtype: 'combo',
-                                            fieldLabel: 'Documento',
-                                            store: storeDocumentoVenta,
-                                            displayField: 'descripcion',
-                                            valueField: 'id',
-                                            queryMode: 'local',
-                                            allowBlank: false,
-                                            name: 'documentoventa',
-                                            labelAlign:'right',
-                                            editable:false,
-                                            itemId:'documentoventa',
-                                            value : 1,
-                                            flex:1
-
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                            handler: 'onClickMantenimiento'
-                                        },
-                                        {
-                                          xtype:'textfield',
-                                          fieldLabel :'Serie/Número',
-                                          labelAlign :'right',
-                                          name : 'seriedoc',
-                                          value : '001',
-                                          flex : 0.5,
-                                          allowBlank:false
-                                        },
-                                        {
-                                          xtype:'textfield',
-                                          labelAlign :'right',
-                                          name : 'numerodoc',
-                                          flex : 0.5,
-                                          allowBlank:false
-                                        },
-                                    ]
-
-
-                                },
-                                {
-                                    xtype: 'container',
-                                    layout: 'hbox',
-                                    defaults: {
-                                        labelWidth: 80,
-                                        padding : '5 0 5 0'
-                                    },
-                                    items: [
-                                          {
-                                              xtype: 'combo',
-                                              fieldLabel: 'Moneda',
-                                              store: storeMonedas,
-                                              displayField: 'descripcion',
-                                              valueField: 'id',
-                                              queryMode: 'local',
-                                              allowBlank: false,
-                                              name: 'idmoneda',
-                                              labelAlign:'left',
-                                              editable:false,
-                                              itemId:'idmoneda',
-                                              value : 1,
-                                              flex:1
-
-                                          },
-                                          {
-                                            xtype:'numberfield',
-                                            fieldLabel :'A Cuenta',
-                                            name : 'pagoacuenta',
-                                            value : 0,
-                                            flex : 2,
-                                            labelWidth : 75,
-                                            labelAlign:'right'
-                                          }
-                                    ]
-                                },
-
+                                },//fin fieldset
+                                
+                               
+                               
 
                                 {
                                     xtype: 'fieldset',
@@ -322,22 +344,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                               fieldStyle: 'text-align: center;font-size:15px;font-weight:bold; ',
                                                               name : 'idcotitxt'
                                                             },
-                                                            {
-                                                                xtype: 'checkboxfield',
-                                                                boxLabel: 'Precio incluye el I.G.V.',
-                                                                hidden : true,
-                                                                labelStyle :'font-size:15px;',
-                                                                name: 'incluyeigv',
-                                                                reference: 'incluyeigv',
-                                                                itemId: 'incluyeigvfacturacion',
-                                                                readOnly:false,
-                                                                value: 0,
-                                                               /*  listeners: {
-                                                                      change: {
-                                                                          fn: 'onSelectedIncluyeIGV'
-                                                                      }
-                                                                  }*/
-                                                            }
+                                                            
                                                           ]
 
                                                         }

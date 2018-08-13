@@ -308,6 +308,7 @@ $di->set('router',function() {
      $router->add('/listado_ventas', array('controller'=>'impresion','action'=>'impresiondeventas'));
      $router->add('/cerrar_caja', array('controller'=>'facturacion','action'=>'cerrarcaja'));
      $router->add('/reporte_ventas_admin', array('controller'=>'impresion','action'=>'impresiondeventasfacturacion'));
+     $router->add('/generar_txt_facturador', array('controller'=>'facturacion','action'=>'generartxtfacturador'));
     
      
 

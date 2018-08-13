@@ -26,12 +26,12 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
         var storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
         var storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
         var storeEstado = Ext.create('sisfacturaelectronica.store.BusquedaEstado');
-
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
 
+    
         Ext.apply(this, {
             items: [{
                 xtype: 'panel',

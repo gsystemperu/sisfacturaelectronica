@@ -11,7 +11,7 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
     this.callParent();;
   },
   items: [
-    {
+   {
       region: 'west',
       collapsible: true,
       titleCollapse: false,
@@ -47,7 +47,7 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
           handler:'onClickSalirApp'
         }
       ],
-      plugins: 'responsive',
+      /*plugins: 'responsive',
       responsiveConfig: {
         'width < 768 && tall': {
           region: 'south',
@@ -55,7 +55,7 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
         'width >= 768': {
           region: 'west'
         }
-      },
+      },*/
       items: [
         {
           title: 'Configuraciones',
@@ -186,7 +186,8 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
 
       ]
 
-    }, {
+    }, 
+    {
       region: 'center',
       padding: 5,
       reference: 'tabPrincipal',
