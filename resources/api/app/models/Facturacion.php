@@ -72,6 +72,13 @@ class Facturacion extends \Phalcon\Mvc\Model
         $sql     =  $obj->executarJson('ventas','sp_facturacion_detalle_vista',$param);
         return $sql;
     }
+    public static function detalleFacturacionImpresion($data)
+    {
+        $obj     = new SQLHelpers();
+        $param   = $data;
+        $sql     =  $obj->executarJson('ventas','sp_facturacion_detalle_vista_impresion',$param);
+        return $sql;
+    }
 
     public static function listarMoneda($data)
     {

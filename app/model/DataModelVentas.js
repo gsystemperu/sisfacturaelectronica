@@ -248,7 +248,7 @@ Ext.define('sisfacturaelectronica.model.CotizacionesFacturar', {
         { name: 'idguia', type: 'integer' },
         { name: 'puntopartida', type: 'string' },
         { name: 'puntollegada', type: 'string' },
-        { name: 'fechatraslado', type: 'date' },
+        { name: 'fechatraslado', type: 'string' },//date
         { name: 'costominimo', type: 'float' },
         { name: 'razonsocialdestinatario', type: 'string' },
         { name: 'rucdestinatario', type: 'string' },
@@ -258,7 +258,7 @@ Ext.define('sisfacturaelectronica.model.CotizacionesFacturar', {
         { name: 'numerolicenciaconductor', type: 'string' },
         { name: 'empresatransporterazonsocial', type: 'string' },
         { name: 'empresatransporteruc', type: 'string' },
-        { name: 'fechaemision', type: 'date' },
+        { name: 'fechaemision', type: 'string' }, //date
         { name: 'idmotivotranslado', type: 'integer' },
         { name: 'serieguia', type: 'string' },
         { name: 'numeroguia', type: 'string' },

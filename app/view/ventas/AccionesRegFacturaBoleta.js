@@ -443,21 +443,25 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
     onClickRowProducto: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
  
         me = this;
-        var _store         = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
-        var _precio         = 0;
-        _data = {
-                idprod: parseInt(record.get('id')),
-                descripcion: record.get('nombre'),
-                cantidad: 1,
-                precio: parseFloat(record.get('precioprod')),
-                total: parseInt(1) * parseFloat(record.get('precioprod'))
-            };
+        s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
+        ps= Ext.ComponentQuery.query('#posicion')[0];
+        i = ps.getValue();
+        p = 0;
+        d = {
+          idprod: parseInt(record.get('id')),
+          descripcion: record.get('nombre'),
+          cantidad: 1,
+          precio: parseFloat(record.get('precioprod')),
+          total: parseInt(1) * parseFloat(record.get('precioprod'))
+        };
 
-        if (_store.findRecord('idprod', parseInt( record.get('id') ))) {
-            Ext.Msg.alert("Error", "Producto ya se encuentra cargada");
-            return false;
+        if (s.findRecord('idprod', parseInt(record.get('id')))) {
+          Ext.Msg.alert("Error", "Producto ya se encuentra cargada");
+          return false;
         }
-        _store.insert(0, _data);
+        i = i+1;
+        s.insert(i, d);
+        ps.setValue(i);
         this.onCalcularTotalVentaPorBusqueda();
     },
 

@@ -159,7 +159,12 @@ class FacturacionController extends Controller
            $vId           = $request->get('idfacturacion');
            if($vId=='')   $vId           = $request->get('vIdCotizacion');
            $data          = array($vId);
-           $jsonData      = Facturacion::detalleFacturacion($data);
+           if($request->get('orden'))
+           {
+            $jsonData      = Facturacion::detalleFacturacionImpresion($data);
+           }else{
+            $jsonData      = Facturacion::detalleFacturacion($data);
+           }
            $response->setContentType('application/json', 'UTF-8');
            $response->setContent($jsonData);
            return $response;

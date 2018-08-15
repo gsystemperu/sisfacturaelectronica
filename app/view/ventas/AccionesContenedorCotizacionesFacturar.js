@@ -126,7 +126,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
     try {
       var _record = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
 
-      if ( /*_record && _record.get('estado')==3 &&*/
+      if ( 
         _record.get('idguia') == 0) {
         var me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0]; //this;
         var l = me.getLayout();
@@ -140,6 +140,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
         Ext.ComponentQuery.query('textfield[name=razonsocialdestinatario]')[0].setValue(_record.get('nomcompleto'));
         Ext.ComponentQuery.query('textfield[name=rucdestinatario]')[0].setValue(_record.get('numrucper'));
         Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
+        Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
+        Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
         dg = Ext.ComponentQuery.query('#dgvDetalleGuiaRemision')[0];
         sgd = dg.getStore();
         sgd.removeAll();
@@ -149,7 +151,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
           Ext.Ajax.request({
             url: (_record.get('idfacturacion') == 0 ? sisfacturaelectronica.util.Rutas.cotizacionDetalle : sisfacturaelectronica.util.Rutas.facturacionDetalle),
             params: {
-              vIdCotizacion: _record.get('idcoti')
+              vIdCotizacion: _record.get('idcoti'),
+              orden : 1
             },
             method: 'GET',
             success: function (response) {
@@ -159,7 +162,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
                   cantidad: row.cantidad,
                   idprod: (_record.get('idfacturacion') == 0 ? row.id : row.idprod),
                   descripcion: (_record.get('idfacturacion') == 0 ? row.descripcion : row.producto),
-                  unidadmedida: (_record.get('idfacturacion') == 0 ? row.um : row.cantidadunidadmedida),
+                  unidadmedida: (_record.get('idfacturacion') == 0 ? row.um : row.presentacion),
                   pesototal: 0
                 }
                 sgd.add(__dato);
@@ -173,7 +176,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
           Ext.Ajax.request({
             url: (_record.get('idfacturacion') == 0 ? sisfacturaelectronica.util.Rutas.cotizacionDetalle : sisfacturaelectronica.util.Rutas.facturacionDetalle),
             params: {
-              idfacturacion: _record.get('idfacturacion')
+              idfacturacion: _record.get('idfacturacion'),
+              orden : 1
             },
             method: 'GET',
             success: function (response) {
@@ -183,7 +187,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
                   cantidad: row.cantidad,
                   idprod: row.idprod,
                   descripcion: row.producto,
-                  unidadmedida: row.um,
+                  unidadmedida: row.presentacion,
                   pesototal: 0
                 }
                 sgd.add(__dato);
@@ -215,7 +219,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
           Ext.Ajax.request({
             url: (_record.get('idfacturacion') == 0 ? sisfacturaelectronica.util.Rutas.cotizacionDetalle : sisfacturaelectronica.util.Rutas.facturacionDetalle),
             params: {
-              vIdCotizacion: _record.get('idcoti')
+              vIdCotizacion: _record.get('idcoti'),
+              orden : 1
             },
             method: 'GET',
             success: function (response) {
@@ -239,7 +244,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
           Ext.Ajax.request({
             url: (_record.get('idfacturacion') == 0 ? sisfacturaelectronica.util.Rutas.cotizacionDetalle : sisfacturaelectronica.util.Rutas.facturacionDetalle),
             params: {
-              idfacturacion: _record.get('idfacturacion')
+              idfacturacion: _record.get('idfacturacion'),
+              orden : 1
             },
             method: 'GET',
             success: function (response) {

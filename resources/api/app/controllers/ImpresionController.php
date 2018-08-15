@@ -6,9 +6,7 @@ include __DIR__ .'/../library/fpdf/exfpdf.php';
 include __DIR__ .'/../library/fpdf/jspdf.php';
 include __DIR__ .'/../library/phpqrcode/qrlib.php';
 
-//use Greenter\Ws\Services\SunatEndpoints;
-//$serializer = 
-//use JMS\Serializer\SerializerBuilder; //::create()->build();
+
 class ImpresionController extends Controller
 {
   
@@ -24,11 +22,12 @@ class ImpresionController extends Controller
     }
     public function impresionguiaremisionAction(){
      
-          $request  = new Phalcon\Http\Request();
-          $id       =  $request->get("id");
-          $data     = array($id);
-          $guiaremision  =  json_decode(GuiaRemision::guiaremisionbuscar($data));       
-          
+          $request       = new Phalcon\Http\Request();
+          $id            = $request->get("id");
+          $data          = array($id);
+          $guiaremision  = json_decode(GuiaRemision::guiaremisionbuscar($data));  
+          $dataEmpresa   = json_decode(Empresa::listar())->data[0];     
+         
           $pdf = new jsPDF('P','mm','A4');
           #Establecemos los márgenes izquierda, arriba y derecha: 
           $pdf->SetAutoPageBreak(true, 5);
@@ -43,57 +42,122 @@ class ImpresionController extends Controller
             $fechaTraslado    = $row->fechatraslado;
             $puntoPartida     = $row->puntopartida;
             $puntoLLegada     = $row->puntollegada;
-            $destinatario_razonsocial =  $row->destinatario_razonsocial;
+            $destinatario_razonsocial =  strtoupper($row->destinatario_razonsocial);
             $destinatario_ruc         = $row->destinatario_ruc;
             $destinatario_dni         = $row->destinatario_dni;
             $unidad_placa             = $row->unidad_placa;
             $unidad_certificado       = $row->unidad_certificado;
             $unidad_licencia          = $row->unidad_licencia;
-            $transportista_nombre     = $row->transportista_nombre;
+            $transportista_nombre     = strtoupper($row->transportista_nombre);
             $transportista_ruc        = $row->transportista_ruc;
             $detalle                  = $row->detalle;
+            $motivo_translado         = $row->motivo_translado;
+            $codigo_guia              = $row->codigo_guia;
           }
-
-       
+          $codigo_guia  = explode('-',$codigo_guia); 
           $h = new FuncionesHelpers();
 
-          $pdf->AddPage();            
-          $pdf->SetFont($font,'',$tam);
-          $pdf->ln(50);
-          $pdf->setX(36);
-          $pdf->SetFontSpacing(1);
-          $pdf->cell(110,5,pinta($fechaEmision),$borde,0,'L');
-          $pdf->cell(0,5,pinta($fechaTraslado),$borde,1,'L');
-          $pdf->Ln(2);
-          $pdf->setX(35);
-          $pdf->cell(0,5,pinta(strtoupper($puntoPartida)),$borde,1,'L');
-          $pdf->setX(35);
-          $pdf->cell(0,5,pinta(strtoupper($puntoLLegada)),$borde,1,'L');
-          $pdf->Ln(8);$pdf->setX(20); // *****
-          $pdf->cell(150,5,pinta('                                    '.$destinatario_razonsocial),0,0,'J');
-          $pdf->cell(0,5,pinta($unidad_placa),0,1,'L');
-          $pdf->ln(6);$pdf->setX(45);
-          $pdf->cell(100,5,pinta($destinatario_ruc),$borde,0,'J');
-          $fila = $pdf->getY();
-          $pdf->setXY(150,$fila - 3);
-          $pdf->cell(50,5,pinta($unidad_certificado),$borde,0,'C');
-          $pdf->setXY(150,$fila + 3);
-          $pdf->cell(50,5,pinta($unidad_licencia),$borde,0,'C');
-          $pdf->Ln(12);
-
           
+          $pdf->AddPage();
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->Ln(1);
+          $pdf->Image('../public/img/logo.jpg', 10, 5, 28);
+          $pdf->setY(27);
+          $pdf->MultiCell($wg,$in, pinta($dataEmpresa->razonsocial),0,'L');
+          $tam = 8;
+          $pdf->SetFont($font,'',$tam);
+          $pdf->Ln(1);
+          $pdf->MultiCell($wg,4, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
+          $pdf->MultiCell($wg,$in,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
+          $pdf->MultiCell($wg,$in,pinta("TELÉFONO: ".$dataEmpresa->telefono),0,'L');
+          $fila = $pdf->getY();
+          $pdf->setXY(130,10);
+          $pdf->SetFont($font,'B',13);
+          $pdf->MultiCell(0,10,'RUC :' . pinta(strtoupper($dataEmpresa->ruc)),'LRT','C');
+          $pdf->setXY(130,20);
+          $pdf->MultiCell(70,5,pinta('GUIA DE REMISIÓN REMITENTE'),'LR','C');
+          $pdf->setXY(130,30);
+          $pdf->MultiCell(0,10,$codigo_guia[0].'-'. str_pad( $codigo_guia[1],8,'0',STR_PAD_LEFT),'LRB','C');
+          $pdf->Ln();
+          $pdf->Ln(2);
+          $tam = 9;
+          $pdf->cell(0,4,pinta(' '),'T',1,'L');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(40,5,pinta('Fecha Emisión : '),$borde,0,'L');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(50,5,pinta($fechaEmision),$borde,0,'L');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(50,5,pinta('Fecha Inicio Translado : '),$borde,0,'L');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(50,5,pinta($fechaTraslado),$borde,1,'L');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(0,5,pinta('Punto de Partida'),$borde,1,'L');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->MultiCell(0,5,pinta(strtoupper($puntoPartida)),$borde,'L');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(0,5,pinta('Punto de LLegada'),$borde,1,'L');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->MultiCell(0,5,pinta(strtoupper($puntoLLegada)),$borde,'L');
+          $pdf->Ln(2);
+          $pdf->cell(0,4,pinta(' '),'T',1,'L');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(22,5,pinta('Destinatario   '),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$destinatario_razonsocial),0,1,'J');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(22,5,pinta('R.U.C.   '),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$destinatario_ruc),$borde,1,'J');
+          $pdf->Ln(2);
+          $pdf->cell(0,4,pinta(' '),'T',1,'L'); 
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(0,5,pinta('Motivo del Traslado'),$borde,1,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->Multicell(0,5,pinta($motivo_translado),$borde,'J');
+        
+          $pdf->Ln();
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->Cell(15,7,pinta('Cant.'),1,0,'C');
+          $pdf->Cell(130,7,pinta('Descripcion'),1,0,'L');
+          $pdf->Cell(30,7,pinta('Unidad Medida'),1,0,'R');
+          $pdf->Cell(0,7,pinta('Peso'),1,1,'R');
+          $tam = 8;
+          $pdf->SetFont($font,'',$tam);
           foreach((array)$detalle as $row)
           {
-            $pdf->setX(13);
-            $pdf->Cell(20,5,pinta($row->cantidad),0,0,'C');
-            $pdf->MultiCell(120,5, substr(pinta(trim($row->nombre)),0,63),0,'J');
-            $pdf->Ln(1.5);
+            $pdf->Cell(15,7,pinta($row->cantidad),1,0,'C');
+            $pdf->Cell(130,7, substr(pinta(trim($row->nombre)),0,63),1,0,'J');
+            $pdf->Cell(30,7, substr(pinta(trim($row->descripcion)),0,63),1,0,'J');
+            $pdf->Cell(0,7, substr(pinta(trim(0)),0,63),1,0,'R');
+            $pdf->Ln();
           }
-          
-          $pdf->SetY(282);
-          $borde=0;$pdf->SetX(20);
-          $pdf->Cell(0,5,pinta($transportista_nombre),$borde,1,'J')  ;$pdf->SetX(20);
-          $pdf->Cell(0,5,pinta($transportista_ruc),$borde,1,'J')  ;
+          $pdf->Ln();
+          $tam = 9;
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(0,6,pinta('Datos del Transportista'),'T',1,'L');
+          $pdf->cell(22,5,pinta('Razon Social   '),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$transportista_nombre),0,1,'J');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(22,5,pinta('R.U.C.   '),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$transportista_ruc),$borde,1,'J');
+          $pdf->Ln(2);
+
+          $pdf->SetFont($font,'',$tam);
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(0,6,pinta('Datos de la Unidad de Transporte'),'T',1,'L');
+          $pdf->cell(48,5,pinta('Marca y Numero de placa   '),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$unidad_placa),0,1,'J');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(48,5,pinta('Nº de constancia de inscripción'),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$unidad_certificado),$borde,1,'J');
+          $pdf->SetFont($font,'B',$tam);
+          $pdf->cell(48,5,pinta('Nº de licencia de conductor'),0,0,'J');
+          $pdf->SetFont($font,'',$tam);
+          $pdf->cell(0,5,pinta(': '.$unidad_licencia),$borde,1,'J');
         
           $pdf->AutoPrint();
           $pdf->Output();
@@ -1043,7 +1107,7 @@ class ImpresionController extends Controller
        $idfactura           = array($request->get("id"));
        $dataEmpresa         = json_decode(Empresa::listar())->data[0];
        $dataFacturacion     = json_decode(Facturacion::datosFacturacionCliente($idfactura))->data[0];
-       $dataDetalle         = json_decode(Facturacion::detalleFacturacion($idfactura))->data;
+       $dataDetalle         = json_decode(Facturacion::detalleFacturacionImpresion($idfactura))->data;
        $dataTicketera       = json_decode(DocumentoVenta::ticketeras())->data[0];
        $totalGrabado        = 0;
        $igv                 = 0;
@@ -1055,7 +1119,7 @@ class ImpresionController extends Controller
        $umlFirmas = $umlExt["ds:Signature"]["ds:SignedInfo"];
        $firmaDoc  = $umlFirmas["ds:Reference"]["ds:DigestValue"];
 
-
+       
       // ========== FPDF ==========  //
       $pdf = new jsPDF('P','mm','A4');
       $wg = 120 ;//Ancho total
@@ -1111,13 +1175,14 @@ class ImpresionController extends Controller
       $pdf->Ln();
       //print_r($dataFacturacion);die();
       $pdf->Cell(45,7,pinta('FECHA EMISIÓN'),1,0,'C');
-      $pdf->Cell(45,7,pinta('FECHA VESIÓN'),1,0,'C');
+      $pdf->Cell(45,7,pinta('FECHA VENCIMIENTO'),1,0,'C');
       $pdf->Cell(45,7,pinta('CONDICIONES'),1,0,'C');
       $pdf->Cell(45,7,pinta('GUIA REMISIÓN'),1,1,'C');
       $pdf->Cell(45,7,pinta($dataFacturacion->fecha),1,0,'C');
       $pdf->Cell(45,7,pinta($dataFacturacion->fecha),1,0,'C');
       $pdf->Cell(45,7,pinta($dataFacturacion->formapago),1,0,'C');
-      $pdf->Cell(45,7,pinta(''),1,1,'C');
+      $codigo_guia  = explode('-',$dataFacturacion->codigoguia); 
+      $pdf->Cell(45,7,$codigo_guia[0].'-'. str_pad( $codigo_guia[1],8,'0',STR_PAD_LEFT),1,1,'C');
       $pdf->Ln();
       $pdf->Cell(15,7,pinta('Cant.'),'B',0,'C');
       $pdf->Cell(20,7,pinta('Codigo'),'B',0,'C');

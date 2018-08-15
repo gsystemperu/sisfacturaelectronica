@@ -25,7 +25,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
     var storeVendedores = Ext.create('sisfacturaelectronica.store.Vendedores');
     var storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
     var storeDocumentoVenta = Ext.create('sisfacturaelectronica.store.DocumentoVenta');
-
+   // alert(storeFormaPago.findRecord('descripcion','CONTADO'));
     me = this;
     Ext.applyIf(me, {
       items: [{
@@ -60,6 +60,11 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                   name: 'vusuario',
                   itemId: 'vusuario',
                   value: ''
+                },
+                {
+                  xtype: 'hiddenfield',
+                  itemId: 'posicion',
+                  value: 0
                 },
                 {
                   xtype: 'fieldset',
@@ -182,7 +187,8 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                         labelWidth: 150,
                         labelAlign: 'right'
                       },
-                      items: [{
+                      items: [
+                        {
                           xtype: 'combo',
                           fieldLabel: 'Forma Pago',
                           store: storeFormaPago,
@@ -193,8 +199,9 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                           name: 'idfopag',
                           editable: false,
                           itemId: 'idfopag',
-                          flex: 1
-
+                          flex: 1,
+                          value : 1
+                          
                         },
                         {
                           xtype: 'button',
@@ -208,12 +215,11 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                           displayField: 'descripcion',
                           valueField: 'idmodo',
                           queryMode: 'local',
-                          allowBlank: false,
+                          allowBlank: true,
                           name: 'idmodo',
                           labelAlign: 'right',
                           editable: false,
                           itemId: 'vmodoentrega',
-                          value: 1,
                           flex: 1
                         },
                         {
@@ -335,6 +341,13 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                         plugins: {
                           ptype: 'cellediting',
                           clicksToEdit: 1
+                        },
+                        viewConfig: {
+                          plugins: {
+                              ptype: 'gridviewdragdrop'
+                          },
+                          forceFit: true
+
                         },
                         columns: [{
                             text: 'Descripción',

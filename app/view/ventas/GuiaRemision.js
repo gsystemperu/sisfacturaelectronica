@@ -313,6 +313,7 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                                     textAlign: 'center',
                                                     fontWeight: 'bold',
                                                     fontSize: '13px'
+
                                                 }
                                             },
                                             {
@@ -321,7 +322,9 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                                 name: 'serieguia',
                                                 itemId: 'serieguia',
                                                 emptyText:'000',
-                                                allowBlank:false
+                                                allowBlank:false,
+                                                value : '*Generando*',
+                                                readOnly:true
                                                 
                                             },
                                             {
@@ -330,7 +333,9 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                                 name: 'numeroguia',
                                                 itemId: 'numeroguia',
                                                 emptyText:'0000',
-                                                allowBlank:false
+                                                allowBlank:false,
+                                                value : '*Generando*',
+                                                readOnly:true
                                                 
                                             },
                                             {
@@ -415,7 +420,7 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
 
                                                 {
                                                     //xtype: 'numbercolumn',
-                                                    text: 'Unid. Medida',
+                                                    text: 'Presentacion',
                                                     dataIndex: 'unidadmedida',
                                                     flex: 1,
                                                     align: 'center',

@@ -129,7 +129,7 @@ Ext.define('sisfacturaelectronica.store.GuiaRemisionDetalle', {
       {name: "cantidad", type:'float' },
       {name: "idprod", type:'integer' },
       {name: "descripcion", type:'string' },
-      {name: "unidadmedida" },
+      {name: "unidadmedida" ,type :'string' },
       {name: "pesototal", type:'float' }
     ],
     proxy: { type: 'memory' }
