@@ -27,7 +27,6 @@ class ImpresionController extends Controller
           $data          = array($id);
           $guiaremision  = json_decode(GuiaRemision::guiaremisionbuscar($data));  
           $dataEmpresa   = json_decode(Empresa::listar())->data[0];     
-         
           $pdf = new jsPDF('P','mm','A4');
           #Establecemos los márgenes izquierda, arriba y derecha: 
           $pdf->SetAutoPageBreak(true, 5);
@@ -56,6 +55,9 @@ class ImpresionController extends Controller
           }
           $codigo_guia  = explode('-',$codigo_guia); 
           $h = new FuncionesHelpers();
+          /*for($i=1;$i<=25;$i++){
+        $pdf->Cell(0,5,pinta('test'),1,1,'C');
+      }*/
 
           
           $pdf->AddPage();
@@ -68,8 +70,8 @@ class ImpresionController extends Controller
           $pdf->SetFont($font,'',$tam);
           $pdf->Ln(1);
           $pdf->MultiCell($wg,4, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
-          $pdf->MultiCell($wg,$in,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
-          $pdf->MultiCell($wg,$in,pinta("TELÉFONO: ".$dataEmpresa->telefono),0,'L');
+          $pdf->Cell(70,$in,"CORREO : ".pinta($dataEmpresa->correo),0,0,'L');
+          $pdf->Cell(50,$in,pinta("TELÉFONO : ".$dataEmpresa->telefono),0,1,'L');
           $fila = $pdf->getY();
           $pdf->setXY(130,10);
           $pdf->SetFont($font,'B',13);
@@ -78,10 +80,10 @@ class ImpresionController extends Controller
           $pdf->MultiCell(70,5,pinta('GUIA DE REMISIÓN REMITENTE'),'LR','C');
           $pdf->setXY(130,30);
           $pdf->MultiCell(0,10,$codigo_guia[0].'-'. str_pad( $codigo_guia[1],8,'0',STR_PAD_LEFT),'LRB','C');
-          $pdf->Ln();
-          $pdf->Ln(2);
+          $pdf->Ln(1);
+          $pdf->setY(45);
           $tam = 9;
-          $pdf->cell(0,4,pinta(' '),'T',1,'L');
+          $pdf->cell(0,1,pinta(''),'T',1,'L');
           $pdf->SetFont($font,'B',$tam);
           $pdf->cell(40,5,pinta('Fecha Emisión : '),$borde,0,'L');
           $pdf->SetFont($font,'',$tam);
@@ -91,15 +93,15 @@ class ImpresionController extends Controller
           $pdf->SetFont($font,'',$tam);
           $pdf->cell(50,5,pinta($fechaTraslado),$borde,1,'L');
           $pdf->SetFont($font,'B',$tam);
-          $pdf->cell(0,5,pinta('Punto de Partida'),$borde,1,'L');
+          $pdf->cell(23.5,5,pinta('Pt. de Partida'),$borde,0,'L');
           $pdf->SetFont($font,'',$tam);
-          $pdf->MultiCell(0,5,pinta(strtoupper($puntoPartida)),$borde,'L');
+          $pdf->Cell(0,5,pinta(': '.strtoupper($puntoPartida)),0,1,'L');
           $pdf->SetFont($font,'B',$tam);
-          $pdf->cell(0,5,pinta('Punto de LLegada'),$borde,1,'L');
+          $pdf->cell(0,5,pinta('Pt. de LLegada'),$borde,1,'L');
           $pdf->SetFont($font,'',$tam);
           $pdf->MultiCell(0,5,pinta(strtoupper($puntoLLegada)),$borde,'L');
-          $pdf->Ln(2);
-          $pdf->cell(0,4,pinta(' '),'T',1,'L');
+          $pdf->Ln(0.5);
+          $pdf->cell(0,1,pinta(' '),'T',1,'L');
           $pdf->SetFont($font,'B',$tam);
           $pdf->cell(22,5,pinta('Destinatario   '),0,0,'J');
           $pdf->SetFont($font,'',$tam);
@@ -108,33 +110,35 @@ class ImpresionController extends Controller
           $pdf->cell(22,5,pinta('R.U.C.   '),0,0,'J');
           $pdf->SetFont($font,'',$tam);
           $pdf->cell(0,5,pinta(': '.$destinatario_ruc),$borde,1,'J');
-          $pdf->Ln(2);
-          $pdf->cell(0,4,pinta(' '),'T',1,'L'); 
+          $pdf->Ln(0.5);
+          $pdf->cell(0,1,pinta(' '),'T',1,'L'); 
           $pdf->SetFont($font,'B',$tam);
-          $pdf->cell(0,5,pinta('Motivo del Traslado'),$borde,1,'J');
+          $pdf->Cell(32,5,pinta('Motivo del Traslado'),$borde,0,'J');
           $pdf->SetFont($font,'',$tam);
-          $pdf->Multicell(0,5,pinta($motivo_translado),$borde,'J');
-        
-          $pdf->Ln();
+          $pdf->Multicell(0,5,pinta(': '.$motivo_translado),$borde,'J');
+          $pdf->Ln(1);
           $pdf->SetFont($font,'B',$tam);
           $pdf->Cell(15,7,pinta('Cant.'),1,0,'C');
           $pdf->Cell(130,7,pinta('Descripcion'),1,0,'L');
-          $pdf->Cell(30,7,pinta('Unidad Medida'),1,0,'R');
-          $pdf->Cell(0,7,pinta('Peso'),1,1,'R');
+          $pdf->Cell(0,7,pinta('Unidad Medida'),1,1,'C');
+         // $pdf->Cell(0,7,pinta('Peso'),1,1,'R');
           $tam = 8;
           $pdf->SetFont($font,'',$tam);
+          /*  for($i=1;$i<=25;$i++){
+              $pdf->Cell(0,5,pinta('test'),1,1,'C');
+          }*/
           foreach((array)$detalle as $row)
           {
-            $pdf->Cell(15,7,pinta($row->cantidad),1,0,'C');
-            $pdf->Cell(130,7, substr(pinta(trim($row->nombre)),0,63),1,0,'J');
-            $pdf->Cell(30,7, substr(pinta(trim($row->descripcion)),0,63),1,0,'J');
-            $pdf->Cell(0,7, substr(pinta(trim(0)),0,63),1,0,'R');
-            $pdf->Ln();
+            $pdf->Cell(15,5,pinta($row->cantidad),1,0,'C');
+            $pdf->Cell(130,5, substr(pinta(trim($row->nombre)),0,63),1,0,'J');
+            $pdf->Cell(0,5, substr(pinta(trim($row->descripcion)),0,63),1,1,'J');
+           // $pdf->Cell(0,5, substr(pinta(trim(0)),0,63),1,1,'R');
+           
           }
-          $pdf->Ln();
+          $pdf->Ln(2);
           $tam = 9;
           $pdf->SetFont($font,'B',$tam);
-          $pdf->cell(0,6,pinta('Datos del Transportista'),'T',1,'L');
+          $pdf->cell(0,5,pinta('Datos del Transportista'),0,1,'L');
           $pdf->cell(22,5,pinta('Razon Social   '),0,0,'J');
           $pdf->SetFont($font,'',$tam);
           $pdf->cell(0,5,pinta(': '.$transportista_nombre),0,1,'J');
@@ -144,7 +148,6 @@ class ImpresionController extends Controller
           $pdf->cell(0,5,pinta(': '.$transportista_ruc),$borde,1,'J');
           $pdf->Ln(2);
 
-          $pdf->SetFont($font,'',$tam);
           $pdf->SetFont($font,'B',$tam);
           $pdf->cell(0,6,pinta('Datos de la Unidad de Transporte'),'T',1,'L');
           $pdf->cell(48,5,pinta('Marca y Numero de placa   '),0,0,'J');
@@ -159,7 +162,7 @@ class ImpresionController extends Controller
           $pdf->SetFont($font,'',$tam);
           $pdf->cell(0,5,pinta(': '.$unidad_licencia),$borde,1,'J');
         
-          $pdf->AutoPrint();
+         // $pdf->AutoPrint();
           $pdf->Output();
 
       
@@ -1131,15 +1134,15 @@ class ImpresionController extends Controller
       $pdf->SetFont($font,'B',$tam);
       $pdf->Ln(1);
       $pdf->Image('../public/img/logo.jpg', 10, 5, 28);
-      $pdf->setY(35);
+      $pdf->setY(27);
       $pdf->MultiCell($wg,$in, pinta($dataEmpresa->razonsocial),0,'L');
       $tam = 8;
       $pdf->SetFont($font,'',$tam);
       $pdf->Ln(1);
       $pdf->MultiCell($wg,4, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
-      $pdf->MultiCell($wg,$in,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
-      $pdf->MultiCell($wg,$in,pinta("TELÉFONO: ".$dataEmpresa->telefono),0,'L');
-      $fila = $pdf->getY();
+      $pdf->Cell(70,$in,"CORREO: ".pinta($dataEmpresa->correo),0,0,'L');
+      $pdf->Cell(50,$in,pinta("TELÉFONO: ".$dataEmpresa->telefono),0,1,'L');
+      $fila = $pdf->getY() ;
       $pdf->setXY(130,20);
       $pdf->SetFont($font,'B',13);
       $pdf->MultiCell(0,10,'RUC :' . pinta(strtoupper($dataEmpresa->ruc)),'LRT','C');
@@ -1158,7 +1161,7 @@ class ImpresionController extends Controller
               $pdf->MultiCell(0,10,$dataFacturacion->seriedoc.'-'. str_pad( $dataFacturacion->numerodoc,8,'0',STR_PAD_LEFT),'LRB','C');
             }
       }
-      $pdf->setY($fila+5);
+      $pdf->setY($fila+1);
       $tam = 9;
       $pdf->SetFont($font,'B',$tam);
       $pdf->Cell(23,$in,pinta("SEÑOR (es)   : "),0,0,'L');  
@@ -1172,7 +1175,7 @@ class ImpresionController extends Controller
       $pdf->Cell(23,$in,pinta("Dirección      : "),0,0,'L');  
       $pdf->SetFont($font,'',$tam);
       $pdf->Cell(0,$in,pinta($dataFacturacion->domiciper),0,1,'L');
-      $pdf->Ln();
+      $pdf->Ln(1);
       //print_r($dataFacturacion);die();
       $pdf->Cell(45,7,pinta('FECHA EMISIÓN'),1,0,'C');
       $pdf->Cell(45,7,pinta('FECHA VENCIMIENTO'),1,0,'C');
@@ -1188,18 +1191,22 @@ class ImpresionController extends Controller
         $pdf->Cell(45,7,'',1,1,'C');
       }
     
-      $pdf->Ln();
-      $pdf->Cell(15,7,pinta('Cant.'),'B',0,'C');
-      $pdf->Cell(20,7,pinta('Codigo'),'B',0,'C');
-      $pdf->Cell(110,7,pinta('Descripcion'),'B',0,'L');
+      $pdf->Ln(1);
+      $pdf->Cell(10,7,pinta('Cant.'),'B',0,'C');
+      $pdf->Cell(30,7,pinta('Presentación'),'B',0,'C');
+      $pdf->Cell(110,7,pinta('Descripción'),'B',0,'L');
       $pdf->Cell(20,7,pinta('Pre.Unit.'),'B',0,'R');
       $pdf->Cell(0,7,pinta('Total'),'B',1,'R');
       $totalventa = 0;
+      /*for($i=1;$i<=25;$i++){
+        $pdf->Cell(0,5,pinta('test'),1,1,'C');
+      }*/
+
       foreach ($dataDetalle as $row) {
-        $pdf->Cell(15,5,pinta($row->cantidad),'',0,'C');
-        $pdf->Cell(20,5,pinta($row->idprod),'',0,'C');
+        $pdf->Cell(10,5,pinta($row->cantidad),0,0,'C');
+        $pdf->Cell(30,5,pinta($row->presentacion),'',0,'L');
         $pdf->Cell(110,5,pinta($row->producto),'',0,'L');
-        $pdf->Cell(20,5,pinta(number_format($row->precio,2, ".", ",")),'',0,'R');
+        $pdf->Cell(20,5,pinta(number_format($row->precio,2, ".", ",")),0,0,'R');
         $pdf->Cell(0,5,pinta(number_format($row->total,2, ".", ",")),'',1,'R');
         $totalventa  += $row->total;
       }
@@ -1233,21 +1240,21 @@ class ImpresionController extends Controller
       $pdf->setY($fila);
       $pdf->MultiCell(130,7,pinta('SON : '.$dataFacturacion->totalletras),0,'L');
       $tam = 9;
-      $pdf->Ln(7);
+      $pdf->Ln(2);
       $tempDir = '../public/img/';
       $codeContents = $dataFacturacion->codigogr.$firmaDoc; 
       $fileName = 'qr'.md5($codeContents).'.png'; 
       $pngAbsoluteFilePath = $tempDir.$fileName; 
       if (!file_exists($pngAbsoluteFilePath)) { 
           QRcode::png($codeContents, $pngAbsoluteFilePath,QR_ECLEVEL_M); 
-          $pdf->Image($pngAbsoluteFilePath, 10, $filaqr + 2, 25,25);
+          $pdf->Image($pngAbsoluteFilePath, 10, $filaqr - 7, 25,25);
           unlink($pngAbsoluteFilePath);
       }else{
            unlink($pngAbsoluteFilePath);
       }
-      $pdf->setY($filaqr + 30);
+      $pdf->setXY(35,$filaqr + 10);
       $pdf->Cell(0,6,pinta('Ha sido aceptada con el Hash :  ' . $firmaDoc));
-      $pdf->AutoPrint();
+    //  $pdf->AutoPrint();
       $pdf->Output();
     }
     public function pruebasqlliteAction(){

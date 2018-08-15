@@ -125,7 +125,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
   onClickGuiasRemision: function (btn) {
     try {
       var _record = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
-
+      console.log(_record);
       if ( 
         _record.get('idguia') == 0) {
         var me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0]; //this;
@@ -140,8 +140,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
         Ext.ComponentQuery.query('textfield[name=razonsocialdestinatario]')[0].setValue(_record.get('nomcompleto'));
         Ext.ComponentQuery.query('textfield[name=rucdestinatario]')[0].setValue(_record.get('numrucper'));
         Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
-        Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
-        Ext.ComponentQuery.query('textfield[name=dnidestinatario]')[0].setValue(_record.get('numdocper'));
+        Ext.ComponentQuery.query('textfield[name=puntopartida]')[0].setValue(_record.get('direfiscal'));
         dg = Ext.ComponentQuery.query('#dgvDetalleGuiaRemision')[0];
         sgd = dg.getStore();
         sgd.removeAll();
