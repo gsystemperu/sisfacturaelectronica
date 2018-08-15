@@ -1254,6 +1254,8 @@ class ImpresionController extends Controller
       }
       $pdf->setXY(35,$filaqr + 10);
       $pdf->Cell(0,6,pinta('Ha sido aceptada con el Hash :  ' . $firmaDoc));
+      $pdf->setXY(10,$filaqr + 17);
+      $pdf->Cell(35,6,pinta('CTA. CTE.   BCP : 191-2085126-0-97  ')); //Nuero de cuenta poner en configuracion
     //  $pdf->AutoPrint();
       $pdf->Output();
     }

@@ -353,13 +353,44 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             queryMode: 'local',
             editable: true,
             emptyText: '---- Seleccionar -----',
+            hidden:true,
           },
-          { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoUnidadMedida' },
-          { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'), handler: 'onClickRefrescarUnidadMedida' },
+          {
+            fieldLabel: 'Unidad Medida',
+            labelAlign: 'right',
+            name: 'idpresentacion',
+            itemId: 'idpresentacion',
+            flex: 1,
+            store: storePresentacion,
+            displayField: 'despres',
+            valueField: 'idpres',
+            queryMode: 'local',
+            editable: false,
+            emptyText: '---- Seleccionar -----',
+          },
+          {
+            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+            handler: 'onClickNuevoPresentacion'
+          },
+          {
+            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'),
+            handler: 'onClickRefrescarPresentacion'
+          },
+          {
+            xtype: 'numberfield',
+            fieldLabel: 'Cant. Presentación',
+            name: 'cantidadunidadmedida',
+            fieldStyle: 'font-size:15px;',
+            value: 0,
+            flex: 1,
+            labelWidth:130
+          }
+          //{ xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoUnidadMedida' },
+          //{ xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'), handler: 'onClickRefrescarUnidadMedida' },
          
         ]
       },
-      {
+     /* {
         xtype: 'container',
         layout: {
           type: 'hbox',
@@ -401,7 +432,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             labelWidth:130
           }
         ]
-      },
+      },*/
       {
         xtype: 'container',
         layout: {
