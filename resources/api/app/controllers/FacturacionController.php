@@ -17,7 +17,7 @@ class FacturacionController extends Controller
            $vUsuario      =  $request->getPost('vusuario');
            $vJsonDetalle  =  $request->getPost('vjsondetalle');
            $vFormaPago    =  $request->getPost('idfopag');
-           $vModoEntrega  =  $request->getPost('idmodo');
+           $vModoEntrega  =  ($request->getPost('idmodo')==''?0:$request->getPost('idmodo'));
            $vDocVenta     =  $request->getPost('documentoventa');
            $vIncluyeIgv   = ($request->getPost('incluyeigv')=='on'? 1:0);
            $vFechaValidoHasta  = ( $request->getPost('validohasta')==''? $request->getPost('fechavalidohasta') : $request->getPost('validohasta'));

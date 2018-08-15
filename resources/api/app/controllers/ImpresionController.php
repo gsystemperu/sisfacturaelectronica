@@ -1181,8 +1181,13 @@ class ImpresionController extends Controller
       $pdf->Cell(45,7,pinta($dataFacturacion->fecha),1,0,'C');
       $pdf->Cell(45,7,pinta($dataFacturacion->fecha),1,0,'C');
       $pdf->Cell(45,7,pinta($dataFacturacion->formapago),1,0,'C');
-      $codigo_guia  = explode('-',$dataFacturacion->codigoguia); 
-      $pdf->Cell(45,7,$codigo_guia[0].'-'. str_pad( $codigo_guia[1],8,'0',STR_PAD_LEFT),1,1,'C');
+      if($dataFacturacion->codigoguia){
+        $codigo_guia  = explode('-',$dataFacturacion->codigoguia); 
+        $pdf->Cell(45,7,$codigo_guia[0].'-'. str_pad( $codigo_guia[1],8,'0',STR_PAD_LEFT),1,1,'C');
+      }else{
+        $pdf->Cell(45,7,'',1,1,'C');
+      }
+    
       $pdf->Ln();
       $pdf->Cell(15,7,pinta('Cant.'),'B',0,'C');
       $pdf->Cell(20,7,pinta('Codigo'),'B',0,'C');

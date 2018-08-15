@@ -183,14 +183,25 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
       });
     },
     onClickBuscarCotizacionesPorFechas:function(btn){
-        __store = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore();
-
-        __store.load({
-            params:{
-              vDesde : Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-              vHasta : Ext.ComponentQuery.query('#dfHasta')[0].getRawValue()
+        g  = Ext.ComponentQuery.query('#dgvVentasFacturar')[0];
+        r  = g.getSelectionModel().getSelection()[0];
+        gs = g.getStore();
+        gs.load(
+            {
+                params:{
+                    vDesde : Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
+                    vHasta : Ext.ComponentQuery.query('#dfHasta')[0].getRawValue()
+                },
+                callback: function (records, operation, success) {
+                    try {
+                        i = this.find('idfacturacion', r.get('idfacturacion'));  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
+                        g.getView().select(i); 
+                    } catch (error) {
+                        return 0;
+                    }  
+                }
             }
-        });
+        );
 
     },
     onSelectedDetalleFacturacionVenta:function(grid, td, cellIndex, record, tr, rowIndex, e, eOpts)
@@ -346,7 +357,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
         '?desde='+ d.toString() +'&hasta='+ h.toString(), "", "width=700,height=900");  
     },
     onClickGenTxtfact:function(b){
-        st= Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore();
+        g =Ext.ComponentQuery.query('#dgvVentasFacturar')[0];
+        st= g.getStore();
         r = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
         if(r){
             Ext.Ajax.request({
@@ -356,14 +368,36 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
                 },
                 success:function(response){
                     rp = Ext.JSON.encode(response.responseText);
-                    st.reload();
-                    sisfacturaelectronica.util.Util.showToast('Generado el TXT');
+                    st.reload({
+                        callback: function (records, operation, success) {
+                            try {
+                                i = this.find('idfacturacion', r.get('idfacturacion'));  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
+                                g.getView().select(i); 
+                            } catch (error) {
+                                return 0;
+                            }  
+                        }
+                    });
+                    sisfacturaelectronica.util.Util.showToast('Se ha generado nuevamente el ( txt al facturador )');
                 }
               });
         }
     },
     onClickActEstado:function(b){
-        Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore().reload();
+        g = Ext.ComponentQuery.query('#dgvVentasFacturar')[0];
+        r = g.getSelectionModel().getSelection()[0];
+        Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getStore().reload(
+            {
+                callback: function (records, operation, success) {
+                    try {
+                        i = this.find('idfacturacion', r.get('idfacturacion'));  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
+                        g.getView().select(i); 
+                    } catch (error) {
+                        return 0;
+                    }  
+                }
+           }
+        );
     }
 
 });

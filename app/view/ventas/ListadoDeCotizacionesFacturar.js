@@ -104,12 +104,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                         hidden:true
                 },
                 {
-                    text: 'Doc.Serie',
-                    dataIndex: 'seriedoc',
-                    flex: 0.3,
-                    align: 'center'
-                },
-                {
                         text: 'Doc. Numero',
                         dataIndex: 'docinterno',
                         flex: 0.5,
@@ -262,12 +256,85 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 celldblclick: 'onClickVerCotizacionFactura'
             }
         }],
-        tbar: [{
-            xtype: 'container',
+        tbar: [
+            {
+                xtype: 'label',
+                text: 'Fecha Desde',
+                padding: '5px 0 0 0',
+                border: true,
+                width: 100,
+                height: 25,
+                style: {
+                    background: '#6a4b5a',
+                    color: 'white',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '13px'
+                }
+            }, {
+                xtype: 'datefield',
+                value: new Date(),
+                reference: 'dfDesdeCotizacionesFactura',
+                itemId: 'dfDesde',
+                width: 110
+            },
+            {
+                xtype: 'label',
+                text: 'Fecha Hasta',
+                padding: '5px 0 0 0',
+                border: true,
+                width: 100,
+                height: 25,
+                style: {
+                    background: '#6a4b5a',
+                    color: 'white',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '13px'
+                }
+            }, {
+                xtype: 'datefield',
+                value: new Date(),
+                reference: 'dfHastaCotizacionesFactura',
+                itemId: 'dfHasta',
+                width: 110
+            },
+            {
+                xtype: 'button',
+                glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
+                tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
+                handler: 'onClickBuscarCotizacionesPorFechas'
+            },
+            {
+                xtype: 'button',
+                text  :'Reportes',
+                tooltip: 'Listado de reportes de venta',
+                menu: [
+                {
+                    text:'Resumen',
+                    handler : 'onClickResumenVentasAdmin'
+                }]
+            },
+           
+            {
+                xtype:'button',
+                text : 'Enviar a Facturador',
+                tooltip : 'Se vuelve a generar el TXT o XML para enviar al facturador sunat',
+                handler : 'onClickGenTxtfact'
+            },
+            {
+                xtype:'button',
+                text : 'Actualizar estado sunat',
+                tooltip : 'Actualiza los estados de los documentos en el facturador',
+                handler : 'onClickActEstado'
+            }
+        /*{
+            xtype: 'toobar',
             bodyPadding: 0,
             layout: 'hbox',
             columnWidth: 10,
-            items: [{
+            items: [
+                {
                     xtype: 'label',
                     text: 'Fecha Desde',
                     padding: '5px 0 0 0',
@@ -325,6 +392,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                         handler : 'onClickResumenVentasAdmin'
                     }]
                 },
+               
                 {
                     xtype:'button',
                     text : 'Enviar a Facturador',
@@ -339,7 +407,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 }
 
             ]
-        }]
+        }*/
+        ]
       };//Fin Objeto
     },
     
