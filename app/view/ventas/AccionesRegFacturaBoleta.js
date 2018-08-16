@@ -300,6 +300,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         var rec = button.getWidgetRecord();
         if (rec) {
             store.remove(rec);
+            grid.getView().refresh();
             this.onCalcularTotalVenta(false);
         }
     },
@@ -443,7 +444,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
     onClickRowProducto: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
  
         me = this;
-        s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
+        dg = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0];
+        s = dg.getStore();
         ps= Ext.ComponentQuery.query('#posicion')[0];
         i = ps.getValue();
         p = 0;
@@ -462,6 +464,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         i = i+1;
         s.insert(i, d);
         ps.setValue(i);
+        dg.getView().refresh();
         this.onCalcularTotalVentaPorBusqueda();
     },
 

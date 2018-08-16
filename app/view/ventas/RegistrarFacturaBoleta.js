@@ -346,9 +346,10 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                           plugins: {
                               ptype: 'gridviewdragdrop'
                           },
-                          forceFit: true
+                          //forceFit: true
 
                         },
+                        scrollable :true,
                         columns: [{
                             text: 'Descripción',
                             dataIndex: 'descripcion',
@@ -421,7 +422,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
 
                         ],
                         cls: '',
-                        height: 290,
+                        height: 300,
                         listeners: {
                           edit: 'onEditorCalcularTotal'
                         }

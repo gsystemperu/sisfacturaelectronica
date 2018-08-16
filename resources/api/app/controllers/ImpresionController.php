@@ -1193,7 +1193,7 @@ class ImpresionController extends Controller
     
       $pdf->Ln(1);
       $pdf->Cell(10,7,pinta('Cant.'),'B',0,'C');
-      $pdf->Cell(30,7,pinta('Presentación'),'B',0,'C');
+      $pdf->Cell(30,7,pinta('Unidad Medida'),'B',0,'L');
       $pdf->Cell(110,7,pinta('Descripción'),'B',0,'L');
       $pdf->Cell(20,7,pinta('Pre.Unit.'),'B',0,'R');
       $pdf->Cell(0,7,pinta('Total'),'B',1,'R');
@@ -1255,7 +1255,7 @@ class ImpresionController extends Controller
       $pdf->setXY(35,$filaqr + 10);
       $pdf->Cell(0,6,pinta('Ha sido aceptada con el Hash :  ' . $firmaDoc));
       $pdf->setXY(10,$filaqr + 17);
-      $pdf->Cell(35,6,pinta('CTA. CTE.   BCP : 191-2085126-0-97  ')); //Nuero de cuenta poner en configuracion
+      $pdf->Cell(35,6,pinta('CTA. CTE.   BCP : 191-2085126-0-77  ')); //Nuero de cuenta poner en configuracion
     //  $pdf->AutoPrint();
       $pdf->Output();
     }
