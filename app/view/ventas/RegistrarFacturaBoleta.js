@@ -342,13 +342,6 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                           ptype: 'cellediting',
                           clicksToEdit: 1
                         },
-                        viewConfig: {
-                          plugins: {
-                              ptype: 'gridviewdragdrop'
-                          },
-                          //forceFit: true
-
-                        },
                         scrollable :true,
                         columns: [{
                             text: 'Descripción',

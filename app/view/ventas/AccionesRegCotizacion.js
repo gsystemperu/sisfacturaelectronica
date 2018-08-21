@@ -20,8 +20,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
           _txtf = Ext.String.format('Facturación  : {0}',record.get('ventas'));
           Ext.ComponentQuery.query('#btnCotizaciones')[0].setText(_txt);
           Ext.ComponentQuery.query('#btnFacturasBoletas')[0].setText(_txtf);
-
-
       } catch (e) {
         console.log('Select ERP cliente');
       }
@@ -114,7 +112,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
       });
     },
      onClickEditarCotizacion: function (btn) {
-        //xamudio
         var _grid = this.lookupReference('dgvVentasCotizaciones');
         var _rec = btn.getWidgetRecord();// _grid.getSelectionModel().getSelection()[0];
        
@@ -254,10 +251,10 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
     },
     onCalcularTotalVenta: function (conigv) {
         me = this;
-        __objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
-        __objIgv      = this.lookupReference('igvventas');
-        __objSubTotal = this.lookupReference('Subtotalventas');
-        __objTotal    = this.lookupReference('TotalGeneral');
+        objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
+        objIgv      = this.lookupReference('igvventas');
+        objSubTotal = this.lookupReference('Subtotalventas');
+        objTotal    = this.lookupReference('TotalGeneral');
 
         var store = Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore();
         var _tot = 0;
@@ -265,76 +262,46 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
         store.each(function (record) {
             _tot = _tot + record.get('total');
         });
-        i = _tot - (_tot /1.18);
-        s = _tot / 1.18;
-        __objSubTotal.setValue(s.toFixed(2));
-        __objIgv.setValue(i.toFixed(2));
-        __objTotal.setValue(_tot.toFixed(2));
+        if(objChk.getValue()){
+            i = _tot - (_tot /1.18);
+            s = _tot / 1.18;    
+        }else{
+            i = _tot * 0.18;
+            s = _tot;
+            _tot = i + s;  
+            
+        }
+        objSubTotal.setValue(s.toFixed(2));
+        objIgv.setValue(i.toFixed(2));
+        objTotal.setValue(_tot.toFixed(2));
 
-        //Ext.ComponentQuery.query('#txtSubtotalventas')[0].setValue(_tot.toFixed(2));
-        /*__objSubTotal.setValue(_tot.toFixed(2));
-        
-        //if (Ext.ComponentQuery.query('#_incluyeigv')[0].getValue()){
-            if (__objChk.getValue()){
-                var _igv = 0;
-            }
-            else{
-                var _igv = _tot * 0.18;
-            }
-        __objSubTotal.setValue(
-            Ext.util.Format.number(_tot.toFixed(2) / 1.18, "0,000.00") 
-        );
-        __objIgv.setValue(
-            Ext.util.Format.number(_tot.toFixed(2) - (_igv.toFixed(2) /1.18) , "0,000.00") 
-        );
-        //Ext.ComponentQuery.query('#txtIgvventas')[0].setValue(_igv.toFixed(2));
-        var _totven = 0;
-        _totven     = _tot + _igv;
-        __objTotal.setValue(
-            Ext.util.Format.number(_tot.toFixed(2), "0,000.00") 
-        );*/
-
-        /*Ext.ComponentQuery.query('#txtTotalGeneral')[0].setValue(  
-            Ext.util.Format.number(_totven.toFixed(2), "0,000.00") 
-        );*/
+       
     },
     onCalcularTotalVentaPorBusqueda: function () {
         me = this;
-        __objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
-        __objIgv      = Ext.ComponentQuery.query('#igvventas')[0];
-        __objSubTotal = Ext.ComponentQuery.query('#Subtotalventas')[0];
-        __objTotal    = Ext.ComponentQuery.query('#TotalGeneral')[0];
-
-        var store = Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore();
-        var _tot = 0;
-        var _igv = 0;
-        store.each(function (record) {
-            _tot = _tot + record.get('total');
+        chk = Ext.ComponentQuery.query('#incluyeigv')[0];
+        ti = Ext.ComponentQuery.query('#igvventas')[0];
+        ts = Ext.ComponentQuery.query('#Subtotalventas')[0];
+        tt = Ext.ComponentQuery.query('#TotalGeneral')[0];
+        st = Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore();
+        t = 0;
+        i = 0;
+        s = 0;
+        st.each(function (r) {
+            t = t + r.get('total');
         });
-       
-        s =  _tot.toFixed(2) / 1.18;
-        __objSubTotal.setValue( s.toFixed(2) );
-        
-        //if (Ext.ComponentQuery.query('#_incluyeigv')[0].getValue()){
-      
-        if (__objChk.getValue()){
-            var _igv = 0;
+        if(chk.getValue()){
+            s = t / 1.18;
+            i = t - s ;
+            t = s + i;
+        }else{
+            s = t;
+            i = t * 0.18;
+            t = s + i;
         }
-        else{
-            var _igv = _tot * 0.18;
-        }
-        i = _tot - (_tot.toFixed(2) / 1.18 );
-        __objIgv.setValue( i.toFixed(2));
-        //Ext.ComponentQuery.query('#txtIgvventas')[0].setValue(_igv.toFixed(2));
-        var _totven = 0;
-        _totven = _tot + _igv;
-        __objTotal.setValue(
-            Ext.util.Format.number(_tot.toFixed(2), "0,000.00000") 
-        );
-
-        /*Ext.ComponentQuery.query('#txtTotalGeneral')[0].setValue(  
-            Ext.util.Format.number(_totven.toFixed(2), "0,000.00") 
-        );*/
+        ti.setValue(i.toFixed(2));
+        ts.setValue(s.toFixed(2));
+        tt.setValue(t.toFixed(2));
     },
     onClickEliminarDetalle: function (button, event, eOpts) {
         var grid = this.lookupReference('dgvDetalleVenta');
@@ -507,35 +474,34 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
     },
 
     onClickRowProducto: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-      /*
-          precioprod   = 1
-          precioprodlocalespecial = 2
-          precioprodprovincia  = 3
-          precioprodprovinciaespecial = 4
-      */
         me = this;
-        var _store         = Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore();
-        var _precio         = 0;
-        _data = {
-                idprod: parseInt(record.get('id')),
-                descripcion: record.get('nombre'),
-                cantidad: 1,
-                precio: parseFloat(record.get('precioprod')),
-                total: parseInt(1) * parseFloat(record.get('precioprod'))
-            };
-
-        if (_store.findRecord('idprod', parseInt( record.get('id') ))) {
+        gs = Ext.ComponentQuery.query('#dgvDetalleVenta')[0];
+        s = gs.getStore();
+        p = 0;
+        ps = Ext.ComponentQuery.query('#posicion')[0];
+        i = ps.getValue();
+        d = {
+            idprod: parseInt(record.get('id')),
+            descripcion: record.get('nombre'),
+            cantidad: 1,
+            precio: parseFloat(record.get('precioprod')),
+            total: parseInt(1) * parseFloat(record.get('precioprod'))
+        };
+        if (s.findRecord('idprod', parseInt(record.get('id')))) {
             Ext.Msg.alert("Error", "Producto ya se encuentra cargada");
             return false;
         }
-        _store.insert(0, _data);
+        i = i + 1;
+        s.insert(i, d);
+        ps.setValue(i);
+        gs.getView().refresh();
         this.onCalcularTotalVentaPorBusqueda();
     },
 
     onClickBuscarProductoPorNombre: function (obj) {
         me = this;
         _store     = me.lookupReference('dgvBuscarProducto').getStore();
-        _idCliente = this.lookupReference('tipopreciopersona').getValue();
+        _idCliente = me.lookupReference('tipopreciopersona').getValue();
         _store.getProxy().extraParams = {
             vCodigo: '',
             vDescripcion: me.lookupReference('txtProductoNombre').getValue(),

@@ -3,11 +3,11 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProducto', {
     alias: 'widget.wBuscarProducto',
     xtype: 'wBuscarProducto',
     requires: [
-      'sisfacturaelectronica.view.ventas.AccionesRegCotizacion'
+        'sisfacturaelectronica.view.ventas.AccionesRegCotizacion'
     ],
-    config : {
-      cliente : 0,
-      detalle : null
+    config: {
+        cliente: 0,
+        detalle: null
     },
     autoShow: true,
     width: 1200,
@@ -25,116 +25,85 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProducto', {
 
     initComponent: function () {
         var store = Ext.create('sisfacturaelectronica.store.ProductosPorPrecioPersona');
-        me        = this;
-        store.getProxy().extraParams={vIdCliente : me.getCliente()};
+        me = this;
+        store.getProxy().extraParams = { vIdCliente: me.getCliente() };
         store.load();
         me = this;
         Ext.apply(me, {
             items: [
-                  {
-                    xtype:'hiddenfield',
-                    itemId:'tipopreciopersona',
-                    reference :'tipopreciopersona',
-                    value : me.getCliente()
-                  },
-                  {
+                {
+                    xtype: 'hiddenfield',
+                    itemId: 'tipopreciopersona',
+                    reference: 'tipopreciopersona',
+                    value: me.getCliente()
+                },
+                {
                     xtype: 'grid',
                     reference: 'dgvBuscarProducto',
-                    store:store,
+                    store: store,
                     columns: [
-                         {
-                            text:'Producto',
+                        {
+                            text: 'Producto',
                             flex: 2,
-                            dataIndex:'nombre',
+                            dataIndex: 'nombre',
                         },
-                       {
-                            text:'Unida Medida',
+                        {
+                            text: 'Unida Medida',
                             flex: 1,
-                            dataIndex:'unidadmedida',
+                            dataIndex: 'unidadmedida',
                         },
                         {
-                             text:'Presentacion',
-                             flex: 1,
-                             dataIndex:'presentacion',
-                         },
-                         {
-                             xtype :'numbercolumn',
-                              text:'Stock',
-                              flex: 0.5,
-                              dataIndex:'existencias',
-                              align :'center',
-                              renderer: function (value, metaData, record) {
-                                if(value == 0){
-                                  metaData.style = ";color:red;fontSize:13px;";
-                                  return value;
-                                }else{
-                                  metaData.style = "color:#0404B4;fontSize:15px;";
-                                  return value;
-                                }
-
-
-                              }
-                          },
-                         /* {
-                            xtype :'numbercolumn',
-                               text:'Stock Dosis',
-                               flex: 0.5,
-                               dataIndex:'stock_dosis',
-                               align :'center'
-                           },
-                           {
-                             xtype :'numbercolumn',
-                                text:'Stock Kilos',
-                                flex: 0.5,
-                                dataIndex:'stock_kilos',
-                                align :'center'
-                            },
-                            {
-                              xtype :'numbercolumn',
-                                 text:'Stock Gramos',
-                                 flex: 0.5,
-                                 dataIndex:'stock_gramos',
-                                 align :'center'
-                             },*/
+                            text: 'Presentacion',
+                            flex: 1,
+                            dataIndex: 'presentacion',
+                        },
                         {
-                            //xtype :'numbercolumn',
-                            text:'Precio',
+                            xtype: 'numbercolumn',
+                            text: 'Stock',
                             flex: 0.5,
-                            dataIndex:'precioprod',
-                            align :'right',
+                            dataIndex: 'existencias',
+                            align: 'center',
+                            renderer: function (value, metaData, record) {
+                                if (value == 0) {
+                                    metaData.style = ";color:red;fontSize:13px;";
+                                    return value;
+                                } else {
+                                    metaData.style = "color:#0404B4;fontSize:15px;";
+                                    return value;
+                                }
+                            }
+                        },
+                        {
+                            text: 'Precio',
+                            flex: 0.5,
+                            dataIndex: 'precioprod',
+                            align: 'right',
                             renderer: Ext.util.Format.numberRenderer('0.00'),
                         }
 
                     ],
-                     /*features: [{
-
-                        ftype: 'grouping',
-                        groupHeaderTpl: '{name}',
-                        hideGroupedHeader: true,
-                        startCollapsed: true
-                    }],*/
-                     listeners: {
-                            cellclick: 'onClickRowProducto'
-                        }
+                    listeners: {
+                        cellclick: 'onClickRowProducto'
+                    }
                 }
 
             ],
-            tbar:[
+            tbar: [
                 {
-                    xtype:'textfield',
-                    fieldLabel :'<b>Producto</b>',
-                    reference : 'txtProductoNombre',
+                    xtype: 'textfield',
+                    fieldLabel: '<b>Producto</b>',
+                    reference: 'txtProductoNombre',
                     flex: 1,
-                    selectOnFocus:true,
-                    enableKeyEvents : true,
-                    listeners:{
-                      keypress:'onKeyPressTextoDeBusquedaProducto2'
+                    selectOnFocus: true,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'onKeyPressTextoDeBusquedaProducto2'
                     }
                 },
                 {
-                    xtype:'button',
+                    xtype: 'button',
                     glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                    handler :'onClickBuscarProductoPorNombre'
+                    handler: 'onClickBuscarProductoPorNombre'
 
                 }
             ]

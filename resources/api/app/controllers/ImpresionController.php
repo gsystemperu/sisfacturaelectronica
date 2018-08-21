@@ -556,92 +556,91 @@ class ImpresionController extends Controller
             $pdf->Image('../public/img/logo.jpg', 10, 5, 28);
             $pdf->setY(5);
             $pdf->setX(100);
-            $pdf->MultiCell($wg,$in, pinta($dataEmpresa->razonsocial),'T','L');
+            $pdf->MultiCell($wg,5, pinta($dataEmpresa->razonsocial),'T','L');
             $pdf->setX(100);
-            $pdf->MultiCell($wg,$in, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
+            $pdf->MultiCell($wg,4, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
             $pdf->setX(100);
-            $pdf->MultiCell($wg,$in,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
+            $pdf->MultiCell($wg,4,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
             $pdf->setX(100);
-            $pdf->MultiCell($wg,$in,pinta("TELÉFONO: ".$dataEmpresa->telefono),'B','L');
-          
+            $pdf->MultiCell($wg,4,pinta("TELÉFONO: ".$dataEmpresa->telefono),'B','L');
             $tam = 9;
-            $pdf->Ln(7);
-      
+            $pdf->Ln(5);
             $pdf->SetFont($font,'B',20);
             $pdf->MultiCell(186,$in,pinta("COTIZACIÓN: ".$dataCotizacion->ctcodigo),0,'C');
-            $pdf->Ln(5);
-      
             $fila = $pdf->GetY();
             $pdf->SetFont($font,'B',$tam);
-            //$pdf->Cell(40,$in,pinta("FECHA DE COTIZACIÓN: "),0,0,'L');
             $pdf->Cell(0,$in,pinta($dataCotizacion->fechacoti),0,1,'R');
-            $pdf->Cell(20,$in,"CLIENTE: ",0,0,'L');
-            $pdf->Cell(0,$in,pinta($dataCotizacion->nomcompleto),0,1,'L');
-            $pdf->Cell(20,$in,"DIRECCION: ",0,0,'L');
-            $pdf->Cell(0,$in,pinta($dataCotizacion->domiciper),0,1,'L');
-            $pdf->Cell(20,$in,"RUC: ",0,0,'L');
-            $pdf->Cell(0,$in,pinta($dataCotizacion->numrucper),0,1,'L');
-            $pdf->Cell(20,$in,"TELEFONO: ",0,0,'L');
-            $pdf->Cell(108,$in,pinta($dataCotizacion->telefper),0,0,'L');
-
+            $pdf->Cell(20,$in,"CLIENTE ",0,0,'L');
+            $pdf->SetFont($font,'',$tam);
+            $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->nomcompleto),0,1,'L');
+            $pdf->SetFont($font,'B',$tam);
+            $pdf->Cell(20,$in,"DIRECCION ",0,0,'L');
+            $pdf->SetFont($font,'',$tam);
+            $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->domiciper),0,1,'L');
+            $pdf->SetFont($font,'B',$tam);
+            $pdf->Cell(20,$in,"RUC ",0,0,'L');
+            $pdf->SetFont($font,'',$tam);
+            $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->numrucper),0,1,'L');
+            $pdf->SetFont($font,'B',$tam);
+            $pdf->Cell(20,$in,"TELEFONO ",0,0,'L');
+            $pdf->SetFont($font,'',$tam);
+            $pdf->Cell(108,$in,pinta(' : '.$dataCotizacion->telefper),0,0,'L');
+            $pdf->SetFont($font,'B',$tam);
             $pdf->Cell(47,6,pinta('COTIZACIÓN VALIDA HASTA : '),0,0,'L');
+            $pdf->SetFont($font,'',$tam);
             $pdf->Cell(0,6,pinta($dataCotizacion->validohasta),0,1,'L');
-
-            
-            
-            
-            
-          // print_r($dataCotizacion);die();
             $pdf->Ln(4);
-              $pdf->Cell(10,5,pinta('Item'),1,0,'C');
-              $pdf->Cell(110,5,pinta('Descripción'),1,0,'C');
-              $pdf->Cell(10,5,pinta('Cant.'),1,0,'C');
-              $pdf->Cell(15,5,pinta('Unidad'),1,0,'C');
-              //$pdf->Cell(16,5,pinta('P. sin igv'),1,0,'C');
-              $pdf->Cell(16,5,pinta('P. con igv'),1,0,'C');
-              $pdf->Cell(32,5,pinta('Total'),1,1,'C');
-                $item = 1;
-                 foreach($dataDetalle as $row){
-                  $pdf->SetFont($font,'',7);
-                  $pdf->Cell(10,5,pinta($item++),1,0,'C'); 
-                  $pdf->Cell(110,5,pinta($row->descripcion),1,0,'L');
-                  
-                  $pdf->Cell(10,5,pinta($row->cantidad),1,0,'C');
-                  $pdf->Cell(15,5,pinta($row->um),1,0,'C');
-                  //$pdf->Cell(16,5,pinta(number_format($row->precio / 1.18 , 2, '.',' ')),1,0,'R');
-                  $pdf->Cell(16,5,pinta(number_format($row->precio, 2, '.',' ')),1,0,'R');
-                  $pdf->Cell(32,5,pinta(number_format($row->total , 2, '.',' ')),1,1,'R');
+            $pdf->Cell(10,5,pinta('Item'),'B',0,'C');
+            $pdf->Cell(110,5,pinta('Descripción'),'B',0,'L');
+            $pdf->Cell(10,5,pinta('Cant.'),'B',0,'C');
+            $pdf->Cell(25,5,pinta('Unidad Medida'),'B',0,'C');
+            $pdf->Cell(17,5,pinta('Pre. Unit.'),'B',0,'R');
+            $pdf->Cell(0,5,pinta('Total'),'B',1,'R');
+            $item = 1;
+          foreach($dataDetalle as $row)
+          {
+                  $pdf->SetFont($font,'',8);
+                  $pdf->Cell(10,5,pinta($item++),0,0,'C'); 
+                  $pdf->Cell(110,5,pinta($row->descripcion),0,0,'L');    
+                  $pdf->Cell(10,5,pinta($row->cantidad),0,0,'C');
+                  $pdf->Cell(25,5,pinta($row->presentacion),0,0,'L');
+                  $pdf->Cell(17,5,pinta(number_format($row->precio, 2, '.',' ')),0,0,'R');
+                  $pdf->Cell(0,5,pinta(number_format($row->total , 2, '.',' ')),0,1,'R');
                   $total_sin_imp += $row->total;
-                 }
-  
-              $pdf->Ln(4);
-              //$impuestos = $total_sin_imp * $impuestos;
-              $total_cotizacion = $total_sin_imp; // $total_sin_imp + $impuestos;
+          }
+         /* for($i=1;$i<=25;$i++){
+            $pdf->Cell(0,5,pinta('test'),1,1,'C');
+          }*/
+          $pdf->Cell(0,1,pinta(' '),'B',1,'R');
+          $pdf->Ln();
+          $total_cotizacion = $total_sin_imp; 
            
           $pdf->SetFont($font,'',$tam);       
           if($dataCotizacion->incluyeigv == 1){
-                $pdf->Cell(165,5,pinta('TOTAL'),0,0,'R');
-                $pdf->Cell(22,5,pinta(number_format($total_cotizacion, 2, '.',' ')),'T',1,'R');
-              }else{
-                $pdf->Cell(168,5,pinta('SUB TOTAL'),0,0,'R');
-                $pdf->Cell(22,5,pinta(number_format($total_cotizacion / 1.18 , 2, '.',' ')),'T',1,'R');
-                $pdf->Cell(168,5,pinta('IGV'),0,0,'R');
-                $pdf->Cell(22,5,pinta(number_format($total_cotizacion - ($total_cotizacion / 1.18 ) , 2, '.',' ')),'T',1,'R');
-                $pdf->Cell(168,5,pinta('TOTAL'),0,0,'R');
-                $pdf->Cell(22,5,pinta(number_format($total_cotizacion, 2, '.',' ')),'T',1,'R');
-              }
-
-          //$pdf->Ln();      
-          //- Observaciones
+              $s = $total_cotizacion / 1.18;
+              $i = $total_cotizacion - $s;
+              $t = $s + $i;
+          }else{
+              $s = $total_cotizacion;
+              $i = $s * 1.18;
+              $t = $s + $i;
+          }
+          $pdf->setX(150);
+          $pdf->Cell(30,5,pinta('SUB TOTAL'),0,0,'L');
+          $pdf->Cell(0,5,pinta(number_format($s , 2, '.',' ')),0,1,'R');
+          $pdf->setX(150);
+          $pdf->Cell(30,5,pinta('IGV 18% '),0,0,'L');
+          $pdf->Cell(0,5,pinta(number_format($i , 2, '.',' ')),0,1,'R');
+          $pdf->setX(150);
+          $pdf->Cell(30,5,pinta('TOTAL'),0,0,'L');
+          $pdf->Cell(0,5,pinta(number_format($t, 2, '.',' ')),0,1,'R');
           $pdf->SetFont($font,'',$tam);
-          $pdf->Cell(0,6,pinta(''),'B',1,'L');
-          $pdf->Cell(35,6,'LUGAR DE ENTREGA :',0,0,'L');
-          $pdf->Cell(0,6,pinta($dataCotizacion->lugarentrega),0,1,'L');
-          $pdf->MultiCell($wg,6,'OBSERVACIONES :',0,'L');
+          $pdf->Cell(35,5,'LUGAR DE ENTREGA :',0,0,'L');
+          $pdf->Cell(0,5,pinta($dataCotizacion->lugarentrega),0,1,'L');
+          $pdf->MultiCell($wg,5,'OBSERVACIONES :',0,'L');
           $pdf->SetFont($font,'',$tam);
-          $pdf->MultiCell($wg,6,pinta($dataCotizacion->comentario),0,'L');
-          
-          $pdf->Cell(35,6,pinta('CREDITOS Y COBRANZAS : '),0,1,'L');
+          $pdf->MultiCell($wg,5,pinta($dataCotizacion->comentario),0,'L');
+          $pdf->Cell(35,5,pinta('CREDITOS Y COBRANZAS : '),0,1,'L');
           $pdf->MultiCell(0,4,pinta($dataCotizacion->creditoscobranzas),0,'J');
           /*$pdf->Ln();    
           $pdf->Cell(80,6,pinta('CUENTA CORRIENTE BCP  :'),0,0,'L');
@@ -649,7 +648,7 @@ class ImpresionController extends Controller
           $pdf->Cell(80,6,pinta('CUENTA CORRIENTE BCP  :'),0,0,'L');
           $pdf->Cell(0,6,pinta('$:  191-2471001-1-15'),0,1,'L');*/
         
-          $pdf->AutoPrint();
+          //$pdf->AutoPrint();
           $pdf->Output();
       
       
