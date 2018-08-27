@@ -89,7 +89,7 @@ Ext.define('sisfacturaelectronica.view.puntoventa.ListadoController', {
               Ext.Msg.alert('Información','El producto ingresado se encuentra en lista, solo puede modificar la cantidad.');return false;
              }
              if(r.get('ventaconreceta')){
-              Ext.Msg.confirm('AkinetFarma','Este Medicamento es con receta médica! desea incluir en la venta?',function(b){
+              Ext.Msg.confirm('SisFacturaElectronica','Este Medicamento es con receta médica! desea incluir en la venta?',function(b){
                 if(b=='yes'){
                   _grid.getStore().insert(0, _data);
                   me.onCalcularTotalVenta();      
@@ -130,7 +130,7 @@ Ext.define('sisfacturaelectronica.view.puntoventa.ListadoController', {
         Ext.Msg.alert('Información','El producto ingresado se encuentra en lista, solo puede modificar la cantidad.');return false;
        }
        if(record.get('ventaconreceta')){
-        Ext.Msg.confirm('AkinetFarma','Este Medicamento es con médica! desea incluir en la venta?',function(b){
+        Ext.Msg.confirm('SisFacturaElectronica','Este Medicamento es con médica! desea incluir en la venta?',function(b){
           if(b=='yes'){
             _grid.getStore().insert(0, _data);
             me.onCalcularTotalVenta();      

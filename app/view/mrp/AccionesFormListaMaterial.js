@@ -68,7 +68,7 @@ Ext.define('sisfacturaelectronica.view.mrp.AccionesFormListaMaterial', {
                   }
               },
               failure: function () {
-                  Ext.Msg.alert("AkinetFarma","Se perdio la conexion con el servidor!");
+                  Ext.Msg.alert("SisFacturaElectronica","Se perdio la conexion con el servidor!");
               }
           });
 

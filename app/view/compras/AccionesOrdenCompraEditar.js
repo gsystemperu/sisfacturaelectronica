@@ -102,7 +102,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompraEditar', {
                    Ext.ComponentQuery.query('#dgvDetalleOrdenCompra')[0].getStore().removeAll();
                },
                failure: function (action) {
-                   Ext.Msg.alert("AkinetFarma", "Error en conexión de base de datos");
+                   Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
 
                }
            });

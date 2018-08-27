@@ -18,7 +18,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesAlmacen', {
                     }                   
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma", action.result.msg);
+                    Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                 }
             });
 
@@ -89,7 +89,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesAlmacen', {
                     }                   
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma", action.result.msg);
+                    Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                 }
             });
 

@@ -30,7 +30,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
         var _win = Ext.create('sisfacturaelectronica.view.ventas.BuscarProducto', { cliente: Ext.ComponentQuery.query('#cboDatosCliente')[0].getValue()});
         _win.show(btn, function () {}, this);
       }else{
-        Ext.Msg.alert("AkinetFarma","Buscar al cliente para buscar los precios de los productos !!"); return false;
+        Ext.Msg.alert("SisFacturaElectronica","Buscar al cliente para buscar los precios de los productos !!"); return false;
       }
     },
     onClickIngresarCotizacion: function (btn) {
@@ -358,7 +358,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
 
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma", action.result.msg);
+                    Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                     _view.close();
                 }
             });
@@ -390,7 +390,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
                     v.close();
                 },
                 failure: function (error) {
-                    Ext.Msg.alert("AkinetFarma", "Error al guardar");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error al guardar");
                     v.close();
                 }
             });

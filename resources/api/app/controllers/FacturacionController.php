@@ -32,6 +32,37 @@ class FacturacionController extends Controller
            return $response;
       }
     }
+    public function actualizarnotaAction(){
+      $request        = new Phalcon\Http\Request();
+      $response       = new \Phalcon\Http\Response();
+      if($request->isPost() ==true)
+      {
+           $vId           =  $request->getPost('idfacturacion');
+           $vIdCoti       =  $request->getPost('idcoti');
+           $vFecha        =  $request->getPost('fechacoti');
+           $vIdCliente    =  $request->getPost('idper');
+           $vUsuario      =  $request->getPost('vusuario');
+           $vJsonDetalle  =  $request->getPost('vjsondetalle');
+           $vFormaPago    =  $request->getPost('idfopag');
+           $vModoEntrega  =  ($request->getPost('idmodo')==''?0:$request->getPost('idmodo'));
+           $vDocVenta     =  $request->getPost('documentoventa');
+           $vIncluyeIgv   = ($request->getPost('incluyeigv')=='on'? 1:0);
+           $vFechaValidoHasta  = ( $request->getPost('validohasta')==''? $request->getPost('fechavalidohasta') : $request->getPost('validohasta'));
+           $vSerieDoc     = $request->getPost('seriedoc');
+           $vNumeroDoc    = $request->getPost('numerodoc');
+           $vPagoAcuenta  = $request->getPost('pagoacuenta');
+           $vIdmoneda     = $request->getPost('idmoneda');
+           $vNtipo     = $request->getPost('nctipo');
+           $vMotivo     = $request->getPost('ncmotivo');
+           
+           $data = array($vId,$vIdCoti,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle, $vFormaPago,$vModoEntrega,$vDocVenta,$vIncluyeIgv,$vFechaValidoHasta,$vSerieDoc,$vNumeroDoc,$vPagoAcuenta,$vIdmoneda,$vNtipo,$vMotivo);
+           //print_r($data);die();
+           $jsonData             = Facturacion::actualizarNota($data);
+           $response->setContentType('application/json', 'UTF-8');
+           $response->setContent(json_encode($jsonData[0], JSON_NUMERIC_CHECK));
+           return $response;
+      }
+    }
     public function anularAction(){
          $request        = new Phalcon\Http\Request();
          $response       = new \Phalcon\Http\Response();
@@ -338,6 +369,18 @@ class FacturacionController extends Controller
                $response->setContent(json_encode($jsonData, JSON_NUMERIC_CHECK));
                return $response;
           }
+      }
+      public function tiponotacreditoAction(){
+        $request        = new Phalcon\Http\Request();
+        $response       = new \Phalcon\Http\Response();
+        if($request->isGet() ==true)
+        {
+             $data          = array();
+             $jsonData      = Facturacion::tipoNotaCredito($data);
+             $response->setContentType('application/json', 'UTF-8');
+             $response->setContent($jsonData);
+             return $response;
+        }
       }
         
 

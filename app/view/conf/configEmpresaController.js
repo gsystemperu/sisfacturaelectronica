@@ -122,7 +122,7 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresaController', {
               }
           },
           failure: function () {
-            Ext.Msg.alert("AkinetFarma", "Error en guardar la información");
+            Ext.Msg.alert("SisFacturaElectronica", "Error en guardar la información");
           }
         });
       }

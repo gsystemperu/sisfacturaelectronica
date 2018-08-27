@@ -47,5 +47,60 @@
             "email",
             "php5"
         ]
+    },
+    {
+        "name": "giansalex/peru-consult",
+        "version": "v2.2.0",
+        "version_normalized": "2.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/giansalex/peru-consult.git",
+            "reference": "6dcec0e5bce078f2a470a7521ae40dd6946d57e2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/giansalex/peru-consult/zipball/6dcec0e5bce078f2a470a7521ae40dd6946d57e2",
+            "reference": "6dcec0e5bce078f2a470a7521ae40dd6946d57e2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "behat/behat": "^3.4",
+            "phpunit/phpunit": ">=4.8 < 6.0"
+        },
+        "suggest": {
+            "ext-dom": "Needed to use class Ruc",
+            "ext-gd": "Needed to use class Dni",
+            "ext-openssl": "Needed to connect to Reniec"
+        },
+        "time": "2018-07-23T20:50:10+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Peru\\": "src/Peru/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Giancarlos Salas",
+                "email": "giansalex@gmail.com"
+            }
+        ],
+        "description": "Consultas Perú",
+        "homepage": "https://github.com/giansalex/peru-consult",
+        "keywords": [
+            "DNI",
+            "clavesol",
+            "reniec",
+            "ruc",
+            "sunat"
+        ]
     }
 ]

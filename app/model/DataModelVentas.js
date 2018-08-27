@@ -1,4 +1,4 @@
-Ext.define('sisfacturaelectronica.model.DataModelVentas', {extend: 'Ext.data.Model',fields: [{ name: 'id', type: 'int' }]});
+Ext.define('sisfacturaelectronica.model.DataModelVentas', { extend: 'Ext.data.Model', fields: [{ name: 'id', type: 'int' }] });
 
 // @Model : Producto
 Ext.define('sisfacturaelectronica.model.ProductoPorCliente', {
@@ -84,17 +84,17 @@ Ext.define('sisfacturaelectronica.model.Cotizacion', {
         { name: 'valtotalcont', type: 'float' },
         //{ name: 'valtotalcont', type: 'float' },
         { name: 'valtotalcont' },
-        { name : 'numdocper',type:'string'},
-        { name : 'numrucper',type:'string'},
-        { name : 'domiciper',type:'string'},
-        { name : 'vendedor',type:'string'},
-        { name : 'referencia',type:'string'},
-        { name : 'vformapago',type:'int'},
-        { name : 'vmodoentrega',type:'int'},
-        { name : 'incluyeigv',type:'boolean'},
-        { name : 'fechavalidohasta',type:'string'},
-        { name : 'comentario',type:'string'},
-        { name : 'idmoneda',type:'integer'}
+        { name: 'numdocper', type: 'string' },
+        { name: 'numrucper', type: 'string' },
+        { name: 'domiciper', type: 'string' },
+        { name: 'vendedor', type: 'string' },
+        { name: 'referencia', type: 'string' },
+        { name: 'vformapago', type: 'int' },
+        { name: 'vmodoentrega', type: 'int' },
+        { name: 'incluyeigv', type: 'boolean' },
+        { name: 'fechavalidohasta', type: 'string' },
+        { name: 'comentario', type: 'string' },
+        { name: 'idmoneda', type: 'integer' }
     ]
 });
 
@@ -109,8 +109,8 @@ Ext.define('sisfacturaelectronica.model.CotizacionDetalle', {
         { name: 'descripcion', type: 'string' },
         { name: 'idpresentacion', type: 'int' },
         { name: 'presentacion', type: 'string' },
-       // { name: 'precio', type: 'float' },
-       { name: 'precio' },
+        // { name: 'precio', type: 'float' },
+        { name: 'precio' },
         { name: 'cantidad', type: 'int' },
         //{ name: 'total', type: 'float' },
         { name: 'total' },
@@ -296,13 +296,13 @@ Ext.define('sisfacturaelectronica.model.DetFacturacion', {
 Ext.define('sisfacturaelectronica.model.DetalleIngresoGuiaVista', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "fechaingreso", type:'string' },
-      {name: "producto", type:'string' },
-      {name: "cantidadsolicitada", type:'float' },
-      {name: "cantidadrecibida", type:'float' },
-      {name: "fvencimiento",type:'string'}, //, format:'d/m/Y'},
-      {name: "preciorecibido", type:'float' },
-      {name: "totalrecibido", type:'float' }
+        { name: "fechaingreso", type: 'string' },
+        { name: "producto", type: 'string' },
+        { name: "cantidadsolicitada", type: 'float' },
+        { name: "cantidadrecibida", type: 'float' },
+        { name: "fvencimiento", type: 'string' }, //, format:'d/m/Y'},
+        { name: "preciorecibido", type: 'float' },
+        { name: "totalrecibido", type: 'float' }
     ]
 });
 
@@ -312,8 +312,8 @@ Ext.define('sisfacturaelectronica.model.DetalleIngresoGuiaVista', {
 Ext.define('sisfacturaelectronica.model.MotivoTranslado', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "descripcion", type:'string' },
+        { name: "id", type: 'int' },
+        { name: "descripcion", type: 'string' },
     ]
 });
 
@@ -322,16 +322,16 @@ Ext.define('sisfacturaelectronica.model.MotivoTranslado', {
 Ext.define('sisfacturaelectronica.model.TiendaDocumentoVentaAsignado', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "documentoventa", type:'string' }
+        { name: "id", type: 'int' },
+        { name: "documentoventa", type: 'string' }
     ]
 });
 // @Model Documentos de venta para asignar una tienda
 Ext.define('sisfacturaelectronica.model.TiendaDocumentoVenta', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "documentoventa", type:'string' }
+        { name: "id", type: 'int' },
+        { name: "documentoventa", type: 'string' }
     ]
 });
 
@@ -341,16 +341,16 @@ Ext.define('sisfacturaelectronica.model.TiendaDocumentoVenta', {
 Ext.define('sisfacturaelectronica.model.TiendaTicketeraAsignada', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "ticketera", type:'string' }
+        { name: "id", type: 'int' },
+        { name: "ticketera", type: 'string' }
     ]
 });
 // @Model ticketeras de venta para asignar una tienda
 Ext.define('sisfacturaelectronica.model.TiendaTicketera', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "ticketera", type:'string' }
+        { name: "id", type: 'int' },
+        { name: "ticketera", type: 'string' }
     ]
 });
 
@@ -358,8 +358,8 @@ Ext.define('sisfacturaelectronica.model.TiendaTicketera', {
 Ext.define('sisfacturaelectronica.model.MetodoPago', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "descripcion", type:'string' },
+        { name: "id", type: 'int' },
+        { name: "descripcion", type: 'string' },
     ]
 });
 
@@ -368,19 +368,38 @@ Ext.define('sisfacturaelectronica.model.MetodoPago', {
 Ext.define('sisfacturaelectronica.model.AperturaCaja', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "descripcion", type:'string' },
-      {name: "valor", type:'float' }
+        { name: "id", type: 'int' },
+        { name: "descripcion", type: 'string' },
+        { name: "valor", type: 'float' }
     ]
 });
 // @Model de la apertura de caja historic
 Ext.define('sisfacturaelectronica.model.AperturaCajaHis', {
     extend: 'Ext.data.Model',
     fields: [
-      {name: "id", type:'int' },
-      {name: "comentario", type:'string' },
-      {name: "fecha", type:'string' },
-      {name: "hora", type:'string' }
+        { name: "id", type: 'int' },
+        { name: "comentario", type: 'string' },
+        { name: "fecha", type: 'string' },
+        { name: "hora", type: 'string' }
+    ]
+});
+
+// @Model : Tipo Nota Credito
+Ext.define('sisfacturaelectronica.model.TipoNotaCredito', {
+    extend: 'Ext.data.Model',
+    fields: [{
+        name: 'id',
+        type: 'int'
+    },
+    {
+        name: 'codigo',
+        type: 'string'
+    },
+    {
+        name: 'descripcion',
+        type: 'string'
+    }
+
     ]
 });
 

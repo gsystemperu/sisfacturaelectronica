@@ -50,7 +50,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesGuiaRemision', {
 
                 },
                 failure: function () {
-                     Ext.Msg.alert("AkinetFarma", "Error al ingresar guia remision");
+                     Ext.Msg.alert("SisFacturaElectronica", "Error al ingresar guia remision");
                      return false;
 
                 }

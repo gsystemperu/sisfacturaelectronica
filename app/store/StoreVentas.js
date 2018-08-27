@@ -610,3 +610,19 @@ Ext.define('sisfacturaelectronica.store.ListaAperturaCajaHistorico', {
         }
     }
 });
+
+// @ Store : Listado de Tipos de nota de credito
+Ext.define('sisfacturaelectronica.store.TipoNotaCredito', {
+    extend: 'Ext.data.Store',
+    requiere:['sisfacturaelectronica.model.DataModelVentas'],
+    model   :'sisfacturaelectronica.model.TipoNotaCredito',
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        api: {read: 'resources/api/tipo_nota_credito'},
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+        }
+    }
+});

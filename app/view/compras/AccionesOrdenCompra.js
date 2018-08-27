@@ -73,7 +73,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
         };
 
         if (_store.findRecord('idprod', parseInt(record.get('id')))) {
-            Ext.Msg.alert("AkinetFarma", "Producto ya se encuentra cargada");
+            Ext.Msg.alert("SisFacturaElectronica", "Producto ya se encuentra cargada");
             return false;
         }
         _store.insert(0, _data);
@@ -103,7 +103,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
         };
 
         if (_store.findRecord('idprod', parseInt(record.get('id')))) {
-            Ext.Msg.alert("AkinetFarma", "Producto ya se encuentra cargada");
+            Ext.Msg.alert("SisFacturaElectronica", "Producto ya se encuentra cargada");
             return false;
         }
         _store.insert(0, _data);
@@ -215,7 +215,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
                     Ext.ComponentQuery.query('#dgvDetalleOrdenCompra')[0].getStore().removeAll();
                 },
                 failure: function (action) {
-                    Ext.Msg.alert("AkinetFarma", "Error en conexión de base de datos");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
 
                 }
             });

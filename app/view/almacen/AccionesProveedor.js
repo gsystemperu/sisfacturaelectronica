@@ -18,7 +18,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProveedor', {
                     }
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma", "Error en conexion de la base de datos");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexion de la base de datos");
                 }
             });
 
@@ -37,7 +37,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProveedor', {
                     }
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma", "Error en conexion de la base de datos");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexion de la base de datos");
                 }
             });
 

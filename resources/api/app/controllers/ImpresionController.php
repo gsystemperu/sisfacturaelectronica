@@ -176,9 +176,9 @@ class ImpresionController extends Controller
       $this->view->cliente = $cliente;
       $this->view->detalle = $detalle;   
     }
-    public function enviarCotizacionAction(){
+    public function enviarCotizacionAction(){ //eddyerazo
 
-      $request    = new Phalcon\Http\Request();
+      /*$request    = new Phalcon\Http\Request();
       $response       = new \Phalcon\Http\Response();
       $id = array($request->getPost("id"));
       $dataEmpresa =  json_decode(Empresa::listar())->data[0];
@@ -243,21 +243,137 @@ class ImpresionController extends Controller
       $pdf->cell(160,5,'Total ',0,0,'R');
       $pdf->cell(0,5,pinta($tot),'T',1,'C');
       
-        $pdf->Output('temp/ordencompra.pdf','F');
-        $mailer = SimpleMail::make()
-        ->setTo($dataOc->provcor, $dataOc->razonsocial) // para 
-        ->setFrom($dataEmpresa->correo, $dataEmpresa->razonsocial) // de
-        ->setSubject('Pedido de mercaderia ')
-        ->setMessage('Le adjunto información de requerimiento.')
-        ->setWrap(100)
-        ->addAttachment('temp/ordencompra.pdf')
-        ->send();
-          
-        $jsonData = array();
-        $jsonData["error"] = $mailer;
-        $response->setContentType('application/json', 'UTF-8');
-        $response->setContent( json_encode($jsonData));
-        return $response;
+        $pdf->Output('temp/cotizacion.pdf','F');*/
+      
+
+     
+
+        $request    = new Phalcon\Http\Request();
+        $response   = new \Phalcon\Http\Response();
+        $idCot      = $request->get("id");
+        $dataEmpresa =  json_decode(Empresa::listar())->data[0];
+        $dataCotizacion =  json_decode(Cotizacion::buscarCotizacionPorId(array($idCot)))->data[0];
+        $dataDetalle =  json_decode(Cotizacion::detalleCotizacionVista(array($idCot)))->data;
+        $dataPersona = json_decode(Persona::Buscar($dataCotizacion->idper))->data[0];
+        
+        $total_sin_imp = 0.00;
+        $impuestos = 0.18;
+        $total_cotizacion = 0.00;
+  
+        // ========== FPDF ==========  //
+        $pdf = new jsPDF('P','mm','A4');
+        $wg = 100 ;//Ancho total
+        $in = 5; //Interlineado
+        $font = 'Arial';
+        $tam = 8;
+  
+        $pdf->AddPage();
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Ln(1);
+        $pdf->Image('../public/img/logo.jpg', 10, 5, 28);
+        $pdf->setY(5);
+        $pdf->setX(100);
+        $pdf->MultiCell($wg,5, pinta($dataEmpresa->razonsocial),'T','L');
+        $pdf->setX(100);
+        $pdf->MultiCell($wg,4, pinta(strtoupper($dataEmpresa->direccion)),0,'L');
+        $pdf->setX(100);
+        $pdf->MultiCell($wg,4,"CORREO: ".pinta($dataEmpresa->correo),0,'L');
+        $pdf->setX(100);
+        $pdf->MultiCell($wg,4,pinta("TELÉFONO: ".$dataEmpresa->telefono),'B','L');
+        $tam = 9;
+        $pdf->Ln(5);
+        $pdf->SetFont($font,'B',20);
+        $pdf->MultiCell(186,$in,pinta("COTIZACIÓN: ".$dataCotizacion->ctcodigo),0,'C');
+        $fila = $pdf->GetY();
+        $pdf->SetFont($font,'B',$tam);
+        $pdf->Cell(0,$in,pinta($dataCotizacion->fechacoti),0,1,'R');
+        $pdf->Cell(20,$in,"CLIENTE ",0,0,'L');
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->nomcompleto),0,1,'L');
+        $pdf->SetFont($font,'B',$tam);
+        $pdf->Cell(20,$in,"DIRECCION ",0,0,'L');
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->domiciper),0,1,'L');
+        $pdf->SetFont($font,'B',$tam);
+        $pdf->Cell(20,$in,"RUC ",0,0,'L');
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Cell(0,$in,pinta(' : '.$dataCotizacion->numrucper),0,1,'L');
+        $pdf->SetFont($font,'B',$tam);
+        $pdf->Cell(20,$in,"TELEFONO ",0,0,'L');
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Cell(108,$in,pinta(' : '.$dataCotizacion->telefper),0,0,'L');
+        $pdf->SetFont($font,'B',$tam);
+        $pdf->Cell(47,6,pinta('COTIZACIÓN VALIDA HASTA : '),0,0,'L');
+        $pdf->SetFont($font,'',$tam);
+        $pdf->Cell(0,6,pinta($dataCotizacion->validohasta),0,1,'L');
+        $pdf->Ln(4);
+        $pdf->Cell(10,5,pinta('Item'),'B',0,'C');
+        $pdf->Cell(110,5,pinta('Descripción'),'B',0,'L');
+        $pdf->Cell(10,5,pinta('Cant.'),'B',0,'C');
+        $pdf->Cell(25,5,pinta('Unidad Medida'),'B',0,'C');
+        $pdf->Cell(17,5,pinta('Pre. Unit.'),'B',0,'R');
+        $pdf->Cell(0,5,pinta('Total'),'B',1,'R');
+        $item = 1;
+      foreach($dataDetalle as $row)
+      {
+              $pdf->SetFont($font,'',8);
+              $pdf->Cell(10,5,pinta($item++),0,0,'C'); 
+              $pdf->Cell(110,5,pinta($row->descripcion),0,0,'L');    
+              $pdf->Cell(10,5,pinta($row->cantidad),0,0,'C');
+              $pdf->Cell(25,5,pinta($row->presentacion),0,0,'L');
+              $pdf->Cell(17,5,pinta(number_format($row->precio, 2, '.',' ')),0,0,'R');
+              $pdf->Cell(0,5,pinta(number_format($row->total , 2, '.',' ')),0,1,'R');
+              $total_sin_imp += $row->total;
+      }
+      $pdf->Cell(0,1,pinta(' '),'B',1,'R');
+      $pdf->Ln();
+      $total_cotizacion = $total_sin_imp; 
+       
+      $pdf->SetFont($font,'',$tam);       
+      if($dataCotizacion->incluyeigv == 1){
+          $s = $total_cotizacion / 1.18;
+          $i = $total_cotizacion - $s;
+          $t = $s + $i;
+      }else{
+          $s = $total_cotizacion;
+          $i = $s * 1.18;
+          $t = $s + $i;
+      }
+      $pdf->setX(150);
+      $pdf->Cell(30,5,pinta('SUB TOTAL'),0,0,'L');
+      $pdf->Cell(0,5,pinta(number_format($s , 2, '.',' ')),0,1,'R');
+      $pdf->setX(150);
+      $pdf->Cell(30,5,pinta('IGV 18% '),0,0,'L');
+      $pdf->Cell(0,5,pinta(number_format($i , 2, '.',' ')),0,1,'R');
+      $pdf->setX(150);
+      $pdf->Cell(30,5,pinta('TOTAL'),0,0,'L');
+      $pdf->Cell(0,5,pinta(number_format($t, 2, '.',' ')),0,1,'R');
+      $pdf->SetFont($font,'',$tam);
+      $pdf->Cell(35,5,'LUGAR DE ENTREGA :',0,0,'L');
+      $pdf->Cell(0,5,pinta($dataCotizacion->lugarentrega),0,1,'L');
+      $pdf->MultiCell($wg,5,'OBSERVACIONES :',0,'L');
+      $pdf->SetFont($font,'',$tam);
+      $pdf->MultiCell($wg,5,pinta($dataCotizacion->comentario),0,'L');
+      $pdf->Cell(35,5,pinta('CREDITOS Y COBRANZAS : '),0,1,'L');
+      $pdf->MultiCell(0,4,pinta($dataCotizacion->creditoscobranzas),0,'J');
+      $pdf->Output('temp/cotizacion.pdf','F');
+
+      $mailer = SimpleMail::make()
+      ->setTo($dataPersona->correoper, $dataOc->nomcompleto) // para 
+      ->setFrom($dataEmpresa->correo, $dataEmpresa->razonsocial) // de
+      ->setSubject('Cotizacion de mercaderia ')
+      ->setMessage('Le adjunto información de requerimiento.')
+      ->setWrap(100)
+      ->addAttachment('temp/cotizacion.pdf')
+      ->send();
+
+      print_r($mailer);die();
+
+      $jsonData = array();
+      $jsonData["error"] = $mailer;
+      $response->setContentType('application/json', 'UTF-8');
+      $response->setContent( json_encode($jsonData));
+      return $response;
       
     }
     public function ordencomprapdfAction(){
@@ -538,7 +654,7 @@ class ImpresionController extends Controller
             $dataCotizacion =  json_decode(Cotizacion::buscarCotizacionPorId(array($idCot)))->data[0];
             $dataDetalle =  json_decode(Cotizacion::detalleCotizacionVista(array($idCot)))->data;
             $dataPersona = json_decode(Persona::Buscar($dataCotizacion->idper))->data[0];;
-            
+          //  print_r($dataPersona);die();
             $total_sin_imp = 0.00;
             $impuestos = 0.18;
             $total_cotizacion = 0.00;

@@ -7,7 +7,7 @@ Ext.define('sisfacturaelectronica.view.almacen.ActualizarDisponibilidadControlle
     onClickGuardar: function (b) {
         f = this.lookupReference('frmdispo');
         v = this.getView();
-        Ext.Msg.confirm('AkinetFarma', 'Este procedimiento actualizará las cantidades a mano y eliminara las anteriores. Desea Continuar?',
+        Ext.Msg.confirm('SisFacturaElectronica', 'Este procedimiento actualizará las cantidades a mano y eliminara las anteriores. Desea Continuar?',
             function (choice) {
                 if (choice === 'yes') {
                     if (f.isValid()) {
@@ -19,12 +19,12 @@ Ext.define('sisfacturaelectronica.view.almacen.ActualizarDisponibilidadControlle
                                 }
                             },
                             failure: function () {
-                                Ext.Msg.alert("AkinetFarma", action.result.msg);
+                                Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                             }
                         });
 
                     } else {
-                        Ext.Msg.alert("AkinetFarma", "Ingrese una cantidad válida");
+                        Ext.Msg.alert("SisFacturaElectronica", "Ingrese una cantidad válida");
                     }
                 }
             }

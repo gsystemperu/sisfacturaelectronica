@@ -30,7 +30,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesReglasAbastecimiento', {
             };
 
         if (_store.findRecord('idprod', parseInt( record.get('id') ))) {
-            Ext.Msg.alert("AkinetFarma", "Producto ya se encuentra cargada");
+            Ext.Msg.alert("SisFacturaElectronica", "Producto ya se encuentra cargada");
             return false;
         }
         _store.insert(0, _data);
@@ -112,7 +112,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesReglasAbastecimiento', {
                     _view.close();
                 },
                 failure: function (action) {
-                    Ext.Msg.alert("AkinetFarma", "Error en conexión de base de datos");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
                     _view.close();
                 }
             });

@@ -1,16 +1,16 @@
-Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
+Ext.define('sisfacturaelectronica.view.ventas.RegistrarNota', {
   extend: 'Ext.panel.Panel',
-  xtype: 'wRegistrarFacturaBoleta',
-  alias: 'widget.wRegistrarFacturaBoleta',
+  xtype: 'wRegistrarNota',
+  alias: 'widget.wRegistrarNota',
   requires: [
     'Ext.grid.plugin.*',
     'Ext.form.field.*',
     'sisfacturaelectronica.util.Rutas',
     'Ext.grid.plugin.RowEditing'
   ],
-  itemId: 'wRegistrarFacturaBoleta',
+  itemId: 'wRegistrarNota',
   bodyPadding: 5,
-  controller: 'acciones-regfacturaboleta',
+  controller: 'acciones-regnota',
   initComponent: function () {
     var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
       clicksToMoveEditor: 1,
@@ -30,10 +30,10 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
     Ext.applyIf(me, {
       items: [{
         xtype: "form",
-        itemId: 'frmRegFacturaBoleta',
-        reference: 'frmRegFacturaBoleta',
+        itemId: 'frmRegNotaCredito',
+        reference: 'frmRegNotaCredito',
         padding: 10,
-        url: sisfacturaelectronica.util.Rutas.facturacionGuardar,
+        url: sisfacturaelectronica.util.Rutas.notaGuardar,
         items: [{
           xtype: 'panel',
           flex: 1,
@@ -100,12 +100,6 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                   glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
                   handler: 'onClickNuevoCliente'
                 },
-                /* {
-                     xtype: 'button',
-                     text :'Cotizaciones',
-                     glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                     handler: 'onClickBuscarCotizacionesAnteriores'
-                 },*/
                 {
 
                   xtype: 'datefield',
@@ -203,28 +197,12 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                     itemId: 'documentoventa',
                     value: 1,
                     flex: 1
+                    
                   },
                   {
                     xtype: 'button',
                     glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
                     handler: 'onClickMantenimiento'
-                  },
-                  {
-                    xtype: 'textfield',
-                    fieldLabel: 'Serie/Número',
-                    labelAlign: 'right',
-                    name: 'serie',
-                    flex: 0.5,
-                    value : '--',
-                    readOnly:true
-                  },
-                  {
-                    xtype: 'textfield',
-                    labelAlign: 'right',
-                    name: 'numerodoc',
-                    flex: 0.3,
-                    value : '**Generando**',
-                    readOnly:true
                   }
                 ]
               },
@@ -274,7 +252,57 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                 }
                 ]
               },
-            
+              {
+                xtype: 'container',
+                itemId: 'dvNcss',
+                layout: 'hbox',
+                defaults: {
+                  margin: '0 0 5 0',
+                },
+                items: [
+                  {
+                    xtype: 'combo',
+                    fieldLabel: 'Tipo Nota Credito',
+                    itemId: 'cboTipoNota',
+                    store: stnc,
+                    displayField: 'descripcion',
+                    valueField: 'id',
+                    queryMode: 'local',
+                    allowBlank: false,
+                    name: 'nctipo',
+                    editable: false,
+                    flex: 1,
+                    labelWidth: 120
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: 'Serie/Número',
+                    labelAlign: 'right',
+                    name: 'seriedoc',
+                    flex: 0.5
+                  },
+                  {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    name: 'numerodoc',
+                    flex: 0.3,
+                  },
+                  {
+                    xtype: 'button',
+                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
+                    tooltip: 'Busca el detalle de la factura ingresada'
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: 'Motivo',
+                    name: 'ncmotivo',
+                    flex: 1.2,
+                    labelWidth: 75,
+                    labelAlign: 'right',
+                    allowBlank: false
+                  }
+                ]
+              }
 
             ]//fin items
           },//fin datos generales
@@ -282,145 +310,104 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
             xtype: 'fieldset',
             columnWidth: 0.1,
             defaultType: 'textfield',
-            items: [{
-              xtype: 'container',
-              margin: '0 0 0 -5',
-              layout: 'fit',
-              frame: true,
-              border: false,
-              padding: 5,
-              items: [
+            items: [
+              {
+                xtype: 'panel',
+                layout: 'fit',
+                margin: '0 0 5 0',
+                items: [{
+                  xtype: 'grid',
+                  flex: 1,
+                  reference: 'dgvDetalleNota',
+                  itemId: 'dgvDetalleNota',
+                  store: storeDetCotizacion,
+                  plugins: [rowEditing],
+                  selModel: 'cellmodel',
+                  plugins: {
+                    ptype: 'cellediting',
+                    clicksToEdit: 1
+                  },
+                  scrollable: true,
+                  columns: [{
+                    text: 'Descripción',
+                    dataIndex: 'descripcion',
+                    flex: 3
+                  },
+                  {
+                    xtype: 'numbercolumn',
+                    text: 'Cantidad',
+                    dataIndex: 'cantidad',
+                    flex: 0.5,
+                    align: 'center',
+                    editor: {
+                      xtype: 'numberfield',
+                      value: 0,
+                      //maxValue: 1000,
+                      minValue: 0,
+                      itemId: 'txtCantidadUnidad'
 
-
-                {
-                  xtype: 'container',
-                  layout: 'hbox',
-                  padding: '0 0 5 0',
-                  items: [{
-                    xtype: 'label',
-                    text: 'Buscar Producto',
-                    width: 120,
-                    height: 23,
-                    style: {
-                      paddingTop: '3px',
-                      background: '#6a4b5a',
-                      color: 'white',
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      fontSize: '13px'
                     }
                   },
                   {
-                    xtype: 'button',
-                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                    handler: 'onClickBuscarProducto',
-                    tooltip: 'Accion para buscar los productos ingresados'
-
-                  }
-
-                  ]
-                }
-
-
-              ]
-            },
-            {
-              xtype: 'panel',
-              layout: 'fit',
-              margin: '0 0 5 0',
-              items: [{
-                xtype: 'grid',
-                flex: 1,
-                reference: 'dgvDetalleVentaFacturaBoleta',
-                itemId: 'dgvDetalleVentaFacturaBoleta',
-                store: storeDetCotizacion,
-                plugins: [rowEditing],
-                selModel: 'cellmodel',
-                plugins: {
-                  ptype: 'cellediting',
-                  clicksToEdit: 1
-                },
-                scrollable: true,
-                columns: [{
-                  text: 'Descripción',
-                  dataIndex: 'descripcion',
-                  flex: 3
-                },
-                {
-                  xtype: 'numbercolumn',
-                  text: 'Cantidad',
-                  dataIndex: 'cantidad',
-                  flex: 0.5,
-                  align: 'center',
-                  editor: {
-                    xtype: 'numberfield',
-                    value: 0,
-                    //maxValue: 1000,
-                    minValue: 0,
-                    itemId: 'txtCantidadUnidad'
-
-                  }
-                },
-                {
-                  // xtype:'numbercolumn',
-                  text: 'Precio',
-                  dataIndex: 'precio',
-                  flex: 0.6,
-                  align: 'right',
-                  renderer: Ext.util.Format.numberRenderer('0.00'),
-                  editor: {
-                    xtype: 'numberfield',
-                    format: '0.00',
-                    decimalPrecision: 5,
-                    decimalSeparator: '.'
-                  }
-                },
-                {
-                  //xtype:'numbercolumn',
-                  text: 'Total',
-                  dataIndex: 'total',
-                  flex: 0.5,
-                  align: 'right',
-                  renderer: Ext.util.Format.numberRenderer('0.00'),
-
-                },
-                {
-                  xtype: 'datecolumn',
-                  dataIndex: 'vencimiento',
-                  flex: 0.5,
-                  format: 'd/m/Y',
-                  text: 'Vencimiento',
-                  editor: {
-                    xtype: 'datefield',
-                    format: 'd/m/Y',
-                    value: new Date()
-                  }
-                },
-                {
-                  xtype: 'widgetcolumn',
-                  flex: 0.2,
-                  widget: {
-                    xtype: 'button',
-                    width: 24,
-                    glyph: 0xf014,
-                    listeners: {
-                      click: 'onClickEliminarDetalle'
+                    // xtype:'numbercolumn',
+                    text: 'Precio',
+                    dataIndex: 'precio',
+                    flex: 0.6,
+                    align: 'right',
+                    renderer: Ext.util.Format.numberRenderer('0.00'),
+                    editor: {
+                      xtype: 'numberfield',
+                      format: '0.00',
+                      decimalPrecision: 5,
+                      decimalSeparator: '.'
                     }
+                  },
+                  {
+                    //xtype:'numbercolumn',
+                    text: 'Total',
+                    dataIndex: 'total',
+                    flex: 0.5,
+                    align: 'right',
+                    renderer: Ext.util.Format.numberRenderer('0.00'),
+
+                  },
+                  {
+                    xtype: 'datecolumn',
+                    dataIndex: 'vencimiento',
+                    flex: 0.5,
+                    format: 'd/m/Y',
+                    text: 'Vencimiento',
+                    editor: {
+                      xtype: 'datefield',
+                      format: 'd/m/Y',
+                      value: new Date()
+                    }
+                  },
+                  {
+                    xtype: 'widgetcolumn',
+                    flex: 0.2,
+                    widget: {
+                      xtype: 'button',
+                      width: 24,
+                      glyph: 0xf014,
+                      listeners: {
+                        click: 'onClickEliminarDetalle'
+                      }
+                    }
+
                   }
 
-                }
 
+                  ],
+                  cls: '',
+                  height: 300,
+                  listeners: {
+                    edit: 'onEditorCalcularTotal'
+                  }
 
-                ],
-                cls: '',
-                height: 300,
-                listeners: {
-                  edit: 'onEditorCalcularTotal'
-                }
+                }]
 
-              }]
-
-            }
+              }
             ]
 
           }, // fin fieldset Detalle
@@ -432,8 +419,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
               flex: 1.5,
               height: 100,
               name: 'comentario',
-              fieldStyle: 'font-size:12px;text-transform:uppercase;',
-              emptyText: 'Comentario facturación :'
+              fieldStyle: 'font-size:12px;text-transform:uppercase;'
             },
             {
               xtype: 'panel',
@@ -444,7 +430,6 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                 reference: 'Subtotalventas',
                 itemId: 'Subtotalventas',
                 name: 'valventacont',
-                // value: "0.00",
                 fieldLabel: 'Sub Total',
                 readOnly: true,
                 width: 280,
@@ -458,14 +443,12 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                 reference: 'igvventas',
                 itemId: 'igvventas',
                 name: 'valigvcont',
-                //value: "0.00",
                 minValue: 0,
                 readOnly: true,
                 width: 280,
                 labelWidth: 120,
                 fieldStyle: 'text-align: right;font-size:16px;',
                 labelAlign: 'right'
-                // hidden:true
               },
               {
                 xtype: 'textfield',
@@ -474,11 +457,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                 reference: 'TotalGeneral',
                 itemId: 'TotalGeneral',
                 name: 'valtotalcont',
-                //   decimalPrecision: 3,
-                //  maxValue: 9999,
                 minValue: 0,
-                //                                            step: 0.01,
-                //                                            decimalSeparator: '.',
                 readOnly: true,
                 width: 280,
                 labelWidth: 120,
@@ -496,18 +475,15 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
               xytpe: 'button',
               text: 'Cancelar',
               scale: 'medium',
-              handler: 'onClickCancelarFacturaBoleta'
+              handler: 'onClickCancelarNota'
             },
             {
               xytpe: 'button',
               text: 'Guardar',
               scale: 'medium',
-              handler: 'onClickGuardarFacturaBoleta'
+              handler: 'onClickGuardarNota'
             }
             ]
-
-
-
 
           }
           ]
@@ -516,13 +492,9 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
 
         ]
       }
-
-
       ]
     });
 
     me.callParent(arguments);
-    Ext.ComponentQuery.query('#vusuario')[0].setValue(sisfacturaelectronica.util.Data.usuario);
-
   }
 });

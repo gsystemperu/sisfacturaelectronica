@@ -27,15 +27,20 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
         xtype: 'wListadoCotizacionesFacturar'
       },
       {
-         xtype: 'wRegistrarFacturaBoleta',
-        //xtype:'wRegistroCotizacionFacturar',
+         xtype: 'wRegistrarFacturaBoleta'
       },
       {
-        xtype:'wGuiaRemision',
+        xtype:'wGuiaRemision'
       },
       {
-        xtype:'wVisualizarCotizacionFacturar',
+        xtype:'wVisualizarCotizacionFacturar'
       },
+      {
+         xtype:'wRegistroCotizacionFacturar'
+      },
+      {
+         xtype:'wRegistrarNota'
+      }
     ],
     tbar: me.getBotonesERP()
 
@@ -47,6 +52,14 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
           {
               text: 'CREAR FACTURA',
               handler: "onClickCrearCotizacionFactura",
+          },
+          {
+            text: 'CREAR COTIZACION/FACTURA',
+            handler: "onClickCrearCotizacionFactura2",
+          },
+          {
+            text: 'CREAR NOTA',
+            handler: "onClickCrearNota",
           },
           {
             text :'IMPRIMIR FACTURA',

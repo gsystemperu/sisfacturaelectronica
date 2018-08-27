@@ -77,7 +77,7 @@ Ext.define('sisfacturaelectronica.util.Rutas', {
     listadoVentasAdmin: 'resources/api/reporte_ventas_admin',
     cierreVentasTicketera: 'resources/api/imprimirresumenticketera',
     generarTxtFacturador: 'resources/api/generar_txt_facturador',
-
+    notaGuardar: 'resources/api/agregar_nota',
     
     //@ Rutas Mantenimiento
     formaPagoGuardar: 'resources/api/agregar_forma_pago',

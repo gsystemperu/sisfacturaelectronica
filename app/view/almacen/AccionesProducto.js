@@ -58,7 +58,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProducto', {
                     }
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma","Se perdio la conexion con el servidor!");
+                    Ext.Msg.alert("SisFacturaElectronica","Se perdio la conexion con el servidor!");
                 }
             });
 
@@ -372,7 +372,7 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProducto', {
                 }
             },
             failure: function () {
-                Ext.Msg.alert("AkinetFarma","Vuelva a enviar la información, si persiste llamar a soporte.");
+                Ext.Msg.alert("SisFacturaElectronica","Vuelva a enviar la información, si persiste llamar a soporte.");
             }
           });
        }

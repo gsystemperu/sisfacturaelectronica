@@ -6,4 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Peru\\' => array($vendorDir . '/giansalex/peru-consult/src/Peru'),
 );

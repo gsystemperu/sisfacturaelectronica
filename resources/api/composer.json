@@ -6,7 +6,8 @@
     }],
     "require": {
         "ext-gd": "*",
-        "eoghanobrien/php-simple-mail": "^1.7"
+        "eoghanobrien/php-simple-mail": "^1.7",
+        "giansalex/peru-consult": "^2.2"
       
 
         

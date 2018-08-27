@@ -51,7 +51,7 @@ Ext.define('sisfacturaelectronica.view.puntoventa.AccionesListadoPdv', {
         '?desde='+ d.toString() +'&hasta='+ h.toString(), "", "width=700,height=900");
     },
     onClickCierreCaja:function(b){
-      Ext.Msg.confirm('AkinetFarma', 'Este procedimiento bloqueara las ventas y no se podran anular, desea continuar?',
+      Ext.Msg.confirm('SisFacturaElectronica', 'Este procedimiento bloqueara las ventas y no se podran anular, desea continuar?',
       function (choice) {
           if (choice === 'yes') {
             g = Ext.ComponentQuery.query('#dgvVentasFacturarPdv')[0]

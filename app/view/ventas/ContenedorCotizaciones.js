@@ -62,7 +62,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizaciones', {
                   handler: "onClickImprimirPDFCotizacion",
           },
           {
-                  text: 'CONFIRMAR VENTA',
+                  text: 'CONFIRMAR Y CREAR FACTURA',
                   itemId : 'btnConfirmarCotizacion',
                   handler: "onClickConfirmarCotizacion",
           }

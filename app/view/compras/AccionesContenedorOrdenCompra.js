@@ -48,9 +48,9 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesContenedorOrdenCompra', {
               success:function(response){
                  r = JSON.parse(response.responseText);
                  if(r.error){
-                    Ext.toast('Correo enviado el proveedor', 'AkinetFarma', 'br')
+                    Ext.toast('Correo enviado el proveedor', 'SisFacturaElectronica', 'br')
                  }else{
-                    Ext.toast('No enviado, revise los datos de correo del proveedor', 'AkinetFarma', 'br') 
+                    Ext.toast('No enviado, revise los datos de correo del proveedor', 'SisFacturaElectronica', 'br') 
                  }
               }
           });
@@ -64,7 +64,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesContenedorOrdenCompra', {
             objrpt = window.open( sisfacturaelectronica.util.Rutas.ordenCompraPdf+ '?id='+ r.get('id') , "", "width=700,height=900");
             //setTimeout(function(){ objrpt.close(); }, 1000);
         } else {
-            Ext.Msg.alert("AkinetFarma", "Seleccionar la orden de compra para imprimir");
+            Ext.Msg.alert("SisFacturaElectronica", "Seleccionar la orden de compra para imprimir");
             return false;
         }
 

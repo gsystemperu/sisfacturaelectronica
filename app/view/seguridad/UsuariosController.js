@@ -26,7 +26,7 @@ Ext.define('sisfacturaelectronica.view.seguridad.UsuariosController', {
                     }
                 },
                 failure: function () {
-                    Ext.Msg.alert("AkinetFarma","Se perdió la conexión con el servidor!");
+                    Ext.Msg.alert("SisFacturaElectronica","Se perdió la conexión con el servidor!");
                 }
             });
         }

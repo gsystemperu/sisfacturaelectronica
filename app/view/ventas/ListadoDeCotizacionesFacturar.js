@@ -78,9 +78,12 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
             }],
             viewConfig: {
                 getRowClass: function(record, index, rowParams, ds) {
-
+                    console.log(record.get('estado'));
                     if(record.get('estado') == 7){
                         return "red-row"; 
+                    }
+                    if(record.get('estado')==2){
+                        return "blue-row";
                     }else{
                         return "black-row";
                     }
@@ -328,86 +331,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 tooltip : 'Actualiza los estados de los documentos en el facturador',
                 handler : 'onClickActEstado'
             }
-        /*{
-            xtype: 'toobar',
-            bodyPadding: 0,
-            layout: 'hbox',
-            columnWidth: 10,
-            items: [
-                {
-                    xtype: 'label',
-                    text: 'Fecha Desde',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    width: 100,
-                    height: 25,
-                    style: {
-                        background: '#6a4b5a',
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: '13px'
-                    }
-                }, {
-                    xtype: 'datefield',
-                    value: new Date(),
-                    reference: 'dfDesdeCotizacionesFactura',
-                    itemId: 'dfDesde',
-                    width: 110
-                },
-                {
-                    xtype: 'label',
-                    text: 'Fecha Hasta',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    width: 100,
-                    height: 25,
-                    style: {
-                        background: '#6a4b5a',
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: '13px'
-                    }
-                }, {
-                    xtype: 'datefield',
-                    value: new Date(),
-                    reference: 'dfHastaCotizacionesFactura',
-                    itemId: 'dfHasta',
-                    width: 110
-                },
-                {
-                    xtype: 'button',
-                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                    tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
-                    handler: 'onClickBuscarCotizacionesPorFechas'
-                },
-                {
-                    xtype: 'button',
-                    text  :'Reportes',
-                    tooltip: 'Listado de reportes de venta',
-                    menu: [
-                    {
-                        text:'Resumen',
-                        handler : 'onClickResumenVentasAdmin'
-                    }]
-                },
-               
-                {
-                    xtype:'button',
-                    text : 'Enviar a Facturador',
-                    tooltip : 'Se vuelve a generar el TXT o XML para enviar al facturador sunat',
-                    handler : 'onClickGenTxtfact'
-                },
-                {
-                    xtype:'button',
-                    text : 'Actualizar estado sunat',
-                    tooltip : 'Actualiza los estados de los documentos en el facturador',
-                    handler : 'onClickActEstado'
-                }
-
-            ]
-        }*/
+      
         ]
       };//Fin Objeto
     },

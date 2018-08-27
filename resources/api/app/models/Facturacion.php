@@ -124,7 +124,6 @@ class Facturacion extends \Phalcon\Mvc\Model
     } 
     public static function actualizarEstadosFacturador($data)
     {
-       // print_r($data);die();
         $obj     = new SQLHelpers();
         $param   = $data;
         $sql     =  $obj->executarQuery('SELECT * FROM ventas.sp_facturacion_actualizar_estado_facturador ('.$param.')');
@@ -137,6 +136,20 @@ class Facturacion extends \Phalcon\Mvc\Model
         $sql     =  $obj->executar('catalogos','sp_generar_cab_y_det_facturador_version_1_1',$param);
         return $sql;
     } 
+    public static function tipoNotaCredito($data)
+    {
+        $obj     = new SQLHelpers();
+        $param   = $data;
+        $sql     =  $obj->executarJson('catalogos','sp_tipo_nota_credito',$param);
+        return $sql;
+    } 
+    public static function actualizarNota($data)
+    {
+        $obj     = new SQLHelpers();
+        $param   = $data;
+        $sql     =  $obj->executar('ventas','sp_facturacion_agregar_nota',$param);
+        return $sql;
+    }
     
     
 

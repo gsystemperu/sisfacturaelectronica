@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77ea37e1f44b366682553ba86ce813d2",
+    "content-hash": "6b4f7948b7ecee874e2af740452a4ea4",
     "packages": [
         {
             "name": "eoghanobrien/php-simple-mail",
@@ -52,6 +52,59 @@
                 "php5"
             ],
             "time": "2018-03-16T19:29:23+00:00"
+        },
+        {
+            "name": "giansalex/peru-consult",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/giansalex/peru-consult.git",
+                "reference": "6dcec0e5bce078f2a470a7521ae40dd6946d57e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giansalex/peru-consult/zipball/6dcec0e5bce078f2a470a7521ae40dd6946d57e2",
+                "reference": "6dcec0e5bce078f2a470a7521ae40dd6946d57e2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "behat/behat": "^3.4",
+                "phpunit/phpunit": ">=4.8 < 6.0"
+            },
+            "suggest": {
+                "ext-dom": "Needed to use class Ruc",
+                "ext-gd": "Needed to use class Dni",
+                "ext-openssl": "Needed to connect to Reniec"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Peru\\": "src/Peru/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giancarlos Salas",
+                    "email": "giansalex@gmail.com"
+                }
+            ],
+            "description": "Consultas Perú",
+            "homepage": "https://github.com/giansalex/peru-consult",
+            "keywords": [
+                "DNI",
+                "clavesol",
+                "reniec",
+                "ruc",
+                "sunat"
+            ],
+            "time": "2018-07-23T20:50:10+00:00"
         }
     ],
     "packages-dev": [],

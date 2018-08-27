@@ -1,6 +1,6 @@
-Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
+Ext.define('sisfacturaelectronica.view.ventas.AccionesRegNota', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.acciones-regfacturaboleta',
+    alias: 'controller.acciones-regnota',
 
     //@Cliente Seleccionar grilla
     onSelectedCliente:function( grid, record, index, eOpts ){
@@ -13,18 +13,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         console.log('Editar Cliente');
       }
     },
-
-    onSelectedClienteERP:function( grid, record, index, eOpts ){
-      try {
-          _txt  = Ext.String.format('Pedidos  : {0}',record.get('cotizaciones'));
-          _txtf = Ext.String.format('Facturación  : {0}',record.get('ventas'));
-          Ext.ComponentQuery.query('#btnCotizaciones')[0].setText(_txt);
-          Ext.ComponentQuery.query('#btnFacturasBoletas')[0].setText(_txtf);
-      } catch (e) {
-        console.log('Select ERP cliente');
-      }
-    },
-
     onClickBuscarProducto: function (btn) {
       if(Ext.ComponentQuery.query('#cboDatosCliente')[0].getValue()){
         var _win = Ext.create('sisfacturaelectronica.view.ventas.BuscarProductoFB', { 
@@ -36,10 +24,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         Ext.Msg.alert("SisFacturaElectronica","Buscar al cliente para buscar los precios de los productos !!"); return false;
       }
     },
-    onClickIngresarCotizacion: function (btn) {
-        var _win = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCotizacion');
-        _win.show(btn, function () {}, this);
-    },
+   
     onClickEliminarProducto:function(button, event, eOpts){
         var rec = button.getWidgetRecord();
         me = this;
@@ -64,123 +49,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
           }
         });
     },
-    onClickEliminarCliente:function(button, event, eOpts){
-      var rec = button.getWidgetRecord();
-      me = this;
-
-      Ext.MessageBox.confirm('Aviso','Desea eliminar al Cliente ?',function(btn){
-        if(btn=='yes'){
-          if (rec) {
-             Ext.Ajax.request({
-                 url :sisfacturaelectronica.util.Rutas.clienteEliminar,
-                 params:{
-                   vIdPersona : rec.get('idper')
-                 },
-                 success:function(response){
-                   var data = Ext.JSON.decode(response.responseText);
-                   Ext.each(data,function(r){
-                     if(r.error != 0)
-                        Ext.ComponentQuery.query('#dgvClientes')[0].getStore().load();
-                  });
-                 }
-             });
-          }
-        }
-      });
-    },
-    onClickEliminarCotizacion:function(button, event, eOpts){
-      var rec = button.getWidgetRecord();
-      me = this;
-      Ext.MessageBox.confirm('Aviso','Desea Anular la cotizacion ?',function(btn){
-        if(btn=='yes'){
-          if (rec) {
-             Ext.Ajax.request({
-                 url :sisfacturaelectronica.util.Rutas.cotizacionEliminar,
-                 params:{
-                   vIdCoti : rec.get('vid')
-                 },
-                 success:function(response){
-                   var data = Ext.JSON.decode(response.responseText);
-                   Ext.each(data,function(r){
-                     if(r.error != 0)
-                          me.lookupReference('dgvVentasCotizaciones').getStore().load();
-                          _storeDet = me.lookupReference('dgvDetalleCotizacion').getStore();
-                          _storeDet.getProxy().extraParams = {vIdCotizacion: 0};
-                          _storeDet.load(1);
-                   });
-                 }
-             });
-          }
-        }
-      });
-    },
-     onClickEditarCotizacion: function (btn) {
-        //xamudio
-        var _grid = this.lookupReference('dgvVentasCotizaciones');
-        var _rec = btn.getWidgetRecord();// _grid.getSelectionModel().getSelection()[0];
-       
-        if(_rec){
-            var me =  Ext.ComponentQuery.query('#wContenedorCotizaciones')[0];    //this;
-            var l = me.getLayout();
-            l.setActiveItem(1);
-            Ext.ComponentQuery.query('#frmRegFacturaBoleta')[0].reset();
-            Ext.ComponentQuery.query('#frmRegFacturaBoleta')[0].loadRecord(_rec);
-            Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore().removeAll();
-            var  _dataDetalle= Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
-            var  _tot = 0;
-            Ext.Ajax.request(
-            {
-                url :sisfacturaelectronica.util.Rutas.cotizacionDetalle,
-                params:{
-                  vIdCotizacion : _rec.get('vid')
-                },
-                success:function(response){
-                   var _obj = Ext.JSON.decode(response.responseText);
-                 
-                   Ext.each(_obj.data,function(record,i){
-                      if (record.cantidad != 0) {
-                          _reg = {
-                              "idprod": record.id,
-                              "cantidad": record.cantidad,
-                              "descripcion": record.descripcion,
-                              "precio": record.precio,
-                              "total": record.total,
-                              "vencimiento": Ext.Date.format(record.vencimiento, 'd/m/Y')   //(record.vencimiento==null? null:  Ext.Date.format(record.vencimiento, 'd/m/Y') )
-                          };
-                          _tot = _tot + record.total;
-                          _dataDetalle.insert(0,_reg);
-                         
-                      }
-                   });
-
-                    __objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
-                    __objIgv      = Ext.ComponentQuery.query('#igvventas')[0];
-                    __objSubTotal = Ext.ComponentQuery.query('#Subtotalventas')[0];
-                    __objTotal    = Ext.ComponentQuery.query('#TotalGeneral')[0];
-                    
-                    var _igv = 0;
-                    __objSubTotal.setValue(_tot.toFixed(2));
-                    if (__objChk.getValue()){var _igv = 0;}
-                    else{var _igv = _tot * 0.18;}
-                    __objSubTotal.setValue(
-                        Ext.util.Format.number(_tot.toFixed(2), "0,000.00000") 
-                    );
-                    __objIgv.setValue(
-                        Ext.util.Format.number(_igv.toFixed(2), "0,000.00000") 
-                    );
-                    var _totven = 0;
-                    _totven     = _tot + _igv;
-                    __objTotal.setValue(
-                        Ext.util.Format.number(_totven.toFixed(2), "0,000.00000") 
-                    );
-                }
-            });
-         
-    
-        }
-
-    },
-
     onClickNuevoCliente: function (btn) {
         w = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCliente');
         w.show(btn, function () {}, this);
@@ -204,7 +72,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         _win = this.getView();
         _win.close();
     },
-
     onSelectOptionProducto: function (combo, record, index) {
         Ext.ComponentQuery.query('#txtCantidad')[0].focus();
     },
@@ -235,33 +102,26 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
 
     },
     onEditorCalcularTotal: function (editor, e) {
-      var _cant = 0;
-      var _pre = 0;
-      _cant = e.record.get('cantidad');
-      _pre = e.record.get('precio');
-      _tot = _pre * _cant;
-      e.record.set('total', _tot.toFixed(2));
+      c = 0;
+      p = 0;
+      c = e.record.get('cantidad');
+      p = e.record.get('precio');
+      t = p * c;
+      e.record.set('total', t.toFixed(2));
       this.onCalcularTotalVenta(false);
     },
-
-
     onSelectedIncluyeIGV: function (obj, newValue, oldValue, eOpts) {
         this.onCalcularTotalVenta(newValue);
     },
     onCalcularTotalVenta: function (conigv) {
-        me = this;
-        __objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
-        __objIgv      = this.lookupReference('igvventas');
-        __objSubTotal = this.lookupReference('Subtotalventas');
-        __objTotal    = this.lookupReference('TotalGeneral');
-        console.log("debug.....");
-        s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
+        fm = Ext.ComponentQuery.query('#frmRegNotaCredito')[0];
+        igv=fm.down('#incluyeigv');
+        s  =fm.down('panel  #dgvDetalleNota').getStore();
         t = 0;
         s.each(function (r) {
             t = t + r.get('total');
         });
-        console.log(__objChk.getValue());
-        if(__objChk.getValue()){
+        if(igv.getValue()){
             s = t / 1.18;
             i = t -(t / 1.18);
         }else{            
@@ -269,9 +129,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
             i = t * 0.18;
             t = s + i;
         }
-        __objSubTotal.setValue(s.toFixed(2));
-        __objIgv.setValue(i.toFixed(2));
-        __objTotal.setValue(t.toFixed(2));
+        fm.down('panel > panel #Subtotalventas').setValue(s.toFixed(2));
+        fm.down('panel > panel #igvventas').setValue(i.toFixed(2));
+        fm.down('panel > panel #TotalGeneral').setValue(t.toFixed(2));
     },
     onCalcularTotalVentaPorBusqueda: function () {
         me = this;
@@ -293,12 +153,12 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         __objTotal.setValue(_tot.toFixed(2));
     },
     onClickEliminarDetalle: function (button, event, eOpts) {
-        var grid = this.lookupReference('dgvDetalleVentaFacturaBoleta');
-        var store = grid.getStore();
-        var rec = button.getWidgetRecord();
-        if (rec) {
-            store.remove(rec);
-            grid.getView().refresh();
+        g = this.lookupReference('dgvDetalleNota');
+        s = g.getStore();
+        r = button.getWidgetRecord();
+        if (r) {
+            s.remove(r);
+            g.getView().refresh();
             this.onCalcularTotalVenta(false);
         }
     },
@@ -308,35 +168,35 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
           l.setActiveItem(0);
 
     },
-    onClickGuardarFacturaBoleta: function () {
-       var _form =  Ext.ComponentQuery.query('#frmRegFacturaBoleta')[0];    //this.lookupReference('frmRegFacturaBoleta');
-        /*if (_form.isValid()) {*/
-
-            var _dataDetalle = [];
-            var s = this.lookupReference('dgvDetalleVentaFacturaBoleta').getStore();
+    onClickGuardarNota: function () {
+       frm =  Ext.ComponentQuery.query('#frmRegNotaCredito')[0];
+        if (frm.isValid()) {
+            dd = [];
+            s = this.lookupReference('dgvDetalleNota').getStore();
             me = this;
-            s.each(function (record) {
-                if (record.get('cantidad') != 0) {
-                    _reg = {
-                        "idprod": record.get('idprod'),
-                        "cantidad": record.get('cantidad'),
-                        "precio": record.get("precio"),
-                        "total": record.get("total"),
-                        "vencimiento": (record.get("vencimiento")==null? null:  Ext.Date.format(record.get("vencimiento"), 'd/m/Y') )
+            s.each(function (re) {
+                if (re.get('cantidad') != 0) {
+                    r = {
+                        "idprod": re.get('idprod'),
+                        "cantidad": re.get('cantidad'),
+                        "precio": re.get("precio"),
+                        "total": re.get("total"),
+                        "vencimiento": (re.get("vencimiento")==null? null:  Ext.Date.format(re.get("vencimiento"), 'd/m/Y') )
                     };
-                    _dataDetalle.push(_reg);
+                    dd.push(r);
                 }
 
             });
-            _txt1 = Ext.ComponentQuery.query('#txtJsonDetalle');
-            _txt1[0].setValue(JSON.stringify(_dataDetalle));
-            var _view = this.getView();
-            _form.submit({
+            console.log(dd);
+            _txt1 = frm.down('#txtJsonDetalle');
+            _txt1.setValue(JSON.stringify(dd));
+            _view = this.getView();
+            frm.submit({
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {
                     if(action.result.error!=0){
                        sisfacturaelectronica.util.Util.showToast("Documento Guardado");
-                       f=Ext.ComponentQuery.query("#frmRegFacturaBoleta")[0];
+                      /* f=Ext.ComponentQuery.query("#frmRegFacturaBoleta")[0];
                        if(f){
                            f.reset();
                            s.removeAll();
@@ -347,7 +207,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
                                 l = c.getLayout();
                                 l.setActiveItem(0);
                             }
-                       }
+                       }*/
                     } 
                 },
                 failure: function () {
@@ -355,9 +215,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
                     _view.close();
                 }
             });
-       /* } else {
-            sisfacturaelectronica.util.Util.showErrorMsg('error al guardar factura individual');
-        }*/
+        } else {
+            sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los campos requeridos');
+        }
     },
 
     //@ Acciones de Matenimiento
@@ -680,7 +540,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
             Ext.create('sisfacturaelectronica.view.ventas.CotizacionesClienteBuscar',{ codigo : _codcliente });
 
     },
-    onClickCancelarFacturaBoleta:function(btn){
+    onClickCancelarNota:function(btn){
         try {
             c = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0];
             if(c){
@@ -695,6 +555,24 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         Ext.create('Ext.window.Window',{title:'Nuevo Producto',modal:true,width:1100,height:700,autoShow:true,
            layout:'fit', itemId:'frmprodpopup', items:[ {xtype:'wContenedorProducto'} ]}
         );
+    },
+    onChangeTipoDoc:function(o,nv,ov){
+        p = Ext.ComponentQuery.query('#dvNc')[0];
+        c = Ext.ComponentQuery.query('[name=nctipo]')[0];
+        s = Ext.ComponentQuery.query('[name=serie]')[0];
+        n = Ext.ComponentQuery.query('[name=numerodoc]')[0];
+        if(nv==3){
+            p.setHidden(false);
+            c.setValue(1);
+            s.setValue('');
+            n.setValue('');
+        }else{
+            p.setHidden(true);
+            c.setValue(0);
+            c.setRawValue('');
+            s.setValue('');
+            n.setValue('');
+
+        }
     }
-   
 });

@@ -61,7 +61,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
           var objrpt = window.open( sisfacturaelectronica.util.Rutas.rptClienteImprimirPagosCC+ 'idper='+ __id+"&persona="+__nombre, "", "width=700,height=900");
           //setTimeout(function(){ objrpt.close(); }, 1000);
       } else {
-          Ext.Msg.alert("AkinetFarma", "Seleccionar al cliente para imprimir");
+          Ext.Msg.alert("SisFacturaElectronica", "Seleccionar al cliente para imprimir");
           return false;
       }
 
@@ -74,7 +74,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
           var objrpt = window.open( sisfacturaelectronica.util.Rutas.rptClienteImprimirCC+ 'idper='+ __id+"&persona="+__nombre, "", "width=700,height=900");
           //setTimeout(function(){ objrpt.close(); }, 1000);
       } else {
-          Ext.Msg.alert("AkinetFarma", "Seleccionar al cliente para imprimir");
+          Ext.Msg.alert("SisFacturaElectronica", "Seleccionar al cliente para imprimir");
           return false;
       }
 

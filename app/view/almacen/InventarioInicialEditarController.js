@@ -45,7 +45,7 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditarController
 
                 },
                 failure: function (action) {
-                    Ext.Msg.alert("AkinetFarma", action.result.msg);
+                    Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                 }
             });
         } else {

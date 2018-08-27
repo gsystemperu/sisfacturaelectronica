@@ -188,7 +188,7 @@ Ext.define('sisfacturaelectronica.view.main.MainController', {
     }
   },
   onClickSalirApp: function (b) {
-    Ext.Msg.confirm('AkinetFarma', 'Esta seguro de salir del sistema?',
+    Ext.Msg.confirm('SisFacturaElectronica', 'Esta seguro de salir del sistema?',
       function (e) {
         if (e == 'yes') {
           Ext.util.Cookies.clear();

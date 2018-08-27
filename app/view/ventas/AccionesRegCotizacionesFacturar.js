@@ -18,7 +18,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
        if (_form.isValid()) {
 
             _dataDetalle = [];
-            _store = this.lookupReference('dgvDetalleVentaFacturar').getStore();
+           _store = this.lookupReference('dgvDetalleVentaFacturar').getStore();
            me = this;
            _store.each(function (record) {
                if (record.get('cantidad') != 0) {
@@ -33,9 +33,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
                }
 
            });
-           _txt1 = Ext.ComponentQuery.query('#txtJsonDetalleFacturacion');
+           _txt1 = Ext.ComponentQuery.query('#txtJsonDetalleFacturacioncf');
            _txt1[0].setValue(JSON.stringify(_dataDetalle));
-           Ext.ComponentQuery.query('[name=usuario]')[0].setValue(sisfacturaelectronica.util.Data.usuario);
+           Ext.ComponentQuery.query('#usuariocf')[0].setValue(sisfacturaelectronica.util.Data.usuario);
            _view = this.getView();
            _form.submit({
                waitMsg: 'Guardando informacion...',
@@ -48,7 +48,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
 
                },
                failure: function () {
-                   Ext.Msg.alert("AkinetFarma", action.result.msg);
+                   Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
                    _view.close();
                }
            });
@@ -166,7 +166,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
           });
 
             }else{
-            Ext.Msg.alert("AkinetFarma","Tiene que seleccionar una cotizacion a facturar!");return false;
+            Ext.Msg.alert("SisFacturaElectronica","Tiene que seleccionar una cotizacion a facturar!");return false;
             }
 
         } catch (e) {
@@ -399,5 +399,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
            }
         );
     }
+
 
 });

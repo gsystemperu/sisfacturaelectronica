@@ -7,18 +7,8 @@ class Cotizacion extends \Phalcon\Mvc\Model
 {
     //@Listados
 
-    //public static function productoListar($vCodigo,$vDescripcion,$vCategoria){
     public static function productoListar($data){
-          /*$helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_producto_listar(".
-          $helper->esCadenaNulo($vCodigo)  .",".
-          $helper->esCadenaNulo($vDescripcion)  .",".
-          $helper->esNumeroNulo($vCategoria)  .")";
-          //echo $sql;die();
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          $data     = $rs->toArray();
-          return    $data[0]['sp_producto_listar'];*/
+   
 
           $obj     = new SQLHelpers();
           $param   =  $data;
@@ -28,7 +18,6 @@ class Cotizacion extends \Phalcon\Mvc\Model
 
     }
 
-    //public static function productoListarPorCliente($vCodigo,$vDescripcion,$vCategoria,$vIdCliente){
     public static function productoListarPorCliente($data){
           $obj     = new SQLHelpers();
           $param   =  $data;
@@ -36,39 +25,8 @@ class Cotizacion extends \Phalcon\Mvc\Model
           return $sql;
     }
 
-  /*  public static function guardarProducto($vIdProd,$vCodigo,$vDescrip,$vPresen,$vPrecio,$vStock,$vIdCate,$vMarcaProd,$vProcedencia,
-    $vIdUnidadMed,$vIdPresentacion,$vEquivalencia,$vRendimientoPlacas, $vPrecioLimaEspecial,$vPrecioProvincia,
-    $vPrecioProvinciaEspecial,$vPrecioProvinciaEspecial2,$vPrecioProvinciaEspecial3, $vPrecioLimaEspecial2,$vPrecioLimaEspecial3,
-    $vPrecioDistribuidorLima,$vPrecioDistribuidorProvincia){*/
      public static function guardarProducto($data){
-        /*  $helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_producto_actualizar(".
-          $helper->esNumeroCero($vIdProd) .",".
-          $helper->esCadenaNulo($vCodigo).",".
-          $helper->esCadenaNulo($vDescrip).",".
-          $helper->esCadenaNulo($vPresen).",".
-          $helper->esNumeroCero($vStock).",".
-          $helper->esNumeroCero($vPrecio).",".
-          $helper->esNumeroCero($vIdCate).",".
-          $helper->esCadenaNulo($vMarcaProd).",".
-          $helper->esCadenaNulo($vProcedencia).",".
-          $helper->esNumeroCero($vIdUnidadMed).",".
-          $helper->esCadenaNulo($vEquivalencia).",".
-          $helper->esCadenaNulo($vRendimientoPlacas).",".
-          $helper->esNumeroCero($vIdPresentacion).",'ANDINALAB',".
-          $helper->esNumeroCero($vPrecioLimaEspecial).",".
-          $helper->esNumeroCero($vPrecioProvincia) .",".
-          $helper->esNumeroCero($vPrecioProvinciaEspecial).",".
-          $helper->esNumeroCero($vPrecioProvinciaEspecial2).",".
-          $helper->esNumeroCero($vPrecioProvinciaEspecial3).",".
-          $helper->esNumeroCero($vPrecioLimaEspecial2).",".
-          $helper->esNumeroCero($vPrecioLimaEspecial3).",".
-          $helper->esNumeroCero($vPrecioDistribuidorLima).",".
-          $helper->esNumeroCero($vPrecioDistribuidorProvincia).")";
-          //echo $sql;die();
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-           return  $rs->toArray();*/
+     
 
            $obj     = new SQLHelpers();
            $param   = $data;
@@ -78,12 +36,6 @@ class Cotizacion extends \Phalcon\Mvc\Model
 
     //public static function eliminarProducto($vIdProd){
     public static function eliminarProducto($data){
-          /*$helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_producto_eliminar(".$helper->esNumeroCero($vIdProd).")";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          return  $rs->toArray();*/
-
           $obj     = new SQLHelpers();
           $param   = $data;
           $sql     =  $obj->executar('inventario','sp_producto_eliminar',$param);
@@ -98,16 +50,7 @@ class Cotizacion extends \Phalcon\Mvc\Model
           $sql     =  $obj->executarCadenaJsonCondicionado('ventas','sp_persona_listar',$param);
           return $sql;
     }
-    //public static function eliminarCliente($vIdCliente,$vUsuario){
     public static function eliminarCliente($data){
-          /*$helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_persona_eliminar(".
-          $helper->esNumeroCero($vIdCliente).",".
-          $helper->esCadenaNulo($vUsuario).")";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          return  $rs->toArray();*/
-
           $obj     = new SQLHelpers();
           $param   = $data;
           $sql     =  $obj->executar('ventas','sp_persona_eliminar',$param);
@@ -115,31 +58,15 @@ class Cotizacion extends \Phalcon\Mvc\Model
     }
 
     public static function tipodocumentoListar(){
-          /*$helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.tipodocumento ";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          $data     = $rs->toArray();
-          return    $data;*/
-
+        
           $obj     = new SQLHelpers();
           $param   = $data;
           $sql     =  $obj->executarQuery("select id idtipdoc, descripcion from catalogos.documentoidentidad WHERE estado='1' order by 1");
           return $sql;
     }
-    //public static function proveedorListar($vNumDoc,$vNumRuc,$vNmbres){
+ 
     public static function proveedorListar($data){
-          /*$helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_proveedor_listar (".
-          $helper->esCadenaNulo($vNumDoc) .",".
-          $helper->esCadenaNulo($vNumRuc). ",".
-          $helper->esCadenaNulo($vNmbres) .")";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          $data     = $rs->toArray();
-          return    $data;*/
-
-
+       
               $obj     = new SQLHelpers();
               $param   = $data;
               $sql     =  $obj->executarJson('ventas','sp_proveedor_listar',$param);
@@ -161,8 +88,6 @@ class Cotizacion extends \Phalcon\Mvc\Model
       $sql     =  $obj->executarJson('ventas','sp_cotizacion_buscar_codigo',$param);
       return $sql;
 }
-
-    //public static function detalleCotizacion($vIdCotizacion){
     public static function detalleCotizacion($data){
           $obj     = new SQLHelpers();
           $param   = $data;
@@ -179,27 +104,14 @@ class Cotizacion extends \Phalcon\Mvc\Model
 
 
     public static function vendedoresListar($data){
-        /*  $helper   = new FuncionesHelpers();
-          $sql      = "SELECT * FROM cotizacion.sp_vendedores_listar()";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql));
-          $data     = $rs->toArray();
-          return    $data[0]['sp_vendedores_listar'];*/
-
+      
           $obj     = new SQLHelpers();
           $param   = $data;
           $sql     =  $obj->executarJson('ventas','sp_vendedores_listar',$param);
           return $sql;
     }
      public static function vendedoresFiltroListar($data){
-          /*$helper   = new FuncionesHelpers();
-          $param = array($query);
-          $sql      = "SELECT * FROM cotizacion.sp_vendedores_filtro_listar(?)";
-          $reporte  = new DpTbCotizacion();
-          $rs       = new Resultset(null,$reporte,$reporte->getReadConnection()->query($sql,$param));
-          $data     = $rs->toArray();
-          return    $data[0]['sp_vendedores_filtro_listar'];*/
-
+        
           $obj     = new SQLHelpers();
           $param   = $data;
           $sql     = $obj->executarJson('ventas','sp_vendedores_filtro_listar',$param);

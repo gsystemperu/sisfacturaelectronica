@@ -88,7 +88,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesGuia', {
                         _paneles.setActiveItem(0);
                 },
                 failure: function (action) {
-                    Ext.Msg.alert("AkinetFarma", "Error en conexión de base de datos");
+                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
                     _view.close();
                 }
             });
