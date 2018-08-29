@@ -73,7 +73,6 @@ Ext.define('sisfacturaelectronica.Application', {
         'puntoventa.ConfigPuntoVenta',
         'almacen.FormProductoPopup',
         'ventas.RegistrarNota',
-
         //@Conf views
         'conf.configEmpresa',
         'conf.configNuevaBoleta',

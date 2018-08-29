@@ -19,81 +19,75 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
     var l = me.getLayout();
     l.setActiveItem(1);
   },
-  onClickCrearNota:function(b){
+  onClickCrearNota: function (b) {
     try {
       r = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
-      //Solo boletas
-      if(r.get('documentoventa')==2)
-      {
-        me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0];
-        l = me.getLayout();
-        l.setActiveItem(5);
-        fm = Ext.ComponentQuery.query('#frmRegNotaCredito')[0];
-        fm.reset();
-        fm.setTitle(':. Nota Crédito .:');
-        fm.loadRecord(r);
-        fm.down('fieldset #documentoventa').setReadOnly(true);
-        fm.down('fieldset #cboTipoNota').setValue(1);
-        fm.down('#vusuario').setValue(sisfacturaelectronica.util.Data.usuario);
-        fm.down('fieldset [name=seriedoc]').setReadOnly(true);
-        fm.down('fieldset [name=numerodoc]').setReadOnly(true);
-        po = fm.down('#posicion');
-        dg = Ext.ComponentQuery.query('#dgvDetalleNota')[0];
-        dgs = dg.getStore();
-        dgs.removeAll();
-        fm.mask('.... espere');
-        Ext.Ajax.request({
-          url:  sisfacturaelectronica.util.Rutas.facturacionDetalle,
-          params: {
-            idfacturacion: r.get('idfacturacion'),
-            orden: 1
-          },
-          method: 'GET',
-          success: function (response) {
-            ds = Ext.JSON.decode(response.responseText);
-            ix = 0;
-            t  = 0;
-            s  = 0;
-            i  = 0;
-            Ext.each(ds.data, function (re) {
-              ix = ix + 1;
-              d = {
-                idprod: parseInt(re.id),
-                descripcion: re.producto,
-                cantidad: re.cantidad,
-                precio: re.precio,
-                total: re.total,
-                vencimiento: re.vecimiento,
-                presentacion: re.presentacion
-              }
-              t  = t + re.total;
-              dgs.insert(ix,d);
-              po.setValue(ix.toString());
-              dg.getView().refresh();
-            });
-            if(r.get('incluyeigv')){
-                s = t / 1.18;
-                i = t - (t / 1.18);
-                t = t;
-            }else{
-                s = t;
-                i = t * 0.18;
-                t = s + i;
+      me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0];
+      l = me.getLayout();
+      l.setActiveItem(5);
+      fm = Ext.ComponentQuery.query('#frmRegNotaCredito')[0];
+      fm.reset();
+      fm.setTitle(':. Nota Crédito .:');
+      fm.loadRecord(r);
+      //fm.down('fieldset #documentoventa').setReadOnly(true);
+      fm.down('fieldset #cboTipoNota').setValue(1);
+      fm.down('#vusuario').setValue(sisfacturaelectronica.util.Data.usuario);
+      fm.down('fieldset [name=seriedoc]').setReadOnly(true);
+      fm.down('fieldset [name=numerodoc]').setReadOnly(true);
+      po = fm.down('#posicion');
+      dg = Ext.ComponentQuery.query('#dgvDetalleNota')[0];
+      dgs = dg.getStore();
+      dgs.removeAll();
+      fm.mask('.... espere');
+      Ext.Ajax.request({
+        url: sisfacturaelectronica.util.Rutas.facturacionDetalle,
+        params: {
+          idfacturacion: r.get('idfacturacion'),
+          orden: 1
+        },
+        method: 'GET',
+        success: function (response) {
+          ds = Ext.JSON.decode(response.responseText);
+          ix = 0;
+          t = 0;
+          s = 0;
+          i = 0;
+          Ext.each(ds.data, function (re) {
+            ix = ix + 1;
+            d = {
+              idprod: parseInt(re.id),
+              descripcion: re.producto,
+              cantidad: re.cantidad,
+              precio: re.precio,
+              total: re.total,
+              vencimiento: re.vecimiento,
+              presentacion: re.presentacion
             }
-            fm.down('panel > panel #Subtotalventas').setValue(s.toFixed(2));
-            fm.down('panel > panel #igvventas').setValue(i.toFixed(2));
-            fm.down('panel > panel #TotalGeneral').setValue(t.toFixed(2));
-            fm.unmask();
+            t = t + re.total;
+            dgs.insert(ix, d);
+            po.setValue(ix.toString());
+            dg.getView().refresh();
+          });
+          if (r.get('incluyeigv')) {
+            s = t / 1.18;
+            i = t - (t / 1.18);
+            t = t;
+          } else {
+            s = t;
+            i = t * 0.18;
+            t = s + i;
           }
-        });
-        
-      }
-
+          fm.down('panel > panel #Subtotalventas').setValue(s.toFixed(2));
+          fm.down('panel > panel #igvventas').setValue(i.toFixed(2));
+          fm.down('panel > panel #TotalGeneral').setValue(t.toFixed(2));
+          fm.unmask();
+        }
+      });
     } catch (e) {
-        alert(e);
-    } 
+      alert(e);
+    }
   },
-  onClickCrearCotizacionFactura2: function (btn) { 
+  onClickCrearCotizacionFactura2: function (btn) {
     try {
       _record = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
       if (_record) {
