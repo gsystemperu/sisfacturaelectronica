@@ -79,7 +79,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
             viewConfig: {
                 getRowClass: function(record, index, rowParams, ds) {
                     console.log(record.get('estado'));
-                    if(record.get('estado') == 7){
+                    if(record.get('estado') == 7 || record.get('estado') == 4){
                         return "red-row"; 
                     }
                     if(record.get('estado')==2){

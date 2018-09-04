@@ -12,18 +12,18 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
     bodyPadding: 10,
     controller: 'acciones-regcotizacion',
     initComponent: function () {
-        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
 
-        var storeClientes = Ext.create('sisfacturaelectronica.store.Clientes');
-        var storeProductos = Ext.create('sisfacturaelectronica.store.Productos');
-        var storeDetCotizacion = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
-        var storeFormaPago = Ext.create('sisfacturaelectronica.store.FormaPago');
-        var storeModoEntrega = Ext.create('sisfacturaelectronica.store.ModoEntrega');
-        var storeVendedores = Ext.create('sisfacturaelectronica.store.Vendedores');
-        var storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
+        storeClientes = Ext.create('sisfacturaelectronica.store.Clientes');
+        storeProductos = Ext.create('sisfacturaelectronica.store.Productos');
+        storeDetCotizacion = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
+        storeFormaPago = Ext.create('sisfacturaelectronica.store.FormaPago');
+        storeModoEntrega = Ext.create('sisfacturaelectronica.store.ModoEntrega');
+        storeVendedores = Ext.create('sisfacturaelectronica.store.Vendedores');
+        storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
 
         me = this;
         Ext.applyIf(me, {
@@ -55,12 +55,11 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                         value: 0
                     },
                     {
-                        /*xtype: 'fieldset',
-                        defaultType: 'textfield',
-                        title: 'CLIENTE',
-                        layout: 'fit',
-                        items: [*/
-                        //{
+                        xtype: 'hiddenfield',
+                        name: 'plantilla',
+                        value: 0
+                    },
+                    {
                         xtype: 'container',
                         layout: 'hbox',
                         margin: '5 0 5 0',
@@ -101,9 +100,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
 
 
                         ]
-                        /* },
 
-                     ]*/
 
                     },
                     {
@@ -320,6 +317,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                         {
                                             xtype: 'container',
                                             layout: 'hbox',
+                                            padding: '0 10 0 0',
                                             items: [
                                                 {
                                                     xtype: 'label',
@@ -343,10 +341,9 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                                     value: 'CT000000000000',
                                                     name: 'ctcodigo'
                                                 }
-
                                             ]
-
                                         }
+                                      
 
                                     ]
                                 }
@@ -475,7 +472,6 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                     reference: 'Subtotalventas',
                                     itemId: 'Subtotalventas',
                                     name: 'valventacont',
-                                    // value: "0.00",
                                     fieldLabel: 'Sub Total',
                                     readOnly: true,
                                     width: 280,
@@ -489,14 +485,13 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                     reference: 'igvventas',
                                     itemId: 'igvventas',
                                     name: 'valigvcont',
-                                    //value: "0.00",
                                     minValue: 0,
                                     readOnly: true,
                                     width: 280,
                                     labelWidth: 120,
                                     fieldStyle: 'text-align: right;font-size:16px;',
                                     labelAlign: 'right'
-                                    // hidden:true
+
                                 },
                                 {
                                     xtype: 'textfield',
@@ -505,11 +500,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                     reference: 'TotalGeneral',
                                     itemId: 'TotalGeneral',
                                     name: 'valtotalcont',
-                                    //   decimalPrecision: 3,
-                                    //  maxValue: 9999,
                                     minValue: 0,
-                                    //                                            step: 0.01,
-                                    //                                            decimalSeparator: '.',
                                     readOnly: true,
                                     width: 280,
                                     labelWidth: 120,
@@ -523,18 +514,18 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                     },
                     {
                         xtype: 'panel',
-                        buttons: [{
-                            xytpe: 'button',
-                            text: 'Cancelar',
-                            scale: 'medium',
-                            handler: 'onClickSalirCotizacion'
-                        }, '-',
-                        {
-                            xytpe: 'button',
-                            text: 'Guardar',
-                            scale: 'medium',
-                            handler: 'onClickGuardarCotizacion'
-                        }
+                        buttons: [
+                            '->',
+                            {
+                                text: 'Cancelar',
+                                scale: 'medium',
+                                handler: 'onClickSalirCotizacion'
+                            },
+                            {
+                                text: 'Guardar',
+                                scale: 'medium',
+                                handler: 'onClickGuardarCotizacion'
+                            }
 
 
                         ]

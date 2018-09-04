@@ -13,7 +13,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
     ],
     layout: {
         type: 'vbox',
-        //pack: 'start',
         align: 'stretch'
     },
     bodyPadding: 0,
@@ -23,15 +22,13 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
     },
     controller: 'acciones-regcotizacion',
     initComponent: function () {
-        var storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
-        var storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
-        var storeEstado = Ext.create('sisfacturaelectronica.store.BusquedaEstado');
-        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
+        storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
+        storeEstado  = Ext.create('sisfacturaelectronica.store.BusquedaEstado');
+        rowEditing   = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false
-        });
-
-    
+        });    
         Ext.apply(this, {
             items: [{
                 xtype: 'panel',
@@ -49,6 +46,15 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         'Ext.grid.selection.SpreadsheetModel',
                         'Ext.grid.plugin.Clipboard'
                     ],
+                    viewConfig: {
+                        getRowClass: function(record, index, rowParams, ds) {
+                            if(record.get('estado') == 4 ){
+                                return "red-row"; 
+                            }else{
+                                return "black-row";
+                            }
+                        }
+                     },
                     emptyText: 'NO HAY REGISTROS PARA MOSTRAR SEGUN EL RANGO DE FECHAS',
                     columns: [
                        {xtype: 'rownumberer'},
@@ -77,19 +83,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
 
                         },
                         {
-                            text: 'Estado',
-                            dataIndex: 'descripcion',
-                            flex: 1,
-                            align: 'center',
-                            renderer : function(value,style){
-                               if(value=='CT ANULADA'){
-                                 return '<span style="color:red;">'+value.toString()+'</span>'
-                               }else{
-                                 return value;
-                               }
-                            }
-                        },
-                        {
                             //xtype: 'numbercolumn',
                             text: 'Total',
                             dataIndex: 'valtotalcont',
@@ -103,7 +96,21 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             widget: {
                                 xtype: 'button',
                                 width: 30,
+                                glyph: 0xf0c5,
+                                tooltip : 'Crear una copia de la cotización',
+                                handler: 'onClickCopiarCotizacion'
+
+                            }
+
+                        },
+                        {
+                            xtype: 'widgetcolumn',
+                            width: 50,
+                            widget: {
+                                xtype: 'button',
+                                width: 30,
                                 glyph: 0xf044,
+                                tooltip : 'Editar la cotización',
                                 handler: 'onClickEditarCotizacion'
 
                             }
@@ -116,6 +123,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                                 xtype: 'button',
                                 width: 30,
                                 glyph: 0xf014,
+                                tooltip : 'Anular la cotización',
                                 handler: 'onClickEliminarCotizacion'
 
                             }
@@ -305,11 +313,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
             }]
         });
         this.callParent();
-        /*storeCoti.getProxy().extraParams = {
-            vDesde: Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-            vHasta: Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-            vPersona: ''
-        };
-        storeCoti.load(1);*/
+       
     }
 });

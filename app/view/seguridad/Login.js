@@ -11,7 +11,7 @@ Ext.define('sisfacturaelectronica.view.seguridad.Login', {
         pack: 'center'
     },
     autoShow: true,
-    width: 350,
+    width: 400,
     height: 400,
     padding : 5,
     closable : false,

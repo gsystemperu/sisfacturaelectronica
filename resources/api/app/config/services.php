@@ -276,6 +276,9 @@ $di->set('router',function() {
      $router->add('/listar_unidad_medida', array('controller'=>'cotizacion','action'=>'uniaddmedidalista'));
      $router->add('/listar_presentacion', array('controller'=>'cotizacion','action'=>'presentacionlista'));
      $router->add('/listar_categorias', array('controller'=>'cotizacion','action'=>'categorialista'));
+     $router->add('/buscar_plantilla', array('controller'=>'cotizacion','action'=>'buscarplantilla'));
+
+     
 
      //$router->add('/guardar_producto', array('controller'=>'cotizacion','action'=>'productoguardar'));
 

@@ -68,7 +68,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistroCotizacionFacturar', {
                                 {
                                     xtype: 'fieldset',
                                     defaultType: 'textfield',
-                                    title: 'Datos Generales xxxxx',
+                                    title: 'Datos Generales',
                                     layout: 'fit',
                                     items: [{
                                             xtype: 'container',

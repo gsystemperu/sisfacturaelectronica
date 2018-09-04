@@ -50,11 +50,11 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
   getBotonesERP:function(){
     return obj = [
           {
-              text: 'CREAR FACTURA',
+              text: 'NUEVO',
               handler: "onClickCrearCotizacionFactura",
           },
           {
-            text: 'CREAR COTIZACION/FACTURA',
+            text: 'CREAR FACTURA DE COTIZACION',
             handler: "onClickCrearCotizacionFactura2",
           },
           {
@@ -62,7 +62,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizacionesFacturar', {
             handler: "onClickCrearNota",
           },
           {
-            text :'IMPRIMIR FACTURA',
+            text :'IMPRIMIR',
             handler : 'onClickDocumentoImprimir'
           },
           {

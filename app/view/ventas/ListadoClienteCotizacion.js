@@ -8,12 +8,10 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         'Ext.grid.column.*',
         'Ext.form.field.*',
         'Ext.panel.Panel',
-        //'sisfacturaelectronica.view.ventas.AccionesRegCotizacion',
         'sisfacturaelectronica.store.DataTemp'
     ],
     layout: {
         type: 'vbox',
-        //pack: 'start',
         align: 'stretch'
     },
     bodyPadding: 0,
@@ -21,7 +19,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         bodyPadding: 0,
         border: false
     },
-    //controller: 'acciones-regcotizacion',
     initComponent: function () {
         var storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
         var storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
@@ -70,19 +67,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
 
                         },
                         {
-                            text: 'Estado',
-                            dataIndex: 'descripcion',
-                            flex: 1,
-                            align: 'center',
-                            renderer : function(value,style){
-                               if(value=='CT ANULADA'){
-                                 return '<span style="color:red;">'+value.toString()+'</span>'
-                               }else{
-                                 return value;
-                               }
-                            }
-                        },
-                        {
                             xtype: 'numbercolumn',
                             text: 'Total',
                             dataIndex: 'valtotalcont',
@@ -96,7 +80,21 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
                             widget: {
                                 xtype: 'button',
                                 width: 30,
+                                glyph: 0xf0c5,
+                                tooltip : 'Crear una copia de la cotización',
+                                handler: 'onClickCopiar'
+
+                            }
+
+                        },
+                        {
+                            xtype: 'widgetcolumn',
+                            width: 50,
+                            widget: {
+                                xtype: 'button',
+                                width: 30,
                                 glyph: 0xf044,
+                                tooltip : 'Editar la cotización',
                                 handler: 'onClickEditarCotizacion'
 
                             }
@@ -109,6 +107,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
                                 xtype: 'button',
                                 width: 30,
                                 glyph: 0xf014,
+                                tooltip : 'Anular la cotización',
                                 handler: 'onClickEliminarCotizacion'
 
                             }

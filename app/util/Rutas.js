@@ -53,14 +53,16 @@ Ext.define('sisfacturaelectronica.util.Rutas', {
     proveedorGuardar: 'resources/api/proveedor_actualizar',
     proveedorEliminar: 'resources/api/proveedor_eliminar',
     //@ Acciones => cotizaciones
-    cotizacionGuardar: 'resources/api/agregar_cotizacion',
+    cotizacionGuardar : 'resources/api/agregar_cotizacion',
     cotizacionEliminar: 'resources/api/eliminar_cotizacion',
-    clienteGuardar: 'resources/api/agregar_cliente',
+    clienteGuardar    : 'resources/api/agregar_cliente',
     clienteGuardarViaListado: 'resources/api/agregar_cliente_via_listado',
-    cotizacionDetalle: 'resources/api/cotizacion_detalle_vista',
+    cotizacionDetalle   : 'resources/api/cotizacion_detalle_vista',
     cotizacionEnviarMail: 'resources/api/cotizacion_enviarmail',
-    imprimirProforma: 'resources/api/imprimirproforma?',
-    imprimirTicket: 'resources/api/imprimirticket?',
+    imprimirProforma    : 'resources/api/imprimirproforma?',
+    imprimirTicket      : 'resources/api/imprimirticket?',
+    buscarPlantilla     : 'resources/api/buscar_plantilla',
+
     //@ Acciones => Facturacion
     facturacionGuardar: 'resources/api/agregar_facturacion',
     facturacionAgregarPagosAcuenta: 'resources/api/agregar_pago_acuenta',

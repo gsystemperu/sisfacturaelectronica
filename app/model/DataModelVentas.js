@@ -42,7 +42,9 @@ Ext.define('sisfacturaelectronica.model.Cliente', {
         { name: 'provinciaper', type: 'string' },
         { name: 'tipoprecioper', type: 'int' },
         { name: 'cotizaciones', type: 'int' },
-        { name: 'ventas', type: 'int' }
+        { name: 'ventas', type: 'int' },
+        { name: 'plantillacotizacion', type: 'string' }
+        
 
 
     ]

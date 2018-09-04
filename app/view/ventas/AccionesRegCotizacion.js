@@ -27,15 +27,15 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
 
     onClickBuscarProducto: function (btn) {
       if(Ext.ComponentQuery.query('#cboDatosCliente')[0].getValue()){
-        var _win = Ext.create('sisfacturaelectronica.view.ventas.BuscarProducto', { cliente: Ext.ComponentQuery.query('#cboDatosCliente')[0].getValue()});
-        _win.show(btn, function () {}, this);
+        w = Ext.create('sisfacturaelectronica.view.ventas.BuscarProducto', { cliente: Ext.ComponentQuery.query('#cboDatosCliente')[0].getValue()});
+        w.show(btn, function () {}, this);
       }else{
         Ext.Msg.alert("SisFacturaElectronica","Buscar al cliente para buscar los precios de los productos !!"); return false;
       }
     },
     onClickIngresarCotizacion: function (btn) {
-        var _win = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCotizacion');
-        _win.show(btn, function () {}, this);
+        w = Ext.create('sisfacturaelectronica.view.ventas.RegistrarCotizacion');
+        w.show(btn, function () {}, this);
     },
     onClickEliminarProducto:function(button, event, eOpts){
         var rec = button.getWidgetRecord();
@@ -112,10 +112,11 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
       });
     },
      onClickEditarCotizacion: function (btn) {
-        var _grid = this.lookupReference('dgvVentasCotizaciones');
-        var _rec = btn.getWidgetRecord();// _grid.getSelectionModel().getSelection()[0];
+        _grid = this.lookupReference('dgvVentasCotizaciones');
+        _rec = btn.getWidgetRecord();
        
         if(_rec){
+            if(_rec.get('estado')==4) return false;
             var me =  Ext.ComponentQuery.query('#wContenedorCotizaciones')[0];    //this;
             var l = me.getLayout();
             l.setActiveItem(1);
@@ -131,8 +132,9 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
                   vIdCotizacion : _rec.get('vid')
                 },
                 success:function(response){
-                   var _obj = Ext.JSON.decode(response.responseText);
-                 
+                   _obj = Ext.JSON.decode(response.responseText);
+                   x = 0;
+                   tp   = Ext.ComponentQuery.query('#posicion')[0];
                    Ext.each(_obj.data,function(record,i){
                       if (record.cantidad != 0) {
                           _reg = {
@@ -143,41 +145,95 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
                               "total": record.total,
                               "vencimiento": Ext.Date.format(record.vencimiento, 'd/m/Y')   //(record.vencimiento==null? null:  Ext.Date.format(record.vencimiento, 'd/m/Y') )
                           };
+                          x++;
                           _tot = _tot + record.total;
-                          _dataDetalle.insert(0,_reg);
-                         
+                          _dataDetalle.insert(x,_reg);
+                        
                       }
                    });
-
-                    __objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
-                    __objIgv      = Ext.ComponentQuery.query('#igvventas')[0];
-                    __objSubTotal = Ext.ComponentQuery.query('#Subtotalventas')[0];
-                    __objTotal    = Ext.ComponentQuery.query('#TotalGeneral')[0];
+                    tp.setValue(x);
+                    objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
+                    objIgv      = Ext.ComponentQuery.query('#igvventas')[0];
+                    objSubTotal = Ext.ComponentQuery.query('#Subtotalventas')[0];
+                    objTotal    = Ext.ComponentQuery.query('#TotalGeneral')[0];
+                    if(_rec.get('incluyeigv')){
+                        i = _tot -  _tot / 1.18;
+                        s = _tot / 1.18;
+                    }else{
+                        s = _tot;
+                        i = _tot * 0.18;
+                        _tot = s + i ;
+                    }
                     
-                    i = _tot -  _tot / 1.18;
-                    s = _tot / 1.18;
-                    __objIgv.setValue( i.toFixed(2) );
-                    __objSubTotal.setValue(s.toFixed(2));
-                    __objTotal.setValue(_tot.toFixed(2));
-                    //var _igv = 0;
-                    /*__objSubTotal.setValue(_tot.toFixed(2));
-                    if (__objChk.getValue()){var _igv = 0;}
-                    else{var _igv = _tot * 0.18;}
-                    __objSubTotal.setValue(
-                        Ext.util.Format.number(_tot.toFixed(2), "0,000.00") 
-                    );
-                    __objIgv.setValue(
-                        Ext.util.Format.number(_igv.toFixed(2), "0,000.00") 
-                    );
-                    var _totven = 0;
-                    _totven     = _tot + _igv;
-                    __objTotal.setValue(
-                        Ext.util.Format.number(_totven.toFixed(2), "0,000.00") 
-                    );*/
+                    objIgv.setValue( i.toFixed(2) );
+                    objSubTotal.setValue(s.toFixed(2));
+                    objTotal.setValue(_tot.toFixed(2));
                 }
             });
          
     
+        }
+
+    },
+    onClickCopiarCotizacion: function (btn) {
+        _grid = this.lookupReference('dgvVentasCotizaciones');
+        _rec = btn.getWidgetRecord();
+        if(_rec){
+            if(_rec.get('estado')==4) return false;
+            var me =  Ext.ComponentQuery.query('#wContenedorCotizaciones')[0];    //this;
+            var l = me.getLayout();
+            l.setActiveItem(1);
+            Ext.ComponentQuery.query('#frmRegCotizacion')[0].reset();
+            Ext.ComponentQuery.query('#frmRegCotizacion')[0].loadRecord(_rec);
+            Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore().removeAll();
+            var  _dataDetalle= Ext.ComponentQuery.query('#dgvDetalleVenta')[0].getStore();
+            var  _tot = 0;
+            Ext.Ajax.request(
+            {
+                url :sisfacturaelectronica.util.Rutas.cotizacionDetalle,
+                params:{
+                  vIdCotizacion : _rec.get('vid')
+                },
+                success:function(response){
+                   _obj = Ext.JSON.decode(response.responseText);
+                   x = 0;
+                   tp   = Ext.ComponentQuery.query('#posicion')[0];
+                   Ext.each(_obj.data,function(record,i){
+                      if (record.cantidad != 0) {
+                          _reg = {
+                              "idprod": record.id,
+                              "cantidad": record.cantidad,
+                              "descripcion": record.descripcion,
+                              "precio": record.precio,
+                              "total": record.total,
+                              "vencimiento": Ext.Date.format(record.vencimiento, 'd/m/Y')   //(record.vencimiento==null? null:  Ext.Date.format(record.vencimiento, 'd/m/Y') )
+                          };
+                          x++;
+                          _tot = _tot + record.total;
+                          _dataDetalle.insert(x,_reg);
+                        
+                      }
+                   });
+                    tp.setValue(x);
+                    objChk      = Ext.ComponentQuery.query('#incluyeigv')[0];
+                    objIgv      = Ext.ComponentQuery.query('#igvventas')[0];
+                    objSubTotal = Ext.ComponentQuery.query('#Subtotalventas')[0];
+                    objTotal    = Ext.ComponentQuery.query('#TotalGeneral')[0];
+                    if(_rec.get('incluyeigv')){
+                        i = _tot -  _tot / 1.18;
+                        s = _tot / 1.18;
+                    }else{
+                        s = _tot;
+                        i = _tot * 0.18;
+                        _tot = s + i ;
+                    }
+                    
+                    objIgv.setValue( i.toFixed(2) );
+                    objSubTotal.setValue(s.toFixed(2));
+                    objTotal.setValue(_tot.toFixed(2));
+                }
+            });
+            Ext.ComponentQuery.query('#vid')[0].setValue(0);
         }
 
     },
@@ -500,15 +556,14 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
 
     onClickBuscarProductoPorNombre: function (obj) {
         me = this;
-        _store     = me.lookupReference('dgvBuscarProducto').getStore();
-        _idCliente = me.lookupReference('tipopreciopersona').getValue();
-        _store.getProxy().extraParams = {
+        s   = me.lookupReference('dgvBuscarProducto').getStore();
+        i   = me.lookupReference('tipopreciopersona').getValue();
+        s.getProxy().extraParams = {
             vCodigo: '',
             vDescripcion: me.lookupReference('txtProductoNombre').getValue(),
-            vIdCliente : _idCliente
-
+            vIdCliente : i
         };
-        _store.load(1);
+        s.load(1);
     },
     onChangeBuscarCategoriaProducto:function(combo, record, eOpts){
         me = this;
@@ -787,6 +842,54 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
             vIdCotizacion: 0
         };
         _storeDet.load();
+    },
+    onTogglePlantilla:function(container, button, pressed){
+        t = Ext.ComponentQuery.query('[name=plantilla]')[0];
+        if(button.text=='SI'){
+            t.setValue(1);
+        }else{
+            t.setValue(0);
+        }
+    },
+    onClickBuscarPlantilla:function(b){
+        c = Ext.ComponentQuery.query('#cboDatosCliente')[0];
+        if(c.getValue()){
+            Ext.Ajax.request({
+                url: sisfacturaelectronica.util.Rutas.buscarPlantilla,
+                params: {
+                    id: c.getValue()
+                },
+                success: function (response) {
+                    rs   = Ext.JSON.decode(response.responseText,true);
+                    tp   = Ext.ComponentQuery.query('#posicion')[0];
+                    dg   = Ext.ComponentQuery.query('#dgvDetalleVenta')[0];
+                    s    = dg.getStore();
+                    i    = 0;
+                    t    = 0;
+                    if(rs){
+                        dg.mask('..Cargando plantilla');
+                        Ext.each(rs,function(r)
+                        {
+                            re = {
+                                "idprod": r.idprod,
+                                "cantidad": r.cantidad,
+                                "descripcion":'', // record.descripcion,
+                                "precio": r.precio,
+                                "total": r.total,
+                                "vencimiento": Ext.Date.format(r.vencimiento, 'd/m/Y')   //(record.vencimiento==null? null:  Ext.Date.format(record.vencimiento, 'd/m/Y') )
+                            };
+                            i++;
+                            t = t + r.total;
+                            s.insert(i,re);
+                            dg.getView().refresh();
+                        });
+                        dg.unmask();
+                        tp.setValue(i);    
+                    }
+                    
+                }
+            });
+        }
     }
 
 });

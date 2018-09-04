@@ -143,7 +143,7 @@ class CotizacionController extends Controller
               $vId  = ( $request->getPost('vid')==''? $request->getPost('idcoti') : $request->getPost('vid') );
               $vFecha  = ( $request->getPost('vfecha')==''? $request->getPost('fechacoti') : $request->getPost('vfecha'));
               $vIdCliente = ( $request->getPost('vidcliente')==''?$request->getPost('idper') : $request->getPost('vidcliente') );
-              $vUsuario = 'desarrollo';   //$request->getPost('vusuario');
+              $vUsuario = $request->getPost('vusuario');
               $vJsonDetalle = $request->getPost('vjsondetalle');
               $vFormaPago= ( $request->getPost('vformapago')==''? $request->getPost('idfopag') : $request->getPost('vformapago') );
               $vModoEntrega= ( $request->getPost('vmodoentrega')==''? $request->getPost('idmodo'): $request->getPost('vmodoentrega'));
@@ -155,10 +155,12 @@ class CotizacionController extends Controller
               $vidMoneda     =$request->getPost('idmoneda');
               $vluegarentregra     =$request->getPost('lugarentrega');
               $vcreditoscobranzas     =$request->getPost('creditoscobranzas');
+              $vPlantilla     =$request->getPost('plantilla');
               
               $data = array($vId,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle,
                $vFormaPago,$vModoEntrega,$vVendedor,$vIncluyeIgv,$vReferencia,
-               $vFechaValidoHasta,$vComentario,$vidMoneda,$vluegarentregra,$vcreditoscobranzas);
+               $vFechaValidoHasta,$vComentario,$vidMoneda,$vluegarentregra,$vcreditoscobranzas,
+              $vPlantilla);
              // print_r($data);die();
               $jsonData             = Cotizacion::agregarCotizacion($data);
               $response->setContentType('application/json', 'UTF-8');
@@ -1070,6 +1072,19 @@ class CotizacionController extends Controller
             return $response;
        }
   }
+  public function buscarplantillaAction(){
+    $request        = new Phalcon\Http\Request();
+    $response       = new \Phalcon\Http\Response();
+    if($request->isPost() ==true)
+    {
+         $id       = $request->getPost('id');
+         $jsonData = Cotizacion::buscarPlantilla(array($id));
+         $response->setContentType('application/json', 'UTF-8');
+         $response->setContent($jsonData);
+         return $response;
+
+    }
+}
  
 
 

@@ -10,7 +10,8 @@ Ext.define('sisfacturaelectronica.util.Glyphs', {
         guardar:'xf0c7',
         cancelar:'xf112',
         refrescar:'xf021',
-        eliminar :'xf014'
+        eliminar :'xf014',
+        plantilla:'xf0f6'
         
 
     },

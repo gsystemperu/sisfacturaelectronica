@@ -331,24 +331,29 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
         e.record.set('total', _tot.toFixed(2));
         this.onCalcularTotalRegistroCotizacionFacturar();
     },
-    onCalcularTotalRegistroCotizacionFacturar: function () {
+    onCalcularTotalRegistroCotizacionFacturar: function (vch) {
         me = this;
-        __objChk      = Ext.ComponentQuery.query('#incluyeigvfacturacion')[0];
-        __objIgv      = this.lookupReference('igvventasfacturacion');
-        __objSubTotal = this.lookupReference('Subtotalventasfacturacion');
-        __objTotal    = this.lookupReference('TotalGeneralfacturacion');
-
-         store = Ext.ComponentQuery.query('#dgvDetalleVentaFacturar')[0].getStore();
-         _tot = 0;
-         _igv = 0;
-        store.each(function (record) {
-            _tot = _tot + record.get('total');
+        objChk      = Ext.ComponentQuery.query('#incluyeigvfacturacion')[0];
+        objIgv      = this.lookupReference('igvventasfacturacion');
+        objSubTotal = this.lookupReference('Subtotalventasfacturacion');
+        objTotal    = this.lookupReference('TotalGeneralfacturacion');
+         s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturar')[0].getStore();
+         t = 0;
+         i = 0;
+        s.each(function (r) {
+            t = t + r.get('total');
         });
-        s = _tot / 1.18;
-        i = _tot -(_tot / 1.18);
-        __objSubTotal.setValue(s.toFixed(2));
-        __objIgv.setValue(i.toFixed(2));
-        __objTotal.setValue(_tot.toFixed(2));
+        if(vch){
+            st = t / 1.18;
+            i = t -(t / 1.18);
+        }else{
+            st = t ;
+            i = t * 0.18; 
+            t = st + i;
+        }
+        objSubTotal.setValue(st.toFixed(2));
+        objIgv.setValue(i.toFixed(2));
+        objTotal.setValue(t.toFixed(2));
     },
     onClickResumenVentasAdmin:function(){
         d = Ext.ComponentQuery.query('#dfDesde')[0].getRawValue();
