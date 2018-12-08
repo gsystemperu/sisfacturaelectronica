@@ -24,7 +24,6 @@ Ext.define('sisfacturaelectronica.store.OrdenesCompras', {
         reader: {
             type: 'json',
             rootProperty: 'data',
-            totalProperty : 'totalreg'
 
         }
     }

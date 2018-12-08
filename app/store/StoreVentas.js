@@ -106,7 +106,7 @@ Ext.define('sisfacturaelectronica.store.Cotizaciones', {
     extend: 'Ext.data.Store',
     requiere:['sisfacturaelectronica.model.DataModelVentas'],
     model   :'sisfacturaelectronica.model.Cotizacion',
-    autoLoad: true,
+    autoLoad: false,
     remoteSort: true,
     autoSync  : true,
     autoDestroy: true,

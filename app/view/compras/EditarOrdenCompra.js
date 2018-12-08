@@ -10,14 +10,14 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
     padding: 10,
     controller: 'acciones-ordencompraeditar',
     initComponent: function () {
-        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
-
-        var storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
-        var storeDetalle = Ext.create('sisfacturaelectronica.store.DetalleOrdenCompra');
-        var storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
+        storeProductos = Ext.create('sisfacturaelectronica.store.ProductosOrdenCompra'); 
+        storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
+        storeDetalle = Ext.create('sisfacturaelectronica.store.DetalleOrdenCompra');
+        storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
         me = this;
         Ext.applyIf(me, {
             items: [
@@ -44,6 +44,11 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                         },
                         {
                             xtype: 'hiddenfield',
+                            name: 'indiceeditar',
+                            value: 0
+                        },
+                        {
+                            xtype: 'hiddenfield',
                             name: 'usuario',
                             itemId: 'usuario',
                             value: ''
@@ -53,7 +58,8 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                             defaultType: 'textfield',
                             title: 'Datos Principales',
                             layout: 'fit',
-                            items: [{
+                            items: [
+                            {
                                 xtype: 'container',
                                 layout: 'hbox',
                                 margin: '0 0 5 6',
@@ -64,15 +70,17 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                                 items: [
                                     {
                                         xtype: 'combo',
-                                        fieldLabel: 'Razon Social',
+                                        emptyText: 'Razón Social : Proveedor S.A.',
+                                        fieldStyle: 'font-size:20px;height:35px;',
                                         itemId: 'cboProveedoresfEditar',
                                         store: storeProveedores,
                                         valueField: 'id',
                                         displayField: 'razonsocial',
                                         queryMode: 'local',
-                                        flex: 2,
+                                        flex: 2.5,
                                         editable: false,
-                                        name: 'idprov'
+                                        name: 'idprov',
+                                        padding: '0 2 0 0'
 
 
                                     },
@@ -80,7 +88,8 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                                         xtype: 'button',
                                         glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
                                         handler: 'onClickFormularioProveedor',
-                                        control: 'cboProveedoresfEditar'
+                                        control: 'cboProveedoresfEditar',
+                                        height: 35
                                     },
                                     {
                                         xtype: 'datefield',
@@ -104,109 +113,117 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                                         name: 'idformapago',
                                         allowBlank: false
                                     }
-                                 ]
+                                ]
                             },
-
-                            ]
-                        },
-                        {
-                            xtype: 'container',
-                            layout: 'hbox',
-                            margin: '0 0 5 6',
-                            columnWidth: 0.5,
-                            defaults: {
-                                allowBlank: false
-                            },
-                            items: [
-                                {
-                                    xtype: 'combo',
-                                    fieldLabel: 'Moneda',
-                                    labelAlign: 'left',
-                                    store: storeMonedas,
-                                    queryMode: 'local',
-                                    valueField: 'id',
-                                    displayField: 'descripcion',
-                                    value: 1,
-                                    editable: false,
-                                    name: 'idmoneda'
+                            {
+                                xtype: 'container',
+                                layout: {
+                                    type: 'hbox',
+                                    align: 'stretch'
                                 },
-                                {
-                                    xtype: 'combo',
-                                    fieldLabel: 'Documento',
-                                    store: stdoc,
-                                    displayField: 'descripcion',
-                                    valueField: 'id',
-                                    queryMode: 'local',
+                                margin: '0 0 5 6',
+                                columnWidth: 0.5,
+                                defaults: {
                                     allowBlank: false,
-                                    name: 'documentoventa',
-                                    labelAlign: 'right',
-                                    editable: false,
-                                    value: 1,
-                                    flex: 1
-
+                                    fieldStyle: 'text-align:center;;font-size:15px'
                                 },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Serie/Número',
-                                    labelAlign: 'right',
-                                    name: 'serie',
-                                    value: '001',
-                                    flex: 1,
-                                    allowBlank: false
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    labelAlign: 'right',
-                                    name: 'numerodoc',
-                                    flex: 0.5,
-                                    allowBlank: false,
-                                    value: ''
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'container',
-                            layout: 'hbox',
-                            margin: '0 0 5 6',
-                            columnWidth: 0.5,
-                            defaults: {
-                                allowBlank: false
-                            },
-                            items: [
-                                {
-                                    xtype: 'checkboxfield',
-                                    boxLabel: '<b>Precios Incluye I.g.v. </b>',
-                                    name: 'flagestadoigv',
-                                    itemId: 'ckbAplicarIgvEditar',
-                                    value: true,
-                                    listeners: {
-                                        change: 'onChangeInIgv'
+                                items: [
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Moneda',
+                                        labelAlign: 'left',
+                                        store: storeMonedas,
+                                        queryMode: 'local',
+                                        valueField: 'id',
+                                        displayField: 'descripcion',
+                                        value: 1,
+                                        editable: false,
+                                        name: 'idmoneda',
+                                        flex: 1.5
+                                    },
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Documento',
+                                        store: stdoc,
+                                        displayField: 'descripcion',
+                                        valueField: 'id',
+                                        queryMode: 'local',
+                                        allowBlank: false,
+                                        name: 'documentoventa',
+                                        labelAlign: 'right',
+                                        editable: false,
+                                        value: 1,
+                                        flex: 1.5
+    
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Serie/Número',
+                                        labelAlign: 'right',
+                                        name: 'serie',
+                                        value: '001',
+                                        flex: 1,
+                                        allowBlank: false
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        labelAlign: 'right',
+                                        name: 'numerodoc',
+                                        flex: 0.5,
+                                        allowBlank: false,
+                                        value: ''
                                     }
-
-                                },
-                                {
-                                    xtype: 'combo',
-                                    fieldLabel: 'Almacen Destino',
-                                    margin: '0 0 5 6',
-                                    itemId: 'cboAlmacen',
-                                    labelAlign: 'right',
-                                    store: sAlam,
-                                    valueField: 'id',
-                                    displayField: 'descripcion',
-                                    queryMode: 'local',
-                                    flex: 1,
-                                    editable: false,
-                                    name: 'idalmacen',
+                                ]
+                            },
+                            {
+                                xtype: 'container',
+                                layout: 'hbox',
+                                margin: '0 0 5 6',
+                                columnWidth: 0.5,
+                                defaults: {
                                     allowBlank: false
-                                }
-                            ]
+                                },
+                                items: [
+                                    {
+                                        xtype: 'checkboxfield',
+                                        boxLabel: '<b>Precios Incluye I.g.v. </b>',
+                                        name: 'flagestadoigv',
+                                        itemId: 'ckbAplicarIgvEditar',
+                                        value: true,
+                                        listeners: {
+                                            change: 'onChangeInIgv'
+                                        }
+    
+                                    },
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Almacen Destino',
+                                        margin: '0 0 5 6',
+                                        itemId: 'cboAlmacen',
+                                        labelAlign: 'right',
+                                        store: sAlam,
+                                        valueField: 'id',
+                                        displayField: 'descripcion',
+                                        queryMode: 'local',
+                                        flex: 1,
+                                        editable: false,
+                                        name: 'idalmacen',
+                                        allowBlank: false,
+                                        labelWidth: 150
+                                    }
+                                ]
+                            },
+
+                            ]//fin datos pricipales
                         },
+                       
                         {
                             xtype: 'fieldset',
                             columnWidth: 0.1,
                             padding: 10,
                             defaultType: 'textfield',
-                            items: [{
+                            items: [
+                           /* {
                                 xtype: 'container',
                                 margin: '0 0 0 -5',
                                 layout: 'fit',
@@ -269,7 +286,7 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                                                 name: 'occodigo',
                                                 readOnly: true
                                             }
-                                            
+
 
                                             ]
                                         }
@@ -277,11 +294,59 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
                                 },
 
                                 ]
-                            },
+                            },*/
                             {
                                 xtype: 'panel',
                                 layout: 'fit',
                                 margin: '0 0 5 0',
+                                tbar: [
+                                    {
+                                        xtype: 'combo',
+                                        flex: 13,
+                                        itemId: 'cboProducto',
+                                        store: storeProductos,
+                                        listConfig: {
+                                            itemTpl: '<b>{nombre}</b>  ->   <strong> {marca} </strong> <br> '
+                                                //+'<label style="background-color:#6A4B5A;color:#FFFFFF;width:200px;height:30px;padding:5px 5px 5px 5px;  "> Precio </label> '
+                                                //+'&nbsp;&nbsp; Precio Mayorista :&nbsp;&nbsp; {precioventa} &nbsp  -  &nbsp;&nbsp;Precio Minorista : &nbsp;&nbsp; {preciounidad} <br> '
+                                                + '<label style="background-color:#03AA92;color:#FFFFFF;width:250px;height:30px;padding:5px 5px 5px 5px;  "> Stock &nbsp; </label> '
+                                                + '&nbsp;&nbsp; Stock : &nbsp;&nbsp;{entero}  &nbsp;&nbsp;-  &nbsp;&nbsp; Fracción :&nbsp;&nbsp; {fraccion} '
+                                        },
+                                        typeAhead: true,
+                                        minChars: 4,
+                                        typeAheadDelay: 150,
+                                        queryDelay: 100,
+                                        queryCaching: false,
+                                        emptyText: ' DIGITAR NOMBRE DEL PRODUCTO',
+                                        valueField: 'id',
+                                        queryMode: 'remote',
+                                        fieldStyle: 'font-size:20px;',
+                                        listeners: {
+                                            beforequery: 'onBeforeQueryProducto',
+                                            select: 'onSelectProducto'
+                                        }
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                        handler: 'onClickNuevoProd',
+                                        height: 33
+                                    },
+
+                                    '->',
+                                    {
+                                        xtype: 'textfield',
+                                        itemId: 'txtNumeroPedido',
+                                        value: '** Generando',
+                                        name: 'occodigo',
+                                        readOnly: true,
+                                        fieldStyle: 'font-size:25px;text-align:center;',
+                                        fieldLabel: 'Nro. Orden de Compra',
+                                        labelWidth: 160,
+                                        labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
+
+                                    }
+                                ],
                                 items: [{
                                     xtype: 'grid',
                                     flex: 1,
@@ -356,18 +421,61 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
 
                                     ],
                                     cls: '',
-                                    height: 300,
+                                    height: 250,
                                     listeners: {
                                         edit: 'onEditorCalcularTotalOrdenCompraEditar'
                                     }
 
-                                }]
-
+                                }],
+                                bbar: [
+                                    '->',
+                                    {
+                                        xtype: 'container',
+                                        layout: {
+                                            type: 'vbox',
+                                            align: 'stretch'
+                                        },
+                                        defaults:{
+                                            fieldStyle: 'text-align: right;font-size:20px;',
+                                            labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;',
+                                            labelAlign: 'left',
+                                            value: "0.00",
+                                            minValue: 0,
+                                            step: 0.01,
+                                            readOnly: true,
+                                            width: 280,
+                                            labelWidth: 120,
+                                        },
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                itemId: 'txtSubtotalOrdenCompraEditar',
+                                                name: 'subtotal',
+                                                fieldLabel: 'Sub Total',
+                                               
+                                                
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                fieldLabel: 'I.g.v.',
+                                                itemId: 'txtIgvOrdenCompraEditar',
+                                                name: 'igv',
+                                               
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                fieldLabel: 'Total General',
+                                                itemId: 'txtTotalGeneralOrdenCompraEditar',
+                                               
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                             ]
 
                         }, // fin fieldset Detalle
-                        {
+                       /* {
                             xtype: 'panel',
                             layout: 'hbox',
                             items: [{
@@ -423,7 +531,7 @@ Ext.define('sisfacturaelectronica.view.compras.EditarOrdenCompra', {
 
                             ]
 
-                        },
+                        },*/
                         {
                             xtype: 'panel',
                             buttons: [

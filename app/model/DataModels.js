@@ -287,6 +287,10 @@ Ext.define('sisfacturaelectronica.model.Producto', {
             type: 'int'
         },
         {
+            name: "tipoproducto",
+            type: 'string'
+        },
+        {
             name: "talla",
             type: 'string'
         },

@@ -69,12 +69,8 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProducto', {
         Ext.ComponentQuery.query('#wFormProducto')[0].reset();
         Ext.ComponentQuery.query('#codigoserie')[0].focus();
     },
-
-    onClickItemProductoERP : function( grid, record, index, eOpts ) {
-        Ext.ComponentQuery.query('#btnExistencias')[0].setText(Ext.String.format('Stock  : {0}',(record.get('_cajas')==''?0:record.get('_cajas'))      ));
-    },
     onClickItemProducto : function( grid, record, index, eOpts ) {
-        Ext.ComponentQuery.query('#btnExistencias')[0].setText(Ext.String.format('Stock  : {0}',(record.get('_cajas')==''?0:record.get('_cajas'))      ));
+        //Ext.ComponentQuery.query('#btnExistencias')[0].setText(Ext.String.format('Stock  : {0}',(record.get('_cajas')==''?0:record.get('_cajas'))      ));
         try {
             var me = Ext.ComponentQuery.query('#wContenedorProducto')[0];
             var l  = me.getLayout();

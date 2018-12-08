@@ -19,6 +19,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         bodyPadding: 0,
         border: false
     },
+    controller : 'acciones-regcotizacion',
     initComponent: function () {
         var storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
         var storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
@@ -45,12 +46,23 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
                         'Ext.grid.selection.SpreadsheetModel',
                         'Ext.grid.plugin.Clipboard'
                     ],
+                    viewConfig: {
+                        getRowClass: function(record, index, rowParams, ds) {
+                            if(record.get('estado') == 7 || record.get('estado') == 4){
+                                return "red-row"; 
+                            }
+                            else{
+                                return "black-row";
+                            }
+                           
+                        }
+                     },
                     emptyText: 'NO HAY REGISTROS PARA MOSTRAR SEGUN EL RANGO DE FECHAS',
                     columns: [
                        {xtype: 'rownumberer'},
                       {
                             text: 'Fecha ',
-                            dataIndex: 'vfecha',
+                            dataIndex: 'fechacoti',
                             flex: 0.5,
                             align: 'center'
                         },
@@ -69,52 +81,12 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
                         {
                             xtype: 'numbercolumn',
                             text: 'Total',
-                            dataIndex: 'valtotalcont',
+                            dataIndex: 'totalcoti',
                             flex: 1,
-                            //renderer: Ext.util.Format.numberRenderer('0.00'),
+                          
                             align: 'right'
-                        },
-                        {
-                            xtype: 'widgetcolumn',
-                            width: 50,
-                            widget: {
-                                xtype: 'button',
-                                width: 30,
-                                glyph: 0xf0c5,
-                                tooltip : 'Crear una copia de la cotización',
-                                handler: 'onClickCopiar'
-
-                            }
-
-                        },
-                        {
-                            xtype: 'widgetcolumn',
-                            width: 50,
-                            widget: {
-                                xtype: 'button',
-                                width: 30,
-                                glyph: 0xf044,
-                                tooltip : 'Editar la cotización',
-                                handler: 'onClickEditarCotizacion'
-
-                            }
-
-                        },
-                        {
-                            xtype: 'widgetcolumn',
-                            width: 50,
-                            widget: {
-                                xtype: 'button',
-                                width: 30,
-                                glyph: 0xf014,
-                                tooltip : 'Anular la cotización',
-                                handler: 'onClickEliminarCotizacion'
-
-                            }
-
                         }
                     ],
-
                     listeners: {
                         cellclick: 'onSelectedDetalleCotizacion'
                     }
@@ -233,11 +205,5 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
             }]
         });
         this.callParent();
-        /*storeCoti.getProxy().extraParams = {
-            vDesde: Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-            vHasta: Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-            vPersona: ''
-        };
-        storeCoti.load(1);*/
-    }
+   }
 });

@@ -143,26 +143,32 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresa', {
           },
           {
             xytpe: 'container',
-            flex: 2,
+            flex: 3,
             layout: {
               type: 'vbox',
               pack: 'start',
               align: 'stretch'
             },
             padding: '10 10 10 10',
+            defaults:{
+              labelWidth:150
+            },
             items: [
               {
                 xtype: 'textfield',
                 fieldLabel: 'Razón Social',
                 name: 'razonsocial',
                 allowBlank: false,
-                fieldStyle: 'font-size:25px;text-transform: uppercase;background-color:#E1E1E1;border:false;'
+                fieldStyle: 'font-size:25px;text-transform: uppercase;background-color:#E1E1E1;border:false;',
+                labelStyle: 'padding : 5px 5px 5px 5px ;text-transform: uppercase;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
               },
               {
                 xtype: 'textfield',
                 fieldLabel: 'R.U.C',
                 name: 'ruc',
                 allowBlank: false,
+                fieldStyle: 'font-size:25px;text-transform: uppercase;background-color:#E1E1E1;border:false;',
+                labelStyle: 'padding : 5px 5px 5px 5px ;text-transform: uppercase;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
 
               }
 
@@ -219,7 +225,7 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresa', {
         items: [
 
           {
-            title: '..:: Tiendas ::..',
+            title: ' Tiendas ',
             layout: 'fit',
             tbar: [
               {
@@ -294,7 +300,7 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresa', {
             }]
           },
           {
-            title: '..:: Doc. Internos ::..',
+            title: ' Doc. Internos ',
             layout: 'fit',
             tbar: [{
               xtype: 'button',
@@ -351,7 +357,7 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresa', {
             }]
           },
           {
-            title: '..:: Ticketeras ::..',
+            title: ' Ticketeras ',
             layout: 'fit',
             tbar: [{
               xtype: 'button',
@@ -426,7 +432,8 @@ Ext.define('sisfacturaelectronica.view.conf.configEmpresa', {
             }]
           },
           {
-            title: ':: Precio Ventas ::',
+            title: ' Precio Ventas ',
+            hidden:true,
             layout: {
               type: 'fit',
             },

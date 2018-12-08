@@ -514,6 +514,7 @@ class ImpresionController extends Controller
       $data           = array($vIdper);
 
       $jsonData      = json_decode(Facturacion::buscarVentasCliente($data))->data;
+      //print_r($jsonData);die();
       // ========== FPDF ==========  //
       $pdf = new fpdf('P','mm','A4');
 
@@ -528,37 +529,45 @@ class ImpresionController extends Controller
       $pdf->Cell($wg,4,pinta("CUENTA CORRIENTE CLIENTE : " . $vPersona),0,1,'L');
 
       $pdf->Ln(4);
-      $pdf->Cell(30,4,'Fecha',1,0,'C');
-      $pdf->Cell(30,4,'Documento',1,0,'C');
+      $pdf->Cell(10,4,'Nro.',1,0,'C');
+      $pdf->Cell(20,4,'Fecha',1,0,'C');
+      $pdf->Cell(25,4,'Documento',1,0,'C');
       $pdf->Cell(10,4,'Tipo',1,0,'C');
-      $pdf->Cell(30,4,'Forma Pago',1,0,'C');
-      $pdf->Cell(30,4,'Total',1,0,'C');
-      $pdf->Cell(30,4,'Acuenta',1,0,'C');
-      $pdf->Cell(30,4,'Saldo',1,1,'C');
+      $pdf->Cell(25,4,'Forma Pago',1,0,'C');
+      $pdf->Cell(25,4,'Total',1,0,'C');
+      $pdf->Cell(25,4,'Acuenta',1,0,'C');
+      $pdf->Cell(25,4,'Saldo',1,0,'C');
+      $pdf->Cell(20,4,'Estado',1,1,'C');
 
       $total  = 0;
       $totalS = 0;
       $totalP = 0;
-
+      $i = 0;
       foreach((array) $jsonData as $row){
           //if($row->formapago == 'CREDITO'){
-              $pdf->Cell(30,4,pinta($row->fechafact),1,0,'C');
-              $pdf->Cell(30,4,pinta($row->docinterno),1,0,'C');
+              $pdf->Cell(10,4,pinta(++$i),1,0,'C');
+              $pdf->Cell(20,4,pinta($row->fechafact),1,0,'C');
+              $pdf->Cell(25,4,pinta($row->docinterno),1,0,'C');
               $pdf->Cell(10,4,pinta($row->tipodoc),1,0,'C');
-              $pdf->Cell(30,4,pinta($row->formapago),1,0,'C');
-              $pdf->Cell(30,4, number_format($row->totalcoti,2,'.',' '),1,0,'R');
-              $pdf->Cell(30,4, number_format($row->pagoacuenta,2,'.',' '),1,0,'R');
-              $pdf->Cell(30,4, number_format($row->saldopagar,2,'.',' '),1,1,'R');
-
-              $total  += $row->totalcoti;
-              $totalS += $row->pagoacuenta;
-              $totalP += $row->saldopagar;
+              $pdf->Cell(25,4,pinta($row->formapago),1,0,'L');
+              $pdf->Cell(25,4, number_format($row->totalcoti,2,'.',' '),1,0,'R');
+              $pdf->Cell(25,4, number_format($row->pagoacuenta,2,'.',' '),1,0,'R');
+              $pdf->Cell(25,4, number_format($row->saldopagar,2,'.',' '),1,0,'R');
+              $pdf->SetFont($font,'',6);
+              $pdf->Cell(20,4, $row->descripcion ,1,1,'R');
+              $pdf->SetFont($font,'',$tam);
+              if($row->estado!=7){
+                $total  += $row->totalcoti;
+                $totalS += $row->pagoacuenta;
+                $totalP += $row->saldopagar;
+              }
+              
             //}
       }
-      $pdf->Cell(100,4,'TOTALES',0,0,'R');
-      $pdf->Cell(30,4, number_format($total,2,'.',' '),1,0,'R');
-      $pdf->Cell(30,4, number_format($totalS,2,'.',' ') ,1,0,'R');
-      $pdf->Cell(30,4, number_format($totalP,2,'.',' ') ,1,1,'R');
+      $pdf->Cell(90,4,'TOTALES',0,0,'R');
+      $pdf->Cell(25,4, number_format($total,2,'.',' '),1,0,'R');
+      $pdf->Cell(25,4, number_format($totalS,2,'.',' ') ,1,0,'R');
+      $pdf->Cell(25,4, number_format($totalP,2,'.',' ') ,1,1,'R');
 
       $pdf->Output();
 
@@ -758,12 +767,8 @@ class ImpresionController extends Controller
           $pdf->MultiCell($wg,5,pinta($dataCotizacion->comentario),0,'L');
           $pdf->Cell(35,5,pinta('CREDITOS Y COBRANZAS : '),0,1,'L');
           $pdf->MultiCell(0,4,pinta($dataCotizacion->creditoscobranzas),0,'J');
-          /*$pdf->Ln();    
-          $pdf->Cell(80,6,pinta('CUENTA CORRIENTE BCP  :'),0,0,'L');
-          $pdf->Cell(0,6,pinta('S/: 191-2451784-0-93'),0,1,'L');
-          $pdf->Cell(80,6,pinta('CUENTA CORRIENTE BCP  :'),0,0,'L');
-          $pdf->Cell(0,6,pinta('$:  191-2471001-1-15'),0,1,'L');*/
-        
+          $pdf->Ln();    
+          $pdf->Cell(0,6,pinta('CTA. CTE. BCP : 191-2085126-0-77 '),0,0,'L');
           //$pdf->AutoPrint();
           $pdf->Output();
       
@@ -1214,7 +1219,6 @@ class ImpresionController extends Controller
       
        //PHPQRCode::png('PHP QR Code :)');
       
-       
 
       // QRcode::png('PHP QR Code :)');
       // die();
@@ -1353,7 +1357,8 @@ class ImpresionController extends Controller
       $pdf->Cell(0,7,pinta(number_format($totalVenta , 2, ".", ",")),0,1,'R');
       $filaqr = $pdf->getY();
       $pdf->setY($fila);
-      $pdf->MultiCell(130,7,pinta('SON : '.$dataFacturacion->totalletras),0,'L');
+      //$pdf->MultiCell(130,7,pinta('SON : '.$dataFacturacion->totalletras),0,'L');
+      $pdf->MultiCell(130,7,pinta('SON : '. strtoupper( $totalVenta ) ),0,'L');
       $tam = 9;
       $pdf->Ln(2);
       $tempDir = '../public/img/';

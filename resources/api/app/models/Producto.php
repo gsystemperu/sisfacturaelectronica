@@ -73,6 +73,16 @@ class Producto extends \Phalcon\Mvc\Model
        $sql     =  $obj->executarJson('inventario','sp_producto_listar_oc_proveedor',$param);
        return $sql;
     }
+    public static function  buscarProductoOrdenCompraFiltro($data)
+    {
+       $obj     =  new SQLHelpers();
+       $param   =  $data;
+       $sql     =  $obj->executarJson('inventario','sp_producto_listar_oc_proveedor_filtro',$param);
+       return $sql;
+    }
+
+
+
 
     public static function buscarCodigoBarras($data)
     {

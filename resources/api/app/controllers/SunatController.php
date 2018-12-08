@@ -1,5 +1,45 @@
+
 <?php
-use Greenter\Model\Client\Client;
+use Peru\Http\ContextClient;
+use Peru\Sunat\Ruc;
+use Peru\Reniec\Dni;
+
+use \Phalcon\Mvc\Controller as Controller;
+
+class SunatController extends Controller
+{
+    private $cs;
+    public function initialize(){
+        $this->view->disable();
+    }
+    public function consultarucAction(){
+        $request        = new Phalcon\Http\Request();
+        $response       = new \Phalcon\Http\Response();
+
+        $this->cs = new Ruc();
+        $this->cs->setClient(new ContextClient());
+        $company = $this->cs->get('10448667010');
+        $json = json_encode($company);
+        echo $json;
+       
+    }
+    public function consultadniAction(){
+        $request        = new Phalcon\Http\Request();
+        $response       = new \Phalcon\Http\Response();
+
+        $this->cs = new Dni();
+        $this->cs->setClient(new ContextClient());
+
+        $person = $this->cs->get('44866701');
+        $json = json_encode($person);
+        echo $json;
+        
+
+
+    }
+}
+
+/*use Greenter\Model\Client\Client;
 use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Company\Address;
 use Greenter\Model\Company\Company;
@@ -142,7 +182,7 @@ class SunatController extends Controller
       $util->writeXml($invoice, $see->getFactory()->getLastXml());
 
       if ($res->isSuccess()) {
-        /**@var $res \Greenter\Model\Response\BillResult*/
+        //@var $res \Greenter\Model\Response\BillResult
         $cdr = $res->getCdrResponse();
         
         $util->writeCdr($invoice, $res->getCdrZip());
@@ -206,3 +246,4 @@ class SunatController extends Controller
         }
     }
 }
+*/

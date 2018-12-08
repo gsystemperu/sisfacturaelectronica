@@ -198,7 +198,8 @@ class OrdencompraController extends Controller
                   $request->getPost('serieGuia'),
                   $request->getPost('numeroGuia'),
                   $request->getPost('numerolote'),
-                  $request->getPost('jsondetalle')
+                  $request->getPost('jsondetalle'),
+                  $request->getPost('usuario')
               );
 
               $jsonData = GuiaProveedor::actualizar($data);

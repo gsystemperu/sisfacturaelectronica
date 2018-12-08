@@ -376,6 +376,13 @@ class Cotizacion extends \Phalcon\Mvc\Model
             $sql     =  $obj->executarJson('ventas','sp_persona_plantilla',$param);
             return $sql;
       }
+     /* public static function listarCotizacionesCliente($data){
+            $obj     = new SQLHelpers();
+            $param   = $data;
+            $sql     =  $obj->executarJson('ventas','sp_cotizacion_buscar_cliente',$param);
+            return $sql;
+      }
+*/
 
 
 }

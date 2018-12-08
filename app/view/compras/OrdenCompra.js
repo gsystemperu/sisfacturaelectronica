@@ -12,7 +12,7 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
     'sisfacturaelectronica.view.compras.AccionesOrdenCompra'
   ],
   layout: {
-    type: 'vbox',
+    type: 'fit',
     align: 'stretch'
   },
   bodyPadding: 0,
@@ -22,11 +22,11 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
   },
   controller: 'acciones-ordencompra',
   initComponent: function () {
-    var storeAbastecimiento = Ext.create('sisfacturaelectronica.store.OrdenesCompras');
-    var storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
-    var storeAbastecimientoDet = Ext.create('sisfacturaelectronica.store.AbastecimientoDetalle');
+    storeAbastecimiento = Ext.create('sisfacturaelectronica.store.OrdenesCompras');
+    storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
+    storeAbastecimientoDet = Ext.create('sisfacturaelectronica.store.AbastecimientoDetalle');
 
-    var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+    rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
       clicksToMoveEditor: 1,
       autoCancel: false
     });
@@ -36,35 +36,29 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
           xtype: 'panel',
           flex: 1,
           margin: '0 3 0 0',
-          layout: 'fit',
+          layout: {
+            type: 'vbox',
+            align: 'stretch'
+          },
           border: false,
           items: [
+            this.getPanelToolBarAbastecimiento(storeProveedores),
+
             this.getPanelAbastecimiento(storeAbastecimiento)
           ],
-          tbar: [
-            this.getPanelToolBarAbastecimiento(storeProveedores)
-          ]
-        },
+       },
        // this.getPanelDetalle(storeAbastecimientoDet)
       ]
     });
     this.callParent();
-
-    /*storeAbastecimiento.load({
-      params: {
-        desde: Ext.ComponentQuery.query('#dfDesde')[0].getRawValue(),
-        hasta: Ext.ComponentQuery.query('#dfHasta')[0].getRawValue(),
-        proveedor: 0
-      }
-    });*/
   },
   getPanelToolBarAbastecimiento: function (storeProveedores) {
     return obj = {
       xtype: 'container',
-      bodyPadding: 0,
+      padding :5,
       layout: {
         type: 'hbox',
-        anchor: '100%'
+        align : 'stretch'
       },
       columnWidth: 10,
       items: [{
@@ -86,8 +80,9 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
           value: new Date(),
           reference: 'dfDesde',
           itemId: 'dfDesdeOC',
-          width: 100,
-          format: 'd/m/Y'
+          flex:1,
+          format: 'd/m/Y',
+          padding : '0 5 0 0'
         }, {
           xtype: 'label',
           text: 'Fecha Hasta',
@@ -107,12 +102,12 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
           value: new Date(),
           reference: 'dfHastaOC',
           itemId: 'dfHastaOC',
-          width: 100,
-          format: 'd/m/Y'
+          flex:1,
+          format: 'd/m/Y',
+          padding : '0 5 0 0'
         }, {
           xtype: 'button',
-          glyph: sisfacturaelectronica.util.Glyphs.getGlyph(
-            'buscar'),
+          glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
           tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
           handler: 'onClickBuscarOrdenCompraPorFechas'
         }, {
@@ -137,9 +132,9 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
           valueField: 'id',
           displayField: 'razonsocial',
           queryMode: 'local',
-          flex: 1,
-          width: 400,
-          editable: false
+          flex:5,
+          editable: true,
+          padding : '0 5 0 0'
         },
          {
           xtype: 'button',
@@ -162,22 +157,21 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
     };
 
   },
-  getPanelAbastecimiento: function (storeAbastecimiento) {
+  getPanelAbastecimiento: function (st) {
     return obj = {
       xtype: 'grid',
+      flex:1,
       itemId: 'gridOrdenesCompra',
       reference: 'gridOrdenesCompra',
-      store: storeAbastecimiento,
+      store: st,
       columnLines: true,
       sortableColumns: false,
-
       requires: [
         'Ext.grid.selection.SpreadsheetModel',
         'Ext.grid.plugin.Clipboard'
       ],
       emptyText: 'NO HAY REGISTROS PARA MOSTRAR SEGUN EL RANGO DE FECHAS',
       columns: [
-         {xtype: 'rownumberer'},
         {
           text: 'Fecha Orden',
           dataIndex: 'fordencompra',
@@ -185,7 +179,7 @@ Ext.define('sisfacturaelectronica.view.compras.OrdenCompra', {
           align: 'center',
         },
         {
-          text: 'Codigo Generado',
+          text: 'Código',
           dataIndex: 'occodigo',
           flex: 1
         },

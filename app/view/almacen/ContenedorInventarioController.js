@@ -9,8 +9,11 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorInventarioController', 
             Ext.ComponentQuery.query('#btnConfInventario')[0].setHidden(true);
             l = me.getLayout();
             l.setActiveItem(1);
-            Ext.ComponentQuery.query('#dgvInvNuevo')[0].getStore().load();
+            g = Ext.ComponentQuery.query('#dgvInvNuevo')[0];
+            g.getPlugin('gridfilters').clearFilters();    
+            g.getStore().load();
             Ext.ComponentQuery.query('#wRegInventarioInicial')[0].reset();
+
 
         } catch (e) {
             console.log(e);
@@ -30,7 +33,9 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorInventarioController', 
                 l = me.getLayout();
                 l.setActiveItem(2);
                 Ext.ComponentQuery.query('#btnConfInventario')[0].setHidden(false);
-                Ext.ComponentQuery.query('#dgvInvEditar')[0].getStore().load({
+                g = Ext.ComponentQuery.query('#dgvInvEditar')[0];
+                g.getPlugin('gridfilters').clearFilters();   
+                g.getStore().load({
                     params:{
                         idinventario : r.get('id')
                     }
@@ -53,50 +58,51 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorInventarioController', 
         //setTimeout(function(){ objrpt.close(); }, 1000);
     },
     onClickConfirmarInventario:function(btn){
-        alert("confirma");
-        f =  Ext.ComponentQuery.query('#wRegInventarioInicialEditar')[0];    //this.lookupReference('frmRegCotizacion');
-        if (f.isValid()) {
-
-            d = [];
-            st = Ext.ComponentQuery.query('#dgvInvEditar')[0].getStore();
-            me = this;
-            ca = st.getCount();
-
-            for (i = 0; i < ca; i++) {
-                re = st.getAt(i);
-                //if(re.modified){
-                    reg = {
-                        "idprod"     : re.get('idprod'),
-                        "stockfisico": re.get('stockfisico'),
-                        "inventario": re.get("inventario"),
-                        "diferencia": re.get("diferencia"),
-                        "generaserie" : re.get("chk"),
-                        "confirmado" : 1
-                    };
-                    d.push(reg);
-                //}
-            }
-            Ext.ComponentQuery.query('#jsondetalle')[0].setValue(JSON.stringify(d));
-            console.log(JSON.stringify(d));
-             f.submit({
-                waitMsg: 'Guardando informacion...',
-                success: function (form, action) {
-                    me =  Ext.ComponentQuery.query('#wContenedorInventario')[0];    //this;
-                    l = me.getLayout();
-                    l.setActiveItem(0);
-                    Ext.ComponentQuery.query('#dgvInvReg')[0].getStore().load();
-                    sisfacturaelectronica.util.Util.showToast('Inventario Guardado!');
-                    Ext.ComponentQuery.query('#btnConfInventario')[0].setHidden(true);
-
-                },
-                failure: function (action) {
-                    Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
+        Ext.Msg.confirm('SisFacturaElectronica', 'Este procedimiento actualizará las cantidades a mano y eliminara las anteriores. Desea Continuar?',
+        function (choice) {
+            if (choice === 'yes') {
+                f =  Ext.ComponentQuery.query('#wRegInventarioInicialEditar')[0];    //this.lookupReference('frmRegCotizacion');
+                if (f.isValid()) {
+                    g = Ext.ComponentQuery.query('#dgvInvEditar')[0];
+                    g.getPlugin('gridfilters').clearFilters();   
+                    d = [];
+                    st =  g.getStore();  // Ext.ComponentQuery.query('#dgvInvEditar')[0].getStore();
+                    me = this;
+                    ca = st.getCount();
+                    for (i = 0; i < ca; i++) {
+                        re = st.getAt(i);
+                        //if(re.modified){
+                            reg = {
+                                "idprod"     : re.get('idprod'),
+                                "stockfisico": re.get('stockfisico'),
+                                "inventario": re.get("inventario"),
+                                "diferencia": re.get("diferencia"),
+                                "generaserie" : re.get("chk"),
+                                "confirmado" : 1
+                            };
+                            d.push(reg);
+                        //}
+                    }
+                    Ext.ComponentQuery.query('#jsondetalle')[0].setValue(JSON.stringify(d));
+                    Ext.ComponentQuery.query('#config')[0].setValue(1);
+                     f.submit({
+                        waitMsg: 'Guardando informacion...',
+                        success: function (form, action) {
+                            me =  Ext.ComponentQuery.query('#wContenedorInventario')[0];    //this;
+                            l = me.getLayout();
+                            l.setActiveItem(0);
+                            Ext.ComponentQuery.query('#dgvInvReg')[0].getStore().load();
+                            sisfacturaelectronica.util.Util.showToast('Inventario Guardado!');
+                            Ext.ComponentQuery.query('#btnConfInventario')[0].setHidden(true);
+                        },
+                        failure: function (action) {
+                            Ext.Msg.alert("SisFacturaElectronica", action.result.msg);
+                        }
+                    });
+                } else {
+                    sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos para el inventario!');
                 }
-            });
-        } else {
-            sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos para el inventario!');
-        }
+            }
+        });
     }
-
-
 });

@@ -12,7 +12,7 @@ Ext.define('sisfacturaelectronica.view.seguridad.Login', {
     },
     autoShow: true,
     width: 400,
-    height: 400,
+    height: 450,
     padding : 5,
     closable : false,
     itemId : 'wlogin',
@@ -24,7 +24,6 @@ Ext.define('sisfacturaelectronica.view.seguridad.Login', {
                 type : 'vbox',
                 align: 'stretch'
             },
-           // url :sisfacturaelectronica.util.Rutas.usuarioLogin,
             reference: 'frmlogin',
             items: [
                 {

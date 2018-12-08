@@ -9,7 +9,8 @@ Ext.define('sisfacturaelectronica.store.tree.ControlAlmacen', {
         itemId: "wRegAlmacen",
         titulo: "Registro Almacenes",
         glyph: 'xf16b'
-      }, {
+      },
+       {
         text: 'Productos',
         leaf: true,
         itemId: "wContenedorProducto",
@@ -37,10 +38,10 @@ Ext.define('sisfacturaelectronica.store.tree.ControlAlmacen', {
             glyph: 'xf16b'
           },
           {
-            text: 'Guias Entrada',
+            text: 'Ingreso Almacen',
             leaf: true,
             itemId: "wContenedorGuias",
-            titulo: "Guia Entrada",
+            titulo: "Ingreso de Guia a Almacen",
             glyph: 'xf16b'
           }
         ]
@@ -52,10 +53,10 @@ Ext.define('sisfacturaelectronica.store.tree.ControlAlmacen', {
          titulo : '',
          children: [
           {
-            text: 'Inventarios',
+            text: 'Ajuste de Inventario',
             leaf: true,
             itemId: "wContenedorInventario",
-            titulo: "Ajsute Inventario",
+            titulo: "Ajuste de Inventario",
             glyph: 'xf16b'
           }
         

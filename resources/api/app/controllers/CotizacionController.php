@@ -282,16 +282,21 @@ class CotizacionController extends Controller
               $vHasta   = $request->get('vHasta');
               $vPersona = $request->get('vPersona');
               $vCodigo  = $request->get('vCodigo');
+              $vIdper   = $request->get('vIdper');
               $data     = array($vDesde,$vHasta,$vPersona);
-              if(sizeof($data)){
+              if(sizeof($data))
+              {
                 if($vCodigo!='')
                 {
                   $data =array($vCodigo);
-                  $jsonData  = Cotizacion::cotizacionesBuscarCodigo($data);
-                }else{
-                  $jsonData  = Cotizacion::cotizacionesListar($data);
-                }
-              }else {
+                  $jsonData    = Cotizacion::cotizacionesBuscarCodigo($data);
+                }else if($vIdper!=''){
+                    $data =array($vIdper);
+                    $jsonData  = Cotizacion::buscarCotizacionesCliente($data);
+                  }else{
+                    $jsonData  = Cotizacion::cotizacionesListar($data);
+                  }
+              }else{
                   $data =array();
                   $jsonData  = Cotizacion::cotizacionesListar($data);
               }
@@ -1084,7 +1089,21 @@ class CotizacionController extends Controller
          return $response;
 
     }
-}
+  }
+  /*public function listarcotizacionesclienteAction(){
+    $request        = new Phalcon\Http\Request();
+    $response       = new \Phalcon\Http\Response();
+    if($request->isPost() ==true)
+    {
+         $id       = $request->getPost('id');
+         $jsonData = Cotizacion::listarCotizacionesCliente(array($id));
+         $response->setContentType('application/json', 'UTF-8');
+         $response->setContent($jsonData);
+         return $response;
+
+    }
+  }*/
+  
  
 
 

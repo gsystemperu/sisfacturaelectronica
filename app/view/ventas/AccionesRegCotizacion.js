@@ -583,12 +583,22 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
           //Ext.ComponentQuery.query('#btnEditarCotizacion')[0].setDisabled(false);
           //Ext.ComponentQuery.query('#btnImprimirCotizacion')[0].setDisabled(false);
         }
-
-        _store = me.lookupReference('dgvDetalleCotizacion').getStore();
-        _store.getProxy().extraParams = {
-            vIdCotizacion: record.get('vid')
-        };
-        _store.load(1);
+        g = me.lookupReference('dgvDetalleCotizacion');
+        if(g){
+            s = g.getStore();
+            s.getProxy().extraParams = {
+                vIdCotizacion: record.get('vid')
+            };
+            s.load(1);
+        }else{
+            g = me.lookupReference('dgvDetalleCotizacionCliente');
+            s = g.getStore();
+            s.getProxy().extraParams = {
+                vIdCotizacion: record.get('idcoti')
+            };
+            s.load(1);
+        }
+        
     },
 
     /*onClickRefrescarListadoCotizaciones: function () {

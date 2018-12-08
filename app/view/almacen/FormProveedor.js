@@ -10,9 +10,9 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProveedor', {
     ],
     layout: 'fit',
     title: '..:: Registro de Proveedor ::..',
-    width: 480,
-    height: 300,
-    autoShow: true,
+    width: 520,
+    height: 500,
+    modal :true,
     controller :'acciones-proveedor',
     config : {
         control:''
@@ -30,7 +30,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProveedor', {
                 xtype: 'form',
                 defaultType:'textfield',
                 reference :'frmProveedor',
-                padding : 10,
+                bodyPadding : 5,
                 defaults:{
                       anchor :'100%',
                       flex :1
@@ -43,45 +43,55 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProveedor', {
                         value : 0
                     },
                     {
-                        fieldLabel:'Razon Social',
+                        emptyText : 'Razón Social : Proveedor S.A.',
                         allowBlank : false,
                         name : 'razonsocial',
-                        
+                        fieldStyle : 'font-size:20px;background-color: #F9F7D8;'
                     },
                     {
-                        fieldLabel:'Correo',
+                        xtype:'label',
+                        text : 'Correo'
+                    },
+                    {
                         name : 'correo',
                         type:'mail'
-                        
                     },
                     {
-                        fieldLabel:'Contacto',
+                        xtype:'label',
+                        text : 'Contacto'
+                    },
+                    {
                         name :'contacto'
                        
                     },
                     {
-                        fieldLabel:'Telefono',
+                        xtype:'label',
+                        text : 'Telefono Fijo / Movil'
+                    },
+                    {
                         name :'telefono'
-                        
+                    },
+                    {
+                        xtype:'label',
+                        text : 'Dirección'
                     },
                     {
                         xtype:'textarea',
-                        fieldLabel:'Direccion',
                         name :'direccion'
-                        
+                    },
+                    {
+                        xtype:'label',
+                        text : 'Dirección Fiscal'
                     },
                     {
                         xtype:'textarea',
-                        fieldLabel:'Direccion Fiscal',
                         name :'direccionfiscal'
-                        
                     }
                 ],
                 buttons:[
                     {
                         text :'Cancelar',
                         handler : 'onClickCancelarProveedor',
-                        
                     },
                     {
                         text :'Guardar',

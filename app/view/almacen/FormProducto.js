@@ -10,10 +10,8 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
 
   ],
   reference: 'myFrmProducto',
-  margin: 30,
-  autoScroll: true,
+  padding : 10,
   controller: 'acciones-producto',
-  submitEmptyText: false,
   url: sisfacturaelectronica.util.Rutas.productoGuardar,
   layout: {
     type: 'vbox',
@@ -22,17 +20,17 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
   },
   initComponent: function () {
     me = this;
-    var storeColores = Ext.create('sisfacturaelectronica.store.Colores');
-    var storeMedida = Ext.create('sisfacturaelectronica.store.Medidas');
-    var storeUnidadMedida = Ext.create('sisfacturaelectronica.store.UnidadDeMedidas');
-    var storeTipoProd = Ext.create('sisfacturaelectronica.store.TipoDeProductos');
-    var storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
-    var storePresentacion = Ext.create('sisfacturaelectronica.store.Presentacion');
-    var storeModelos = Ext.create('sisfacturaelectronica.store.Modelos');
-    var storeMarcas = Ext.create('sisfacturaelectronica.store.Marcas');
+    storeColores = Ext.create('sisfacturaelectronica.store.Colores');
+    storeMedida = Ext.create('sisfacturaelectronica.store.Medidas');
+    storeUnidadMedida = Ext.create('sisfacturaelectronica.store.UnidadDeMedidas');
+    storeTipoProd = Ext.create('sisfacturaelectronica.store.TipoDeProductos');
+    storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
+    storePresentacion = Ext.create('sisfacturaelectronica.store.Presentacion');
+    storeModelos = Ext.create('sisfacturaelectronica.store.Modelos');
+    storeMarcas = Ext.create('sisfacturaelectronica.store.Marcas');
     storeAlma = Ext.create('sisfacturaelectronica.store.Almacenes');
-    storeFF  = Ext.create('sisfacturaelectronica.store.FormaFarmaceutica');
-    
+    storeFF = Ext.create('sisfacturaelectronica.store.FormaFarmaceutica');
+
     Ext.apply(me,
       {
         items: me.getFormularioProducto(storeColores, storeMedida, storeUnidadMedida, storeTipoProd, storeProveedores, storePresentacion, storeModelos, storeMarcas),
@@ -41,8 +39,9 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             xtype: 'button',
             text: 'Actualizar Cantidad Disponible',
             scale: 'medium',
-            handler: 'onClickActStockMa'
-          },{
+            handler: 'onClickActStockMa',
+            hidden: true
+          }, {
             xtype: 'button',
             text: 'Copiar',
             scale: 'medium',
@@ -66,8 +65,8 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
       });
     me.callParent(arguments);
   },
-  getFormularioProducto: function (storeColores, storeMedida, 
-    storeUnidadMedida, storeTipoProd, storeProveedores, storePresentacion, 
+  getFormularioProducto: function (storeColores, storeMedida,
+    storeUnidadMedida, storeTipoProd, storeProveedores, storePresentacion,
     storeModelos, storeMarcas) {
     _storeDetProvProd = Ext.create('sisfacturaelectronica.store.DetProductoProveedor', {});
     storeSec = Ext.create('sisfacturaelectronica.store.AlmacenSecciones');
@@ -111,10 +110,9 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
               {
                 xtype: 'image',
                 name: 'fotoprod',
-                //src: 'resources/images/imagen.png',
                 itemId: 'imgprod',
-                height: 90,
-                width: 100
+                height: 120,
+                width: 130
               }
             ],
             tbar: [
@@ -137,39 +135,56 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
           },
           {
             xytpe: 'container',
-            flex: 2,
+            flex: 4,
             layout: {
               type: 'vbox',
               pack: 'start',
               align: 'stretch'
             },
-            defaults :{ 
-              labelWidth : 120
+            defaults: {
+              labelWidth: 120
             },
             padding: '10 10 10 10',
             items: [
               {
-                xtype: 'textfield',
-                fieldLabel: 'Codigo Producto',
-                name: 'codigoproducto',
-                itemId: 'codigoserie'
-              },
-              {
-                xtype: 'textfield',
-                fieldLabel: 'Codigo Barras',
-                name: 'codigobarras'
+                xtype:'container',
+                flex:1,
+                layout:{
+                  type:'hbox',
+                  align : 'stretch'
+                },
+                padding : '0 0 5 0',
+                defaults:{
+                  labelWidth : 120
+                },
+                items:[
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: 'Código Producto',
+                    name: 'codigoproducto',
+                    itemId: 'codigoserie',
+                    flex:1
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: 'Código Barras',
+                    name: 'codigobarras',
+                    flex:1,
+                    labelAlign : 'right'
+                  }
+                ]
               },
               {
                 xtype: 'textfield',
                 fieldLabel: 'Nombre Comercial',
                 name: 'nombre',
-                itemId : 'nombre',
+                itemId: 'nombre',
                 allowBlank: false,
                 fieldStyle: 'font-size:20px;text-transform: uppercase;background-color:#F9F7D8'
               },
               {
                 xtype: 'textfield',
-                fieldLabel: 'Nombre Generico',
+                fieldLabel: 'Nombre Corto',
                 name: 'nombregenerico',
                 allowBlank: true,
                 fieldStyle: 'font-size:20px;text-transform: uppercase;background-color:#F9F7D8'
@@ -196,11 +211,12 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             displayField: 'descripcion',
             valueField: 'id',
             queryMode: 'local',
-            editable: false,
+            editable: true,
             flex: 1,
             store: storeTipoProd,
             emptyText: '---- Seleccionar -----',
-            allowBlank: true
+            allowBlank: true,
+            padding: '0 5 0 0'
           },
           { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoTipoProducto' },
           {
@@ -214,16 +230,17 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             displayField: 'descripcion',
             valueField: 'id',
             queryMode: 'local',
-            editable: false,
+            editable: true,
             flex: 1,
-            labelAlign : 'right',
+            labelAlign: 'right',
             store: storeFF,
             emptyText: '---- Seleccionar -----',
-            allowBlank: true
+            allowBlank: true,
+            padding: '0 5 0 0'
           },
           { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoTipoProducto' },
           {
-            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'),handler: 'onClickRefrescarForma'
+            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'), handler: 'onClickRefrescarForma'
           }
         ]
 
@@ -293,6 +310,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             flex: 1,
             name: 'idmodelo',
             itemId: 'idmodelo',
+            padding: '0 5 0 0'
 
           },
           { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoUnidadMedida', hidden: false },
@@ -308,8 +326,8 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             queryMode: 'local',
             labelAlign: 'right',
             emptyText: '---- Seleccionar -----',
-
-            itemId: 'idmarca'
+            itemId: 'idmarca',
+            padding: '0 5 0 0'
 
           },
           { xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoUnidadMedida' },
@@ -343,7 +361,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
 
           {
             fieldLabel: 'Unidad Medida',
-            labelWidth : 124,
+            labelWidth: 124,
             name: 'idunidadmedida',
             itemId: 'idunidadmedida',
             flex: 1,
@@ -353,7 +371,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             queryMode: 'local',
             editable: true,
             emptyText: '---- Seleccionar -----',
-            hidden:true,
+            hidden: true,
           },
           {
             fieldLabel: 'Unidad Medida',
@@ -367,6 +385,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             queryMode: 'local',
             editable: false,
             emptyText: '---- Seleccionar -----',
+            padding: '0 5 0 0'
           },
           {
             xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
@@ -383,56 +402,11 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             fieldStyle: 'font-size:15px;',
             value: 0,
             flex: 1,
-            labelWidth:130
+            labelWidth: 130
           }
-          //{ xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'), handler: 'onClickNuevoUnidadMedida' },
-          //{ xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'), handler: 'onClickRefrescarUnidadMedida' },
-         
         ]
       },
-     /* {
-        xtype: 'container',
-        layout: {
-          type: 'hbox',
-        },
-        defaultType: 'combo',
-        defaults: {
-          labelAlign: 'right'
-        },
-        padding: '0 0 0 0',
-        items: [
-           {
-            fieldLabel: 'Presentación',
-            labelAlign: 'left',
-            name: 'idpresentacion',
-            itemId: 'idpresentacion',
-            flex: 1,
-            store: storePresentacion,
-            displayField: 'despres',
-            valueField: 'idpres',
-            queryMode: 'local',
-            editable: false,
-            emptyText: '---- Seleccionar -----',
-          },
-          {
-            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-            handler: 'onClickNuevoPresentacion'
-          },
-          {
-            xtype: 'button', glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'),
-            handler: 'onClickRefrescarPresentacion'
-          },
-          {
-            xtype: 'numberfield',
-            fieldLabel: 'Cant. Presentación',
-            name: 'cantidadunidadmedida',
-            fieldStyle: 'font-size:15px;',
-            value: 0,
-            flex: 1,
-            labelWidth:130
-          }
-        ]
-      },*/
+
       {
         xtype: 'container',
         layout: {
@@ -470,32 +444,6 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
         layout: {
           type: 'hbox',
         },
-        hidden: true,
-        padding: '0 0 10 0',
-        defaultType: 'numberfield',
-        items: [
-          {
-            fieldLabel: 'Precio Venta',
-            //  name: 'precioventa',
-            flex: 1,
-            hidden: true
-          },
-          {
-            fieldLabel: 'Precio Venta Unidad ',
-            name: 'precioventafraccion',
-            labelWidth: 150,
-            flex: 1,
-            labelAlign: 'left',
-            hidden: false
-          }
-        ]
-
-      },
-      {
-        xtype: 'container',
-        layout: {
-          type: 'hbox',
-        },
         padding: '0 0 10 0',
         defaultType: 'numberfield',
         items: [{
@@ -524,7 +472,7 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
         height: 350,
         items: [
           {
-            title: '..: Venta :..',
+            title: ' Venta ',
             layout: {
               type: 'vbox',
               align: 'stretch',
@@ -636,376 +584,73 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
                 ]
               },
               {
-                xtype: 'fieldset',
-                title : 'PRESENTACIÓN CAJA',
+                xtype: 'container',
                 layout: {
                   type: 'hbox',
-                  align: 'stretch',
-                  pack: 'start'
+                  flex: 1,
+                  labelAlign: 'right'
                 },
+                hidden: false,
                 padding: '5 0 5 0',
-                defaultType: 'numberfield',
-                defaults: {
+                defaults : {
+                  labelWidth : 150,
                   labelAlign: 'right',
-                  
                 },
+                defaultType: 'numberfield',
                 items: [
                   {
-                    xtype: 'label',
-                    text: 'Se Vende por Unidad',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    height: 25,
-                    flex: 1.95,
-                    style: {
-                      //background: '#007C7B',
-                      color: '#bf0000',
-                      textAlign: 'left',
-                      fontWeight: 'bold',
-                      fontSize: '13px',
-                      padding:'10px'
-                      
-                    },
+                    xtype: 'checkbox',
+                    boxLabel: 'Maneja Stock',
+                    name: 'manejastock',
+                    flex: 1,
+                    value: true
+                  },
+                  {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Stock Minimo',
+                    name: 'stockminimo',
+                    flex: 1.5,
+                    labelAlign: 'right',
+                    value: 0
+                  },
+                  {
+                    xtype: 'numberfield',
+                    fieldLabel: 'Precio Minorista',
+                    name: 'precioventafraccion',
+                    flex: 2,
+                    allowDecimals: true,
+                    decimalSeparator: '.',
+                    decimalPrecision: 5,
+                    step: '0.1',
+                    value: 0,
+                    allowBlank: false,
+                    fieldStyle: 'font-size:20px;text-transform: uppercase;background-color:#F9F7D8;text-align:right;'
                     
                   },
                   {
-                    xtype: 'checkbox',
-                    name: 'ventaunidad',
-                    boxLabelAlign: 'before',
-                    bodyPadding: 5,
-                    flex: 0.5,
-                    listeners : {
-                      change :'onChangeVentaUnidad'
-                    }
-
-
-                  },
-
-                  {
-                    fieldLabel: 'Precio Unidad',
-                    name: 'preciounidad',
-                    labelWidth: 130,
-                    labelAlign: 'right',
-                    disabled:true,
-                    value: 0,
-                    flex: 3
-                  },
-                ]
-              },
-              {
-                xtype: 'fieldset',
-                title : 'PRESENTACIÓN CAJA',
-                layout: {
-                  type: 'hbox',
-                  align: 'stretch',
-                  pack: 'start'
-                },
-                padding: '5 0 5 0',
-                hidden: false,
-                defaultType: 'numberfield',
-                defaults: {
-                  labelAlign: 'right'
-                
-                },
-                items: [
-                  {
-                    xtype: 'label',
-                    text: 'Se vende por Blister (Capsulas, pastillas, comprimidos etc..)',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    height: 25,
-                    flex: 2.5,
-                    style: {
-                     // background: '#007C7B',
-                      color: '#bf0000',
-                      textAlign: 'left',
-                      fontWeight: 'bold',
-                      fontSize: '13px',
-                      padding:'10px'
-                    }
-                  },
-                  {
-                    xtype: 'checkbox',
-                    name: 'ventablister',
-                    boxLabelAlign: 'before',
-                    flex: 0.5,
-                    listeners : {
-                      change :'onChangeVentaBlister'
-                    }
-                  },
-                  {
-                    fieldLabel: 'Cantidad x Blister',
-                    name: 'cantidadblister',
-                    disabled:true,
-                    labelWidth: 130,
-                    labelAlign: 'right',
-                    value: 0,
-                    flex: 2
-                  }, 
-                  {
-                    fieldLabel: 'Precio Blister',
-                    name: 'precioblister',
-                    disabled:true,
-                    labelWidth: 130,
-                    labelAlign: 'right',
-                    value: 0,
-                    flex: 2
-                  }
-
-                ]
-              },
-              {
-                xtype: 'container',
-                layout: {
-                  type: 'hbox',
-                  align: 'stretch',
-                  pack: 'start'
-                },
-                padding: '5 0 5 0',
-                hidden: false,
-                defaultType: 'numberfield',
-                defaults: {
-                  labelAlign: 'right',
-                },
-                items: [
-                  {
-                    xtype: 'label',
-                    text: '** Venta con Receta Médica',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    height: 25,
-                    flex :1,
-                    style: {
-                     // background: '#007C7B',
-                      color: '#bf0000',
-                      textAlign: 'left',
-                      fontWeight: 'bold',
-                      fontSize: '13px',
-                      padding:'10px'
-                    }
-                  },
-                  {
-                    xtype: 'checkbox',
-                    name: 'ventaconreceta',
-                    boxLabelAlign: 'before',
-                    flex: 3
-                  }
-                ]
-              },
-              {
-                xtype: 'container',
-                layout: {
-                  type: 'hbox',
-                  flex: 1,
-                  labelAlign: 'right'
-                },
-                hidden: false,
-                padding: '5 0 5 0',
-                defaultType: 'numberfield',
-                items: [{
-                  xtype: 'checkbox',
-                  boxLabel: 'Maneja Stock',
-                  name: 'manejastock',
-                  flex: 1,
-                  value: true
-                },
-                {
-                  xtype: 'numberfield',
-                  fieldLabel: 'Stock Minimo',
-                  name: 'stockminimo',
-                  flex: 1,
-                  labelAlign: 'right',
-                  value: 0
-                },
-                ]
-              },
-              {
-                xtype: 'container',
-                padding: '5 5 5 5',
-                layout: {
-                  type: 'hbox',
-                  flex: 1,
-                },
-                items: [
-                  {
 
                     xtype: 'numberfield',
-                    fieldLabel: 'Precio Publico Lima',
+                    fieldLabel: 'Precio Mayorista',
                     name: 'precioventa',
-                    flex: 1,
+                    preventMark: true,
+                    flex: 2,
                     allowDecimals: true,
                     decimalSeparator: '.',
                     decimalPrecision: 5,
                     step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    allowBlank: false,
-                    fieldStyle: 'font-size:20px;text-transform: uppercase;background-color:#F9F7D8'
-
-                  },
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Lima 1',
-                    name: 'precioprodlocalespecial',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 5,
-                    step: '0.1',
-                    labelWidth: 170,
                     value: 0,
                     labelAlign: 'right',
-                    hidden: true
-                  },
-                  {
+                    fieldStyle: 'font-size:20px;text-transform: uppercase;background-color:#F9F7D8;text-align:right;'
 
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Lima 2',
-                    name: 'precioprodlocalespecial2',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 5,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right',
-                    hidden: true
-
-
-                  },
-                  {
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Lima 3',
-                    name: 'precioprodlocalespecial3',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 5,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right',
-                    hidden: true
-                  },
-
-                ]
-              },
-              {
-                xtype: 'container',
-                hidden: true,
-                layout: {
-                  type: 'hbox',
-                },
-                padding: '5 5 5 5',
-                defaults: {
-                  flex: 1
-                },
-                items: [
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Provincia',
-                    name: 'precioprodprovincia',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0
-                  },
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Provincia 1',
-                    name: 'precioprodprovinciaespecial',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right'
-                  },
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Provincia 2',
-                    name: 'precioprodprovinciaespecial2',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right'
-                  },
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Especial Provincia 3',
-                    name: 'precioprodprovinciaespecial3',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right'
-                  }
-
-                ]
-              },
-
-              {
-                xtype: 'container',
-                hidden: true,
-                layout: {
-                  type: 'hbox',
-                },
-                padding: '5 5 5 5',
-                items: [
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Distribuidor Lima',
-                    name: 'precioproddistribuidorlima',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0
-                  },
-                  {
-
-                    xtype: 'numberfield',
-                    fieldLabel: 'Precio Distribuidor Provincia',
-                    name: 'precioproddistribuidorprovincia',
-                    flex: 1,
-                    allowDecimals: true,
-                    decimalSeparator: '.',
-                    decimalPrecision: 2,
-                    step: '0.1',
-                    labelWidth: 170,
-                    value: 0,
-                    labelAlign: 'right'
                   }
                 ]
-              }
-
-
+              },
 
             ]
           },
           {
-            title: ':: Almacen ::',
+            title: ' Almacen ',
+            hidden: false,
             layout: {
               type: 'fit',
             },
@@ -1023,24 +668,24 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
                     flex: 1,
                     editable: false,
                     queryMode: 'local',
-                    width : 400,
+                    width: 400,
                     listeners: {
                       select: 'onSelectedAlmacen'
                     },
-                    name : 'idalmacen'
+                    name: 'idalmacen'
                   },
                   {
                     xtype: 'combo',
                     fieldLabel: 'Sección',
-                    reference : 'almacenseccion',
+                    reference: 'almacenseccion',
                     store: storeSec,
                     displayField: 'descripcion',
                     valueField: 'id',
                     flex: 1,
                     editable: true,
                     queryMode: 'local',
-                    width : 400,
-                    name : 'idalmacenseccion'
+                    width: 400,
+                    name: 'idalmacenseccion'
                   }
                 ]
               }
@@ -1048,7 +693,8 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
             ]
           },
           {
-            title: '..:: Proveedores Laboratorio::..',
+            title: 'Proveedores',
+            hidden: false,
             layout: 'fit',
             tbar: [
               { xtype: 'button', text: 'nuevo', handler: 'onClickAddProveedorProducto' },
@@ -1105,33 +751,10 @@ Ext.define('sisfacturaelectronica.view.almacen.FormProducto', {
                 ],
               }
             ]
-          },
-          {
-            title: '..: Acción Farmacológica :..',
-            layout: {
-              type: 'fit',
-              align: 'stretch',
-              pack: 'start'
-            },
-            bodyPadding: 10,
-            items:[
-              {xtype:'textarea',name:'accionfarmacologica'}
-            ]
           }
-
         ]
-
       }
-
-
-
-
-
-
     ];
     return obj;
   }
-
-
-
 });

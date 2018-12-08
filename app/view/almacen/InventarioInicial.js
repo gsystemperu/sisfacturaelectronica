@@ -40,7 +40,8 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
       bbar: [
         '->',
         { xtype: 'button', text: 'CANCELAR', handler: 'onClickCancelarInventario' },
-        { xtype: 'button', text: 'GUARDAR', handler: 'onClickGuardarInventario' }
+        { xtype: 'button', text: 'GUARDAR BORRADOR', handler: 'onClickGuardarInventario' },
+        { xtype: 'button', text: 'GUARDAR Y CONFIRMAR', handler: 'onClickGuardarConfInventario' }
       ]
     });
     this.callParent();
@@ -52,8 +53,6 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
         type: 'vbox',
         align: 'stretch'
       },
-      bodyPadding: 20,
-      flex: 1,
       items: [
         {
           xtype: 'hiddenfield',
@@ -65,18 +64,29 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
           xtype: 'hiddenfield',
           name: 'jsondetalle',
           reference: 'jsondetalle',
-
         },
+        {
+          xtype: 'hiddenfield',
+          name: 'usuario',
+          reference: 'usuario',
+        },
+        {
+          xtype: 'hiddenfield',
+          name: 'config',
+          reference: 'config',
+          value : 0
+        },
+        
         {
           xtype: 'label',
           text: 'Inventario / Nuevo',
           itemId: 'lblTituloProducto',
-          padding: '5 0 5 0',
+          padding: '10 10 10 0',
           style: {
-            color: '#775c80',
+            color: '#2d5f87',
             textAlign: 'left',
             fontWeight: 'bold',
-            fontSize: '20px'
+            fontSize: '30px'
           }
 
         },
@@ -87,14 +97,14 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
             align: 'stretch'
           },
           defaults: {
-            flex: 1
+            flex: 2
           },
           items: [
             {
               xtype: 'label',
               text: 'Referencia',
               style: {
-                color: '#775c80',
+                color: '#2d5f87',
                 textAlign: 'left',
                 fontWeight: 'bold',
                 fontSize: '20px'
@@ -104,9 +114,10 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
             },
             {
               xtype: 'label',
+              flex:1,
               text: 'Fecha',
               style: {
-                color: '#775c80',
+                color: '#2d5f87',
                 textAlign: 'left',
                 fontWeight: 'bold',
                 fontSize: '20px'
@@ -121,18 +132,20 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
             align: 'stretch'
           },
           defaults: {
-            flex: 1
+            flex: 2
           },
           items: [
             {
               xtype: 'textfield',
               name: 'referencia',
               fieldStyle: 'font-size:20px;font-weight:bold;',
-              allowBlank: false
+              allowBlank: false,
+              padding : '0 5 0 0'
             },
             {
               xtype: 'datefield',
               name: 'fechainventario',
+              flex:1,
               value: new Date()
 
             }
@@ -157,22 +170,37 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicial', {
           store: st,
           sortableColumns: false,
           plugins: [rowEditing],
-          plugins: {
-            ptype: 'cellediting',
-            clicksToEdit: 1
-          },
+          plugins: 
+          [
+            {
+              ptype: 'cellediting',
+              clicksToEdit: 1
+            },
+            {
+              ptype : 'gridfilters'
+            }
+          ],
+          
           selModel: 'cellmodel',
           columns: [
             {
               text: 'Producto',
               dataIndex: 'nombre',
               flex: 2.5,
-              align: 'left'
+              align: 'left',
+              filter: {
+                type: 'string',
+                itemDefaults: {
+                  emptyText : 'Ingresar nombre del producto',
+                  width : 500
+                }
+              }
             }, {
               text: 'Stock',
               dataIndex: 'stockfisico',
               flex: 1,
               align: 'right',
+              filter: 'number',
               editor: {
                 xtype: 'numberfield'
               },

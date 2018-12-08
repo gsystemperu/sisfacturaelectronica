@@ -23,6 +23,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
     controller: 'acciones-regcotizacion',
     initComponent: function () {
         storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
+        storeCoti.load();
         storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
         storeEstado  = Ext.create('sisfacturaelectronica.store.BusquedaEstado');
         rowEditing   = Ext.create('Ext.grid.plugin.RowEditing', {

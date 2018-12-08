@@ -14,7 +14,7 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
-
+        storeProductos = Ext.create('sisfacturaelectronica.store.ProductosOrdenCompra'); 
         storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
         storeDetalle = Ext.create('sisfacturaelectronica.store.DetalleOrdenCompra');
         storeMonedas = Ext.create('sisfacturaelectronica.store.Monedas');
@@ -47,6 +47,11 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                         },
                         {
                             xtype: 'hiddenfield',
+                            name: 'indice',
+                            value: 0
+                        },
+                        {
+                            xtype: 'hiddenfield',
                             name: 'usuario',
                             itemId: 'usuario',
                             value: ''
@@ -69,28 +74,32 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
 
                                         {
                                             xtype: 'combo',
-                                            fieldLabel: 'Razon Social',
+                                            emptyText: 'Razón Social : Proveedor S.A.',
+                                            fieldStyle: 'font-size:20px;height:35px;',
                                             itemId: 'cboProveedoresf',
                                             store: storeProveedores,
                                             valueField: 'id',
                                             displayField: 'razonsocial',
                                             queryMode: 'local',
-                                            flex: 2,
+                                            flex: 2.5,
                                             editable: true,
-                                            name: 'vidproveedor'
+                                            name: 'vidproveedor',
+                                            padding: '0 2 0 0'
 
                                         },
                                         {
                                             xtype: 'button',
                                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
                                             handler: 'onClickFormularioProveedor',
-                                            control: 'cboProveedoresf'
+                                            control: 'cboProveedoresf',
+                                            height: 35
                                         },
                                         {
                                             xtype: 'button',
                                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('refrescar'),
                                             handler: 'onClickRefrescarProveedor',
-                                            //control: 'cboProveedoresf'
+                                            height: 35
+
                                         },
 
                                         {
@@ -122,11 +131,15 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                 },
                                 {
                                     xtype: 'container',
-                                    layout: 'hbox',
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'stretch'
+                                    },
                                     margin: '0 0 5 6',
                                     columnWidth: 0.5,
                                     defaults: {
-                                        allowBlank: false
+                                        allowBlank: false,
+                                        fieldStyle: 'text-align:center;;font-size:15px'
                                     },
                                     items: [
                                         {
@@ -139,7 +152,8 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                             displayField: 'descripcion',
                                             value: 1,
                                             editable: false,
-                                            name: 'idmoneda'
+                                            name: 'idmoneda',
+                                            flex: 1.5
                                         },
                                         {
                                             xtype: 'combo',
@@ -153,7 +167,7 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                             labelAlign: 'right',
                                             editable: false,
                                             value: 1,
-                                            flex: 1
+                                            flex: 1.5
 
                                         },
                                         {
@@ -163,15 +177,14 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                             name: 'serie',
                                             value: '001',
                                             flex: 1,
-                                            allowBlank: false
+                                            allowBlank: false,
                                         },
                                         {
                                             xtype: 'textfield',
                                             labelAlign: 'right',
                                             name: 'numerodoc',
-                                            flex: 0.5,
+                                            flex: 1,
                                             allowBlank: false,
-                                            value: ''
                                         }
                                     ]
                                 },
@@ -182,18 +195,24 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                     columnWidth: 0.5,
                                     defaults: {
                                         allowBlank: false
-                                       
+
                                     },
                                     items: [
                                         {
                                             xtype: 'checkboxfield',
-                                            boxLabel: '<b>Precios Incluye I.g.v. </b>',
+                                            boxLabel: '<b >Precios Incluye I.g.v. </b>',
                                             name: 'flagestadoigv',
                                             value: true,
                                             listeners: {
                                                 change: 'onChangeInIgv'
-                                            }
+                                            },
+                                            padding : '0 10px 0 0'
 
+                                        },
+                                        {
+                                            xtype: 'checkboxfield',
+                                            boxLabel: '<b style="color:#2d5f87">Es Orden Interna </b>',
+                                            name: 'ordenInterna'
                                         },
                                         {
                                             xtype: 'combo',
@@ -209,7 +228,7 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                                             editable: false,
                                             name: 'idalmacen',
                                             allowBlank: false,
-                                            labelWidth : 150
+                                            labelWidth: 150
                                         }
                                     ]
                                 },
@@ -222,236 +241,197 @@ Ext.define('sisfacturaelectronica.view.compras.IngresarOrdenCompra', {
                             columnWidth: 0.1,
                             padding: 10,
                             defaultType: 'textfield',
-                            items: [{
-                                xtype: 'container',
-                                margin: '0 0 0 -5',
-                                layout: 'fit',
-                                frame: true,
-                                border: false,
-                                items: [{
-                                    xtype: 'container',
-                                    layout: 'vbox',
-                                    columnWidth: 0.5,
-                                    margin: '0 0 10 6',
-                                    items: [
-
-
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    layout: 'fit',
+                                    tbar: [
                                         {
-                                            xtype: 'container',
-                                            layout: 'hbox',
-                                            padding: '0 0 0 0',
-                                            items: [{
-                                                xtype: 'label',
+                                            xtype: 'combo',
+                                            flex: 13,
+                                            itemId: 'cboProducto',
+                                            store: storeProductos,
+                                            listConfig: {
+                                                itemTpl: '<b>{nombre}</b>  ->   <strong> {marca} </strong> <br> '
+                                                    //+'<label style="background-color:#6A4B5A;color:#FFFFFF;width:200px;height:30px;padding:5px 5px 5px 5px;  "> Precio </label> '
+                                                    //+'&nbsp;&nbsp; Precio Mayorista :&nbsp;&nbsp; {precioventa} &nbsp  -  &nbsp;&nbsp;Precio Minorista : &nbsp;&nbsp; {preciounidad} <br> '
+                                                    + '<label style="background-color:#03AA92;color:#FFFFFF;width:250px;height:30px;padding:5px 5px 5px 5px;  "> Stock &nbsp; </label> '
+                                                    + '&nbsp;&nbsp; Stock : &nbsp;&nbsp;{entero}  &nbsp;&nbsp;-  &nbsp;&nbsp; Fracción :&nbsp;&nbsp; {fraccion} '
+                                            },
+                                            typeAhead: true,
+                                            minChars: 4,
+                                            typeAheadDelay: 150,
+                                            queryDelay: 100,
+                                            queryCaching: false,
+                                            emptyText: ' DIGITAR NOMBRE DEL PRODUCTO',
+                                            valueField: 'id',
+                                            queryMode: 'remote',
+                                            fieldStyle: 'font-size:20px;',
+                                            listeners: {
+                                                beforequery: 'onBeforeQueryProducto',
+                                                select: 'onSelectProducto'
+                                            }
+                                        },
+                                        {
+                                            xtype: 'button',
+                                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                            handler: 'onClickNuevoProd',
+                                            height: 33
+                                        },
+
+                                        '->',
+                                        {
+                                            xtype: 'textfield',
+                                            itemId: 'txtNumeroPedido',
+                                            value: '** Generando',
+                                            readOnly: true,
+                                            fieldStyle: 'font-size:25px;text-align:center;',
+                                            fieldLabel: 'Nro. Orden de Compra',
+                                            labelWidth: 160,
+                                            labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
+
+                                        }
+                                    ],
+                                    items: [
+                                        {
+                                            xtype: 'grid',
+                                            flex: 1,
+                                            itemId: 'dgvDetalleOrdenCompra',
+                                            reference: 'dgvDetalleOrdenCompra',
+                                            store: storeDetalle,
+                                            plugins: [rowEditing],
+                                            selModel: 'cellmodel',
+                                            plugins: {
+                                                ptype: 'cellediting',
+                                                clicksToEdit: 1
+                                            },
+                                            columns: [{
                                                 text: 'Producto',
-                                                width: 80,
-                                                height: 23,
-                                                style: {
-                                                    paddingTop: '3px',
-                                                    background: '#6a4b5a',
-                                                    color: 'white',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '13px'
-                                                }
-                                            },
-                                            {
-                                                xtype: 'button',
-                                                // text: 'Buscar Producto',
-                                                glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                                                handler: 'onClickBuscarProducto'
-
-                                            },
-                                            {
-                                                xtype: 'container',
-                                                width: 20
+                                                dataIndex: 'producto',
+                                                flex: 1.8
                                             },
 
                                             {
-                                                xtype: 'label',
-                                                text: 'NRO° ORDEN COMPRA ',
-                                                width: 210,
-                                                height: 23,
-                                                style: {
-                                                    paddingTop: '3px',
-                                                    background: '#6a4b5a',
-                                                    color: 'white',
-                                                    textAlign: 'center',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '15px',
-                                                    textAlign: 'center'
+                                                xtype: 'numbercolumn',
+                                                text: 'Cant.',
+                                                dataIndex: 'cantidad',
+                                                flex: 0.3,
+                                                align: 'center',
+                                                editor: {
+                                                    xtype: 'numberfield',
+                                                    value: 0,
+                                                    //maxValue: 1000,
+                                                    minValue: 0,
+                                                    itemId: 'txtCantidadUnidad'
+
                                                 }
                                             },
                                             {
-                                                xtype: 'textfield',
-                                                itemId: 'txtNumeroPedido',
-                                                value: 'OC000000000',
-                                                readOnly: true
+                                                xtype: 'numbercolumn',
+                                                text: 'Precio Compra',
+                                                dataIndex: 'precio',
+                                                flex: 0.6,
+                                                align: 'right',
+                                                editor: {
+                                                    xtype: 'numberfield',
+                                                    format: '0.00',
+                                                    decimalPrecision: 2,
+                                                    decimalSeparator: '.'
+                                                }
+                                            },
+                                            {
+                                                xtype: 'numbercolumn',
+                                                text: 'Total',
+                                                dataIndex: 'total',
+                                                flex: 0.6,
+                                                align: 'right'
+
+                                            },
+                                            {
+                                                xtype: 'numbercolumn',
+                                                text: 'Precio Venta',
+                                                dataIndex: 'precioventa',
+                                                flex: 0.6,
+                                                align: 'right',
+                                                editor: {
+                                                    xtype: 'numberfield',
+                                                    format: '0.00',
+                                                    decimalPrecision: 2,
+                                                    decimalSeparator: '.'
+                                                }
+                                            },
+
+                                            {
+                                                xtype: 'widgetcolumn',
+                                                flex: 0.2,
+                                                widget: {
+                                                    xtype: 'button',
+                                                    width: 24,
+                                                    glyph: 0xf014,
+                                                    listeners: {
+                                                        click: 'onClickEliminarDetalle'
+                                                    }
+                                                }
+
                                             }
 
+                                            ],
+                                            cls: '',
+                                            height: 250,
+                                            listeners: {
+                                                edit: 'onEditorCalcularTotalOrdenCompra'
+                                            }
+
+                                        }],
+                                    bbar: [
+                                        '->',
+                                        {
+                                            xtype: 'container',
+                                            layout: {
+                                                type: 'vbox',
+                                                align: 'stretch'
+                                            },
+                                            defaults:{
+                                                fieldStyle: 'text-align: right;font-size:20px;',
+                                                labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;',
+                                                labelAlign: 'left',
+                                                value: "0.00",
+                                                minValue: 0,
+                                                step: 0.01,
+                                                readOnly: true,
+                                                width: 280,
+                                                labelWidth: 120,
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    itemId: 'txtSubtotalOrdenCompra',
+                                                    name: 'subtotal',
+                                                    fieldLabel: 'Sub Total',
+                                                   
+                                                    
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'I.g.v.',
+                                                    itemId: 'txtIgvOrdenCompra',
+                                                    name: 'igv',
+                                                   
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Total General',
+                                                    itemId: 'txtTotalGeneralOrdenCompra',
+                                                   
+                                                }
                                             ]
                                         }
                                     ]
-                                },
 
-                                ]
-                            },
-                            {
-                                xtype: 'panel',
-                                layout: 'fit',
-                                margin: '0 0 5 0',
-                                items: [{
-                                    xtype: 'grid',
-                                    flex: 1,
-                                    itemId: 'dgvDetalleOrdenCompra',
-                                    reference: 'dgvDetalleOrdenCompra',
-                                    store: storeDetalle,
-                                    plugins: [rowEditing],
-                                    selModel: 'cellmodel',
-                                    plugins: {
-                                        ptype: 'cellediting',
-                                        clicksToEdit: 1
-                                    },
-                                    columns: [{
-                                        text: 'Producto',
-                                        dataIndex: 'producto',
-                                        flex: 1.8
-                                    },
-
-                                    {
-                                        xtype: 'numbercolumn',
-                                        text: 'Cant.',
-                                        dataIndex: 'cantidad',
-                                        flex: 0.3,
-                                        align: 'center',
-                                        editor: {
-                                            xtype: 'numberfield',
-                                            value: 0,
-                                            //maxValue: 1000,
-                                            minValue: 0,
-                                            itemId: 'txtCantidadUnidad'
-
-                                        }
-                                    },
-                                    {
-                                        xtype: 'numbercolumn',
-                                        text: 'Precio Compra',
-                                        dataIndex: 'precio',
-                                        flex: 0.6,
-                                        align: 'right',
-                                        editor: {
-                                            xtype: 'numberfield',
-                                            format: '0.00',
-                                            decimalPrecision: 2,
-                                            decimalSeparator: '.'
-                                        }
-                                    },
-                                    {
-                                        xtype: 'numbercolumn',
-                                        text: 'Total',
-                                        dataIndex: 'total',
-                                        flex: 0.6,
-                                        align: 'right'
-
-                                    },
-                                    {
-                                        xtype: 'numbercolumn',
-                                        text: 'Precio Venta',
-                                        dataIndex: 'precioventa',
-                                        flex: 0.6,
-                                        align: 'right',
-                                        editor: {
-                                            xtype: 'numberfield',
-                                            format: '0.00',
-                                            decimalPrecision: 2,
-                                            decimalSeparator: '.'
-                                        }
-                                    },
-
-                                    {
-                                        xtype: 'widgetcolumn',
-                                        flex: 0.2,
-                                        widget: {
-                                            xtype: 'button',
-                                            width: 24,
-                                            glyph: 0xf014,
-                                            listeners: {
-                                                click: 'onClickEliminarDetalle'
-                                            }
-                                        }
-
-                                    }
-
-
-                                    ],
-                                    cls: '',
-                                    height: 300,
-                                    listeners: {
-                                        edit: 'onEditorCalcularTotalOrdenCompra'
-                                    }
-
-                                }]
-
-                            }
+                                }
                             ]
 
                         }, // fin fieldset Detalle
-                        {
-                            xtype: 'panel',
-                            layout: 'hbox',
-                            items: [{
-                                xtype: 'panel',
-                                flex: 1.8
-                            },
-                            {
-                                xtype: 'panel',
-                                flex: 1,
-                                padding: '0 0 15 0',
-                                items: [{
-                                    xtype: 'textfield',
-                                    itemId: 'txtSubtotalOrdenCompra',
-                                    name: 'subtotal',
-                                    fieldLabel: '<b>Sub Total</b>',
-                                    value: "0.00",
-                                    minValue: 0,
-                                    step: 0.01,
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                    labelAlign: 'right'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: '<b>I.g.v.  </b>',
-                                    itemId: 'txtIgvOrdenCompra',
-                                    name: 'igv',
-                                    value: "0.00",
-                                    minValue: 0,
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                    labelAlign: 'right'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: '<b>Total General </b>',
-                                    itemId: 'txtTotalGeneralOrdenCompra',
-                                    value: "0.00",
-                                    name: 'totalgeneral',
-                                    minValue: 0,
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                    labelAlign: 'right'
-                                }
-                                ]
-                            }
-
-                            ]
-
-                        },
                         {
                             xtype: 'panel',
                             buttons: [

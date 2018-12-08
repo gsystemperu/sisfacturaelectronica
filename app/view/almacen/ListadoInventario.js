@@ -86,12 +86,12 @@ Ext.define('sisfacturaelectronica.view.almacen.ListadoInventario',{
                     xtype: 'label',
                     text :'Registro de Inventarios',
                     itemId: 'lblTituloProducto',
-                    padding :'5 5 5 5',
+                    padding :10,
                     style: {
-                      color: '#775c80',
+                      color: '#2d5f87',
                       textAlign: 'left',
                       fontWeight: 'bold',
-                      fontSize: '23px'
+                      fontSize: '28px'
                     },
                     flex: 1
                   },

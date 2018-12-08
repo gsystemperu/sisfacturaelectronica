@@ -5,7 +5,10 @@ Ext.define('sisfacturaelectronica.view.almacen.ListadoInventarioController', {
         me = this;
         Ext.Ajax.request({
                 url: sisfacturaelectronica.util.Rutas.inventarioAnular,
-                params: { id          : btn.getWidgetRecord().get('id')},
+                params: { 
+                    id          : btn.getWidgetRecord().get('id'),
+                    usuario : sisfacturaelectronica.util.Data.usuario 
+                },
                 success: function(response){
                     var _error = Ext.JSON.decode(response.responseText);
                     if(_error.error!=0){

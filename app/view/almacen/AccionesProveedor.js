@@ -6,15 +6,17 @@ Ext.define('sisfacturaelectronica.view.almacen.AccionesProveedor', {
     //@ Tabla Proveedor
     //=============================================
     onClickGuardarProveedorModal: function (btn) {
-        _form = this.lookupReference('frmProveedor');
+        f = this.lookupReference('frmProveedor');
         me = this;
-        if (_form.isValid()) {
-            _form.submit({
+        if (f.isValid()) {
+            f.submit({
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {
                     if (action.result.error != 0) {
-                        Ext.ComponentQuery.query('#' + btn.idcontrol.toString())[0].getStore().load();
+                        c = Ext.ComponentQuery.query('#' + btn.idcontrol.toString())[0];
+                        c.getStore().load();
                         me.getView().close();
+                        c.setValue(action.result.error);
                     }
                 },
                 failure: function () {

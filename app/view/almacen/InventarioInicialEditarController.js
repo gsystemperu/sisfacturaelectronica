@@ -12,9 +12,10 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditarController
     onClickGuardarInventario:function(btn){
         f =  Ext.ComponentQuery.query('#wRegInventarioInicialEditar')[0];    //this.lookupReference('frmRegCotizacion');
         if (f.isValid()) {
-
+            g = this.lookupReference('dgvInvEditar');
+            g.getPlugin('gridfilters').clearFilters();   
             d = [];
-            st = this.lookupReference('dgvInvEditar').getStore();
+            st = g.getStore(); //this.lookupReference('dgvInvEditar').getStore();
             me = this;
             ca = st.getCount();
 
@@ -33,6 +34,7 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditarController
                 //}
             }
             this.lookupReference('jsondetalle').setValue(JSON.stringify(d));
+            this.lookupReference('usuario').setValue( sisfacturaelectronica.util.Data.usuario  );
             f.submit({
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {

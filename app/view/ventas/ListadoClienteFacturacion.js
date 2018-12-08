@@ -8,12 +8,10 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
         'Ext.grid.column.*',
         'Ext.form.field.*',
         'Ext.panel.Panel',
-        //'sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar',
         'sisfacturaelectronica.store.DataTemp'
     ],
     layout: {
         type: 'vbox',
-        //pack: 'start',
         align: 'stretch'
     },
     bodyPadding: 0,
@@ -24,7 +22,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
     //controller: 'acciones-regcotizacionfacturar',
     initComponent: function () {
         var storeCotiFacturar = Ext.create('sisfacturaelectronica.store.ClienteVentasFacturacion');
-
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false

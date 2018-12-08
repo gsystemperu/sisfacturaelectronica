@@ -26,9 +26,16 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
       }
     },
     onClickVerCotizaciones:function(){
-      var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    //this;
-      var l = me.getLayout();
+      me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    //this;
+      l = me.getLayout();
       l.setActiveItem(2);
+      s = Ext.ComponentQuery.query('#dgvVentas')[0].getStore();
+      r = Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
+      s.load({
+        params : {
+          vIdper : r.get('idper')
+        }
+      });
     },
     onClickRefrescarListado: function () {
         _store = Ext.ComponentQuery.query('#dgvClientes')[0].getStore();

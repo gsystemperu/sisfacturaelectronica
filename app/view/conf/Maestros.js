@@ -21,7 +21,7 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
         align: 'stretch',
         pack: 'start'
     },
-    controller : 'acciones-config',
+    controller: 'acciones-config',
     initComponent: function () {
         me = this;
         Ext.apply(me, {
@@ -39,62 +39,62 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvEstados',
-                        store: storeEstado,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        }],
-                        listeners: {
-                            select : 'onSelectedEstado'
-                        }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvEstados',
+                    store: storeEstado,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    }],
+                    listeners: {
+                        select: 'onSelectedEstado'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmEstados',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.estadoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idestado',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmEstados',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.estadoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idestado',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionEstado',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoEstado'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarEstado'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionEstado',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoEstado'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarEstado'
+                    }
+                ]
+
+            }
 
             ]
 
@@ -111,62 +111,62 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvEstados',
-                        store: storeEstado,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        }],
-                        listeners: {
-                            select : 'onSelectedEstado'
-                        }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvEstados',
+                    store: storeEstado,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    }],
+                    listeners: {
+                        select: 'onSelectedEstado'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmEstados',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.estadoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idestado',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmEstados',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.estadoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idestado',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionEstado',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoEstado'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarEstado'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionEstado',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoEstado'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarEstado'
+                    }
+                ]
+
+            }
 
             ]
 
@@ -183,62 +183,62 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvEstados',
-                        store: storeEstado,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        }],
-                        listeners: {
-                            select : 'onSelectedEstado'
-                        }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvEstados',
+                    store: storeEstado,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    }],
+                    listeners: {
+                        select: 'onSelectedEstado'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmEstados',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.estadoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idestado',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmEstados',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.estadoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idestado',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionEstado',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoEstado'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarEstado'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionEstado',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoEstado'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarEstado'
+                    }
+                ]
+
+            }
 
             ]
 
@@ -255,62 +255,62 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvEstados',
-                        store: storeEstado,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        }],
-                        listeners: {
-                            select : 'onSelectedEstado'
-                        }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvEstados',
+                    store: storeEstado,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    }],
+                    listeners: {
+                        select: 'onSelectedEstado'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmEstados',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.estadoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idestado',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmEstados',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.estadoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idestado',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionEstado',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoEstado'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarEstado'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionEstado',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoEstado'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarEstado'
+                    }
+                ]
+
+            }
 
             ]
 
@@ -327,82 +327,82 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvBancos',
-                        store: storeBanco,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                        {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget: {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                 handler: 'onClickEliminarBanco'
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvBancos',
+                    store: storeBanco,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget: {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarBanco'
 
-                            }
                         }
-                        ],
-                        listeners: {
-                            select : 'onSelectedBanco'
-                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedBanco'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmBancos',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.bancoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idbanco',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmBancos',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.bancoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idbanco',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionBanco',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoBanco'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarBanco'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionBanco',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoBanco'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarBanco'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelCategorias:function(storeCategoria){
-             obj = {
+    getPanelCategorias: function (storeCategoria) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Categoria',
@@ -411,83 +411,90 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvCategoria',
-                        store: storeCategoria,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvCategoria',
+                    store: storeCategoria,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget: {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                 handler: 'onClickEliminarCategoria'
-
-                            }
-                        }
-
-                        ],
-                        listeners: {
-                            select : 'onSelectedCategoria'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmCategoria',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.categoriaGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idCategoria',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionCategoria',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickCateRefrescar'
                         }
                     ],
-                    tbar: [
-                        {
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget: {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoCategoria'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarCategoria'
-                        }
-                    ]
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarCategoria'
 
+                        }
+                    }
+
+                    ],
+                    listeners: {
+                        select: 'onSelectedCategoria'
+                    }
+
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmCategoria',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.categoriaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idCategoria',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionCategoria',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoCategoria'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarCategoria'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelColores:function(storeColores){
-             obj = {
+    getPanelColores: function (storeColores) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Colores',
@@ -496,82 +503,82 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvColores',
-                        store: storeColores,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                        {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget: {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                 handler: 'onClickEliminarColor'
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvColores',
+                    store: storeColores,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget: {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarColor'
 
-                            }
                         }
-                        ],
-                        listeners: {
-                            select : 'onSelectedColor'
-                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedColor'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmColores',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.colorGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idColor',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmColores',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.colorGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idColor',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionColor',
-                            allowBlank: false
-                        },
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoColor'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarColor'
-                        }
-                    ]
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionColor',
+                    allowBlank: false
+                },
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
 
-                }
+                        handler: 'onClickNuevoColor'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarColor'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-     getPanelMedidas:function(storeMedidas){
-             obj = {
+    getPanelMedidas: function (storeMedidas) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Medidas',
@@ -580,167 +587,175 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvMedidas',
-                        store: storeMedidas,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarMedida'
-                            }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvMedidas',
+                    store: storeMedidas,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarMedida'
                         }
-                        ],
-                        listeners: {
-                            select : 'onSelecteMedida'
-                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelecteMedida'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmMedidas',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.medidaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idMedidas',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmMedidas',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.medidaGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idMedidas',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionMedidas',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoMedida'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarMedida'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionMedidas',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoMedida'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarMedida'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-     getPanelUnidadMedida:function(storeUnidadMedidas){
-             obj = {
+    getPanelUnidadMedida: function (storeUnidadMedidas) {
+        obj = {
             xtype: 'panel',
             hidden: false,
-            title: 'U.M / Catálogo de Sunat',
+            title: 'Unidad Medida',
             layout: {
                 type: 'hbox',
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvUnidadMedida',
-                        store: storeUnidadMedidas,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarUnidadMedida'
-                            }
-                        }
-                        ],
-                        listeners: {
-                            select : 'onSelectedUnidadMedida'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmUnidadMedida',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.unidadMedidaGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            value: 0
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvUnidadMedida',
+                    store: storeUnidadMedidas,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionUnidadMedida',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickUMrefrescar'
                         }
                     ],
-                    tbar: [
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
                         {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            disabled:true,
-                            handler: 'onClickNuevoUnidadMedida'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             disabled:true,
-                             handler: 'onClickGuardarUnidadMedida'
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarUnidadMedida'
                         }
-                    ]
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedUnidadMedida'
+                    }
 
+                },
+                ]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmUnidadMedida',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.unidadMedidaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionUnidadMedida',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        disabled: true,
+                        handler: 'onClickNuevoUnidadMedida'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        disabled: true,
+                        handler: 'onClickGuardarUnidadMedida'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelTipoDeProducto:function(storeTipoProductos){
-             obj = {
+    getPanelTipoDeProducto: function (storeTipoProductos) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Categoría',
@@ -749,82 +764,89 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvTipoProducto',
-                        store: storeTipoProductos,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarTipoProducto'
-                            }
-                        }
-                        ],
-                        listeners: {
-                             select : 'onSelectedTipoProducto'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmTipoProducto',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.tipoProductoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idTipoProducto',
-                            value: 0
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvTipoProducto',
+                    store: storeTipoProductos,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionTipoProducto',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickTipoProdRefrescar'
                         }
                     ],
-                    tbar: [
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
                         {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoTipoProducto'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarTipoProducto'
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarTipoProducto'
                         }
-                    ]
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedTipoProducto'
+                    }
 
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmTipoProducto',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.tipoProductoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idTipoProducto',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionTipoProducto',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoTipoProducto'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarTipoProducto'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelTarifas:function(storeTarifas){
-             obj = {
+    getPanelTarifas: function (storeTarifas) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Tarifas',
@@ -833,82 +855,82 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvTarifas',
-                        store: storeTarifas,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarTarifa'
-                            }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvTarifas',
+                    store: storeTarifas,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarTarifa'
                         }
-                        ],
-                        listeners: {
-                            select : 'onSelectedTarifa'
-                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedTarifa'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmTarifas',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.TarifaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idTarifa',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmTarifas',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                    url: sisfacturaelectronica.util.Rutas.TarifaGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idTarifa',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionTarifa',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoTarifa'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarTarifa'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionTarifa',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoTarifa'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarTarifa'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelPresentacionProducto:function(storePresentacion){
-             obj = {
+    getPanelPresentacionProducto: function (storePresentacion) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Presentación',
@@ -917,82 +939,89 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvPresentacion',
-                        store: storePresentacion,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'despres',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                               handler: 'onClickEliminarPresentacion'
-                            }
-                        }
-                        ],
-                        listeners: {
-                               select : 'onSelectedPresentacion'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmPresentacion',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                  url: sisfacturaelectronica.util.Rutas.presentacionGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'idpres',
-                            reference: 'idTipoProducto',
-                            value: 0
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvPresentacion',
+                    store: storePresentacion,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'despres',
-                            itemId: 'txtDescripcionPresentacion',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickPreseRefrescar'
                         }
                     ],
-                    tbar: [
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'despres',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
                         {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoPresentacion'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarPresentacion'
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarPresentacion'
                         }
-                    ]
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedPresentacion'
+                    }
 
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmPresentacion',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.presentacionGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'idpres',
+                    reference: 'idTipoProducto',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'despres',
+                    itemId: 'txtDescripcionPresentacion',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoPresentacion'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarPresentacion'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelTipoDocumentoPersona:function(storeTipoDocumentoPersona){
-             obj = {
+    getPanelTipoDocumentoPersona: function (storeTipoDocumentoPersona) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Tipo Documento',
@@ -1001,82 +1030,82 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvTipoDocPersona',
-                        //store: storeTipoProductos,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                              //  handler: 'onClickEliminarTipoProducto'
-                            }
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvTipoDocPersona',
+                    //store: storeTipoProductos,
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            //  handler: 'onClickEliminarTipoProducto'
                         }
-                        ],
-                        listeners: {
-                             //select : 'onSelectedTipoProducto'
-                        }
+                    }
+                    ],
+                    listeners: {
+                        //select : 'onSelectedTipoProducto'
+                    }
 
-                    }]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmTipoDocPersona',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                //  url: sisfacturaelectronica.util.Rutas.tipoProductoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idTipoProducto',
+                    value: 0
                 },
                 {
-                    xtype: 'form',
-                    reference: 'frmTipoDocPersona',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                  //  url: sisfacturaelectronica.util.Rutas.tipoProductoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idTipoProducto',
-                            value: 0
-                        },
-                        {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionTipoProducto',
-                            allowBlank: false
-                        }
-                    ],
-                    tbar: [
-                        {
-                            xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                          //  handler: 'onClickNuevoTipoProducto'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                            // handler: 'onClickGuardarTipoProducto'
-                        }
-                    ]
-
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionTipoProducto',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        //  handler: 'onClickNuevoTipoProducto'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        // handler: 'onClickGuardarTipoProducto'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelFormaPago:function(storeFormaPago){
-             obj = {
+    getPanelFormaPago: function (storeFormaPago) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Forma Pago',
@@ -1085,82 +1114,89 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvFormaPago',
-                        store: storeFormaPago,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarFormaPago'
-                            }
-                        }
-                        ],
-                        listeners: {
-                             select : 'onSelectedFormaPago'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmFormaPago',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                      url: sisfacturaelectronica.util.Rutas.formaPagoGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'idfopag',
-                            reference: 'idFormaPago',
-                            value: 0
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvFormaPago',
+                    store: storeFormaPago,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionFormaPago',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickFormaPagRefrescar'
                         }
                     ],
-                    tbar: [
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
                         {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoFormaPago'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                             handler: 'onClickGuardarFormaPago'
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarFormaPago'
                         }
-                    ]
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedFormaPago'
+                    }
 
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmFormaPago',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.formaPagoGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'idfopag',
+                    reference: 'idFormaPago',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionFormaPago',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoFormaPago'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarFormaPago'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelModoDeEntrega:function(storeModoEntrega){
-             obj = {
+    getPanelModoDeEntrega: function (storeModoEntrega) {
+        obj = {
             xtype: 'panel',
             hidden: false,
             title: 'Modo Entrega',
@@ -1169,335 +1205,360 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
                 align: 'stretch'
             },
             items: [{
-                    xtype: 'container',
-                    flex: 1,
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'gridpanel',
-                        reference: 'dgvModoEntrega',
-                        store: storeModoEntrega,
-                        columns: [{
-                            text: 'Descripcion',
-                            dataIndex: 'descripcion',
-                            flex: 1
-                        },
-                         {
-                            xtype: 'widgetcolumn',
-                            flex: 0.5,
-                            widget:
-                            {
-                                xtype: 'button',
-                                flex: 1,
-                                glyph: 0xf014,
-                                handler: 'onClickEliminarModoEntrega'
-                            }
-                        }
-                        ],
-                        listeners: {
-                             select : 'onSelectedModoEntrega'
-                        }
-
-                    }]
-                },
-                {
-                    xtype: 'form',
-                    reference: 'frmModoEntrega',
-                    flex: 1,
-                    bodyPadding: 10,
-                    layout: 'anchor',
-                      url: sisfacturaelectronica.util.Rutas.modoEntregaGuardar,
-                    items: [{
-                            xtype: 'hiddenfield',
-                            name: 'id',
-                            reference: 'idTipoProducto',
-                            value: 0
-                        },
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvModoEntrega',
+                    store: storeModoEntrega,
+                    tbar: [
+                        '->',
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'Descripcion',
-                            name: 'descripcion',
-                            itemId: 'txtDescripcionModoEntrega',
-                            allowBlank: false
+                            text: 'Refrescar',
+                            handler: 'onClickModoEnRefrescar'
                         }
                     ],
-                    tbar: [
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
+                    {
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
                         {
                             xtype: 'button',
-                            text: 'Nuevo',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoModoEntrega'
-                        },
-                        {
-                            xtype: 'button',
-                            text: 'Guardar',
-                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                              handler: 'onClickGuardarModoEntrega'
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarModoEntrega'
                         }
-                    ]
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedModoEntrega'
+                    }
 
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmModoEntrega',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.modoEntregaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idTipoProducto',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionModoEntrega',
+                    allowBlank: false
                 }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
+
+                        handler: 'onClickNuevoModoEntrega'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
+
+                        handler: 'onClickGuardarModoEntrega'
+                    }
+                ]
+
+            }
 
             ]
 
         };
         return obj;
     },
-    getPanelMarca:function(storeMarca)
-    {
+    getPanelMarca: function (storeMarca) {
         obj = {
-       xtype: 'panel',
-       hidden: false,
-       title: 'Marcas',
-       layout: {
-           type: 'hbox',
-           align: 'stretch'
-       },
-       items: [{
-               xtype: 'container',
-               flex: 1,
-               layout: 'fit',
-               items: [{
-                   xtype: 'gridpanel',
-                   reference: 'dgvMarca',
-                   store: storeMarca,
-                   columns: [{
-                       text: 'Descripcion',
-                       dataIndex: 'descripcion',
-                       flex: 1
-                   },
+            xtype: 'panel',
+            hidden: false,
+            title: 'Marcas',
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            items: [{
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvMarca',
+                    store: storeMarca,
+                    tbar: [
+                        '->',
+                        {
+                            text: 'Refrescar',
+                            handler: 'onClickMarcaRefrescar'
+                        }
+                    ],
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
                     {
-                       xtype: 'widgetcolumn',
-                       flex: 0.5,
-                       widget:
-                       {
-                           xtype: 'button',
-                           flex: 1,
-                           glyph: 0xf014,
-                           handler: 'onClickEliminarMarca'
-                       }
-                   }
-                   ],
-                   listeners: {
-                        select : 'onSelectedMarca'
-                   }
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarMarca'
+                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedMarca'
+                    }
 
-               }]
-           },
-           {
-               xtype: 'form',
-               reference: 'frmMarca',
-               flex: 1,
-               bodyPadding: 10,
-               layout: 'anchor',
-               url: sisfacturaelectronica.util.Rutas.marcaGuardar,
-               items: [{
-                       xtype: 'hiddenfield',
-                       name: 'id',
-                       reference: 'idMarca',
-                       value: 0
-                   },
-                   {
-                       xtype: 'textfield',
-                       anchor: '100%',
-                       fieldLabel: 'Descripcion',
-                       name: 'descripcion',
-                       itemId: 'txtDescripcionMarca',
-                       allowBlank: false
-                   }
-               ],
-               tbar: [
-                   {
-                       xtype: 'button',
-                       text: 'Nuevo',
-                       glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                       handler: 'onClickNuevoMarca'
-                   },
-                   {
-                       xtype: 'button',
-                       text: 'Guardar',
-                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                         handler: 'onClickGuardarMarca'
-                   }
-               ]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmMarca',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.marcaGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idMarca',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionMarca',
+                    allowBlank: false
+                }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
 
-           }
+                        handler: 'onClickNuevoMarca'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
 
-       ]
+                        handler: 'onClickGuardarMarca'
+                    }
+                ]
 
-     };
-     return obj;
+            }
+
+            ]
+
+        };
+        return obj;
     },
-    getPanelModelo:function(storeModelo)
-    {
+    getPanelModelo: function (storeModelo) {
         obj = {
-       xtype: 'panel',
-       hidden: false,
-       title: 'Modelos',
-       layout: {
-           type: 'hbox',
-           align: 'stretch'
-       },
-       items: [{
-               xtype: 'container',
-               flex: 1,
-               layout: 'fit',
-               items: [{
-                   xtype: 'gridpanel',
-                   reference: 'dgvModelo',
-                   store: storeModelo,
-                   columns: [{
-                       text: 'Descripcion',
-                       dataIndex: 'descripcion',
-                       flex: 1
-                   },
+            xtype: 'panel',
+            hidden: false,
+            title: 'Modelos',
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            items: [{
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvModelo',
+                    store: storeModelo,
+                    tbar: [
+                        '->',
+                        {
+                            text: 'Refrescar',
+                            handler: 'onClickModeloRefrescar'
+                        }
+                    ],
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
                     {
-                       xtype: 'widgetcolumn',
-                       flex: 0.5,
-                       widget:
-                       {
-                           xtype: 'button',
-                           flex: 1,
-                           glyph: 0xf014,
-                           handler: 'onClickEliminarModelo'
-                       }
-                   }
-                   ],
-                   listeners: {
-                        select : 'onSelectedModelo'
-                   }
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarModelo'
+                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedModelo'
+                    }
 
-               }]
-           },
-           {
-               xtype: 'form',
-               reference: 'frmModelo',
-               flex: 1,
-               bodyPadding: 10,
-               layout: 'anchor',
-              url: sisfacturaelectronica.util.Rutas.modeloGuardar,
-               items: [{
-                       xtype: 'hiddenfield',
-                       name: 'id',
-                       reference: 'idModelo',
-                       value: 0
-                   },
-                   {
-                       xtype: 'textfield',
-                       anchor: '100%',
-                       fieldLabel: 'Descripcion',
-                       name: 'descripcion',
-                       itemId: 'txtDescripcionModelo',
-                       allowBlank: false
-                   }
-               ],
-               tbar: [
-                   {
-                       xtype: 'button',
-                       text: 'Nuevo',
-                       glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                       handler: 'onClickNuevoModelo'
-                   },
-                   {
-                       xtype: 'button',
-                       text: 'Guardar',
-                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                         handler: 'onClickGuardarModelo'
-                   }
-               ]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmModelo',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.modeloGuardar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idModelo',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionModelo',
+                    allowBlank: false
+                }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
 
-           }
+                        handler: 'onClickNuevoModelo'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
 
-       ]
+                        handler: 'onClickGuardarModelo'
+                    }
+                ]
 
-     };
-     return obj;
+            }
+
+            ]
+
+        };
+        return obj;
     },
-    getPanelForma:function(storeModelo)
-    {
+    getPanelForma: function (storeModelo) {
         obj = {
-       xtype: 'panel',
-       hidden: false,
-       title: 'Formas',
-       layout: {
-           type: 'hbox',
-           align: 'stretch'
-       },
-       items: [{
-               xtype: 'container',
-               flex: 1,
-               layout: 'fit',
-               items: [{
-                   xtype: 'gridpanel',
-                   reference: 'dgvForma',
-                   store: storeModelo,
-                   columns: [{
-                       text: 'Descripcion',
-                       dataIndex: 'descripcion',
-                       flex: 1
-                   },
+            xtype: 'panel',
+            hidden: false,
+            title: 'Formas',
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            items: [{
+                xtype: 'container',
+                flex: 1,
+                layout: 'fit',
+                items: [{
+                    xtype: 'gridpanel',
+                    reference: 'dgvForma',
+                    store: storeModelo,
+                    tbar: [
+                        '->',
+                        {
+                            text: 'Refrescar',
+                            handler: 'onClickFormaRefrescar'
+                        }
+                    ],
+                    columns: [{
+                        text: 'Descripcion',
+                        dataIndex: 'descripcion',
+                        flex: 1
+                    },
                     {
-                       xtype: 'widgetcolumn',
-                       flex: 0.5,
-                       widget:
-                       {
-                           xtype: 'button',
-                           flex: 1,
-                           glyph: 0xf014,
-                           handler: 'onClickEliminarForma'
-                       }
-                   }
-                   ],
-                   listeners: {
-                        select : 'onSelectedForma'
-                   }
+                        xtype: 'widgetcolumn',
+                        flex: 0.5,
+                        widget:
+                        {
+                            xtype: 'button',
+                            flex: 1,
+                            glyph: 0xf014,
+                            handler: 'onClickEliminarForma'
+                        }
+                    }
+                    ],
+                    listeners: {
+                        select: 'onSelectedForma'
+                    }
 
-               }]
-           },
-           {
-               xtype: 'form',
-               reference: 'frmForma',
-               flex: 1,
-               bodyPadding: 10,
-               layout: 'anchor',
-               url: sisfacturaelectronica.util.Rutas.formaFarmaceuticaActualizar,
-               items: [{
-                       xtype: 'hiddenfield',
-                       name: 'id',
-                       reference: 'idforma',
-                       value: 0
-                   },
-                   {
-                       xtype: 'textfield',
-                       anchor: '100%',
-                       fieldLabel: 'Descripcion',
-                       name: 'descripcion',
-                       itemId: 'txtDescripcionForma',
-                       allowBlank: false
-                   }
-               ],
-               tbar: [
-                   {
-                       xtype: 'button',
-                       text: 'Nuevo',
-                       glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                       handler: 'onClickNuevaForma'
-                   },
-                   {
-                       xtype: 'button',
-                       text: 'Guardar',
-                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-                         handler: 'onClickGuardarForma'
-                   }
-               ]
+                }]
+            },
+            {
+                xtype: 'form',
+                reference: 'frmForma',
+                flex: 1,
+                bodyPadding: 10,
+                layout: 'anchor',
+                url: sisfacturaelectronica.util.Rutas.formaFarmaceuticaActualizar,
+                items: [{
+                    xtype: 'hiddenfield',
+                    name: 'id',
+                    reference: 'idforma',
+                    value: 0
+                },
+                {
+                    xtype: 'textfield',
+                    anchor: '100%',
+                    fieldLabel: 'Descripcion',
+                    name: 'descripcion',
+                    itemId: 'txtDescripcionForma',
+                    allowBlank: false
+                }
+                ],
+                tbar: [
+                    {
+                        xtype: 'button',
+                        text: 'Nuevo',
 
-           }
+                        handler: 'onClickNuevaForma'
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Guardar',
 
-       ]
+                        handler: 'onClickGuardarForma'
+                    }
+                ]
 
-     };
-     return obj;
-    },    
+            }
+
+            ]
+
+        };
+        return obj;
+    },
     getItems: function () {
         storeEstado = Ext.create('sisfacturaelectronica.store.Estados');
         //storeBancos = Ext.create('sisfacturaelectronica.store.Bancos');
@@ -1509,13 +1570,13 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
         //storeTarifas = Ext.create('sisfacturaelectronica.store.Tarifas');
 
         storePresentacion = Ext.create('sisfacturaelectronica.store.Presentacion');
-        storeFormaPago  = Ext.create('sisfacturaelectronica.store.FormaPago');
+        storeFormaPago = Ext.create('sisfacturaelectronica.store.FormaPago');
         storeModoEntrega = Ext.create('sisfacturaelectronica.store.ModoEntrega');
 
         storeModelos = Ext.create('sisfacturaelectronica.store.Modelos');
-        storeMarcas  = Ext.create('sisfacturaelectronica.store.Marcas');
-        stformas      =Ext.create('sisfacturaelectronica.store.FormaFarmaceutica');
-        
+        storeMarcas = Ext.create('sisfacturaelectronica.store.Marcas');
+        stformas = Ext.create('sisfacturaelectronica.store.FormaFarmaceutica');
+
         me = this;
         _obj = [{
             xtype: 'tabpanel',
@@ -1526,19 +1587,19 @@ Ext.define('sisfacturaelectronica.view.conf.Maestros', {
             tabBar: {
                 border: false
             },
-            autoScroll :true,
+            autoScroll: true,
             items: [
                 //me.getPanelEstados(storeEstado),
                 //me.getPanelEstadosVentas(storeEstado),
                 //me.getPanelEstadosCompras(storeEstado),
                 //me.getPanelEstadosInventario(storeEstado),
-               // me.getPanelBancos(storeBancos),
-              //  me.getPanelCategorias(storeCategoria),
+                // me.getPanelBancos(storeBancos),
+                //  me.getPanelCategorias(storeCategoria),
                 //me.getPanelColores(storeColores),
-              //  me.getPanelMedidas(storeMedidas),
+                //  me.getPanelMedidas(storeMedidas),
                 me.getPanelUnidadMedida(storeUnidadMedidas),
                 me.getPanelTipoDeProducto(storeTipoProductos),
-               // me.getPanelTarifas(storeTarifas)
+                // me.getPanelTarifas(storeTarifas)
                 me.getPanelPresentacionProducto(storePresentacion),
                 //me.getPanelTipoDocumentoPersona(),
                 me.getPanelFormaPago(storeFormaPago),

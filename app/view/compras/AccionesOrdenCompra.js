@@ -78,7 +78,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
         }
         _store.insert(0, _data);
         if(Ext.ComponentQuery.query('#myStore')[0].getValue()){
-            me.onCalcularTotalOrdenCompraEditar();
+            me.onCalcularTotalOrdenCompraEditar(_store);
          }else{
             me.onCalcularTotalOrdenCompra();
          }
@@ -166,7 +166,7 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
          rec = button.getWidgetRecord();
         if (rec) {
             store.remove(rec);
-            this.onCalcularTotalOrdenCompraEditar();
+            this.onCalcularTotalOrdenCompraEditar(store);
         }
     },
     onClickSalirOrdenCompra: function (btn) {
@@ -182,43 +182,48 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
     },
 
     onClickGuardarOrdenCompra: function () {
-         _form = this.lookupReference('frmOrdenCompra');
-        if (_form.isValid()) {
-             _dataDetalle = [];
-             _store = this.lookupReference('dgvDetalleOrdenCompra').getStore();
-            me = this;
-            _store.each(function (record) {
-                if (record.get('cantidad') != 0) {
-                    _reg = {
-                        "idprod": record.get('idprod'),
-                        "cantidad": record.get('cantidad'),
-                        "precio": record.get("precio"),
-                        "total": record.get("total"),
-                        "precioventa":record.get("precioventa")
-                    };
-                    _dataDetalle.push(_reg);
-                }
+         f = this.lookupReference('frmOrdenCompra');
+         if (f.isValid()) {
+            det = [];
+            s = this.lookupReference('dgvDetalleOrdenCompra').getStore();
+            if(s.getCount()==0){
+                Ext.Msg.alert("Aviso","No puede ingresar una orden de compra sin detalle");
+                return false;
+            }else{
+                me = this;
+                s.each(function (record) {
+                    if (record.get('cantidad') != 0) {
+                        _reg = {
+                            "idprod": record.get('idprod'),
+                            "cantidad": record.get('cantidad'),
+                            "precio": record.get("precio"),
+                            "total": record.get("total"),
+                            "precioventa": record.get("precioventa")
+                        };
+                        det.push(_reg);
+                    }
 
-            });
-            _txt1 = Ext.ComponentQuery.query('#txtJsonDetalleOC');
-            _txt1[0].setValue(JSON.stringify(_dataDetalle));
-            Ext.ComponentQuery.query('[name=usuario]')[0].setValue(sisfacturaelectronica.util.Data.usuario);
-             _view = this.getView();
-            _form.submit({
-                waitMsg: 'Guardando informacion...',
-                success: function (form, action) {
-                    _dgv = Ext.ComponentQuery.query('#gridOrdenesCompra')[0];
-                    _dgv.getStore().load();
-                     me =  Ext.ComponentQuery.query('#wContenedorOrdenCompra')[0];    //this;
-                     l = me.getLayout();
-                    l.setActiveItem(0);
-                    Ext.ComponentQuery.query('#dgvDetalleOrdenCompra')[0].getStore().removeAll();
-                },
-                failure: function (action) {
-                    Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
+                });
+                _txt1 = Ext.ComponentQuery.query('#txtJsonDetalleOC');
+                _txt1[0].setValue(JSON.stringify(det));
+                Ext.ComponentQuery.query('[name=usuario]')[0].setValue(sisfacturaelectronica.util.Data.usuario);
+                _view = this.getView();
+                f.submit({
+                    waitMsg: 'Guardando informacion...',
+                    success: function (form, action) {
+                        dg = Ext.ComponentQuery.query('#gridOrdenesCompra')[0];
+                        dg.getStore().load();
+                        me = Ext.ComponentQuery.query('#wContenedorOrdenCompra')[0];    //this;
+                        l = me.getLayout();
+                        l.setActiveItem(0);
+                        Ext.ComponentQuery.query('#dgvDetalleOrdenCompra')[0].getStore().removeAll();
+                    },
+                    failure: function (action) {
+                        Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
 
-                }
-            });
+                    }
+                });
+            }
         } else {
             sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos necesarios!');
         }
@@ -250,27 +255,29 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
         });
     },
 
-    onClickFormularioProveedor: function (btn) {
-         win = Ext.create('sisfacturaelectronica.view.almacen.FormProveedor', {
-            control: btn.control.toString()
+    onClickFormularioProveedor: function (b) {
+        w = Ext.create('sisfacturaelectronica.view.almacen.FormProveedor', {
+            control: b.control.toString()
         });
+        w.show(b);
     },
 
     onClickConfirmarOrdenCompra: function (btn) {
-         _grid = this.lookupReference('gridOrdenesCompra');
-         _rec = _grid.getSelectionModel().getSelection()[0];
+         id =  r.get('id');
+         g = this.lookupReference('gridOrdenesCompra');
+         r = g.getSelectionModel().getSelection()[0];
         me = this;
-        if (_rec) {
-            _grid.mask('... Confirmando ');
+        if (r) {
+            g.mask('... Confirmando ');
             Ext.Ajax.request({
                 url: sisfacturaelectronica.util.Rutas.ordenCompraConfirmar,
                 params: {
-                    id: _rec.get('id')
+                    id: r.get('id')
                 },
                 success: function (response) {
                      _error = Ext.JSON.decode(response.responseText);
                     if (_error.error != 0) {
-                        _grid.unmask();
+                        g.unmask();
                         me.lookupReference('gridOrdenesCompra').getStore().reload();
                     }
                 }
@@ -293,7 +300,8 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
              l = me.getLayout();
             l.setActiveItem(2);
             Ext.ComponentQuery.query('#frmOrdenCompraEditar')[0].loadRecord(rec);
-            _store  = Ext.ComponentQuery.query('#dgvDetalleOrdenCompraEditar')[0].getStore();
+            g =  Ext.ComponentQuery.query('#dgvDetalleOrdenCompraEditar')[0];
+            _store  =g.getStore();
             _store.removeAll();
             Ext.Ajax.request({
                 url :sisfacturaelectronica.util.Rutas.ordenCompraBuscarDetalle,
@@ -302,6 +310,8 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
                 },
                 success:function(response){
                     _obj = Ext.JSON.decode(response.responseText);
+                   i =  Ext.ComponentQuery.query('[name=indiceeditar]')[0];
+                   x = 0;
                    Ext.each(_obj.data,function(record){
                       _data = {
                           idprod   : parseInt(record.idprod),
@@ -310,9 +320,13 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
                           precio   : record.preciocompra,
                           total    : record.total
                       };
-                      _store.insert(0, _data);
+                     
+                      x = i.getValue() + 1;
+                      _store.insert(x, _data);
+                      g.getView().refresh();
+                      i.setValue(x);
                     });
-                    _me.onCalcularTotalOrdenCompraEditar();
+                    _me.onCalcularTotalOrdenCompraEditar(_store);
                 }
             });
             if(rec.get('idestado')==3){
@@ -322,8 +336,6 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
                 b=Ext.ComponentQuery.query('#frmOrdenCompraEditar')[0];
                 b.down('#btnGuardarVenta').setDisabled(false);
             }
-            
-
           } catch (e) {
             console.log('Editar Orden Compra');
           }
@@ -355,9 +367,9 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
       }
     },
 
-    onCalcularTotalOrdenCompraEditar: function () {
+    onCalcularTotalOrdenCompraEditar: function (store) {
         me = this;
-        store = Ext.ComponentQuery.query('#dgvDetalleOrdenCompraEditar')[0].getStore();
+      //  store = Ext.ComponentQuery.query('#dgvDetalleOrdenCompraEditar')[0].getStore();
         t = 0;
         s = Ext.ComponentQuery.query('#ckbAplicarIgvEditar')[0].getValue();
         store.each(function (r) {t += r.get('total');});
@@ -424,4 +436,45 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesOrdenCompra', {
       // try {Ext.ComponentQuery.query('#txtBuscarCodigoProd')[0].focus();} catch (e) {}
 
    },
+   onBeforeQueryProducto:function(queryPlan, eOpts ){
+       if(queryPlan.query.length>2){
+            p = Ext.ComponentQuery.query('#cboProveedoresf')[0];
+            if(p.getValue()!=null){
+                queryPlan.query = p.getValue() +'|'+ queryPlan.query;
+            }
+            else {
+                queryPlan.cancel = true;
+                sisfacturaelectronica.util.Util.showErrorMsg('Seleccionar o buscar el proveedor!');
+            }
+       }
+   },
+   onSelectProducto:function(grid, record, index, eOpts){
+        me = this;
+        i = Ext.ComponentQuery.query('hiddenfield[name=indice]')[0];
+        g = Ext.ComponentQuery.query('#dgvDetalleOrdenCompra')[0];
+        s = g.getStore();
+        p = 0;
+        if(parseFloat(record.get('preciocompraproveedor'))>0){
+          p = parseFloat(record.get('preciocompraproveedor'));
+        }else{
+          p = parseFloat(record.get('preciocompra'))
+        }
+        d = {
+            idprod: parseInt(record.get('id')),
+            producto: record.get('nombre'),
+            cantidad: 1,
+            precio: p,    
+            total: parseInt(1) * p   
+        };
+        if (s.findRecord('idprod', parseInt(record.get('id')))) {
+            Ext.Msg.alert("SisFacturaElectronica", "Producto ya se encuentra cargada");
+            return false;
+        }
+        x = i.getValue();
+        x = x + 1 ;
+        s.insert(x, d);
+        g.getView().refresh();
+        i.setValue(x);
+        me.onCalcularTotalOrdenCompra();
+   }
 });

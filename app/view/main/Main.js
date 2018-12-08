@@ -63,22 +63,25 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
           iconCls: 'fa fa-gear fa-2x',
 
           bodyPadding: 0,
-          items: [{
-            xtype: 'menutree',
-            reference: 'treeMantenimiento', //'treeGestionClientes',
-            layout: 'fit',
-            rootVisible: true,
-            listeners: {
-              itemClick: 'onClickOpcionMenu'
+          layout:{
+            type:'vbox',
+            align: 'stretch',
+          },
+          items: [
+            {
+              xtype: 'menutree',
+              reference: 'treeMantenimiento', //'treeGestionClientes',
+              layout: 'fit',
+              rootVisible: true,
+              listeners: {
+                itemClick: 'onClickOpcionMenu'
+              }
             }
-          }]
-
-
+          ]
         }, {
           title: 'Control de Almacen',
           itemId: 'panControlAlmacen', //'panGestionCliente',
           iconCls: 'fa fa-dropbox fa-2x',
-          hidden:true,
           bodyPadding: 0,
           items: [{
             xtype: 'menutree',

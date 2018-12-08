@@ -4,7 +4,7 @@ Ext.define('sisfacturaelectronica.store.tree.Mantenimiento', {
         expanded: true,
         children: [
             {
-              text: 'Tablas Maestras',
+              text: 'Maestros',
               leaf: true,
               itemId: "wRegMaestros",
               titulo: "Maestros",

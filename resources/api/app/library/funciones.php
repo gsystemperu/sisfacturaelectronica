@@ -388,9 +388,9 @@ function centimos()
 	$importe_parcial = number_format($importe_parcial, 2, ".", "") * 100;
 	
 	if ($importe_parcial > 0)
-		$num_letra = " con  ". $importe_parcial.' / 100 SOLES';  //.decena_centimos($importe_parcial);
+		$num_letra = " Y  ". $importe_parcial.' / 100 SOLES';  //.decena_centimos($importe_parcial);
 	else
-		$num_letra = " con  ". '00 / 100 SOLES';
+		$num_letra = " Y  ". '00 / 100 SOLES';
  
 	return $num_letra;
 }

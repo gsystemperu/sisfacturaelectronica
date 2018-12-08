@@ -51,7 +51,7 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorInventario', {
         handler: "onClickEditarInventario",
       },
       {
-        text: 'IMPRIMIR STOCK',
+        text: 'IMPRIMIR LISTADO',
         handler: "onClickImprimirStockInventario",
       },
       '->',

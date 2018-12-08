@@ -77,15 +77,22 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesGuia', {
             });
              _txt1 = Ext.ComponentQuery.query('#txtjsondetalle');
             _txt1[0].setValue(JSON.stringify(_dataDetalle));
+            Ext.ComponentQuery.query('#usuarioguia')[0].setValue(sisfacturaelectronica.util.Data.usuario);
             var _view = this.getView();
             _form.submit({
                 waitMsg: 'Guardando informacion...',
                 success: function (form, action) {
                         _dgv = Ext.ComponentQuery.query('#gridOrdenesCompraConfir')[0];
-                        _dgv.getStore().load();
-                        Ext.ComponentQuery.query('#frmGuiaIngresoProveedor')[0].reset();
-                        _paneles = Ext.ComponentQuery.query('#wContenedorGuias')[0].getLayout() ;
-                        _paneles.setActiveItem(0);
+                        if(_dgv){
+                            _dgv.getStore().load();
+                            Ext.ComponentQuery.query('#frmGuiaIngresoProveedor')[0].reset();
+                            _paneles = Ext.ComponentQuery.query('#wContenedorGuias')[0].getLayout() ;
+                            _paneles.setActiveItem(0);
+                        }else{
+                            me =  Ext.ComponentQuery.query('#wContenedorOrdenCompra')[0]; 
+                            l = me.getLayout();
+                            l.setActiveItem(0);
+                        }
                 },
                 failure: function (action) {
                     Ext.Msg.alert("SisFacturaElectronica", "Error en conexión de base de datos");
@@ -95,6 +102,21 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesGuia', {
         } else {
             sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos necesarios!');
         }
+     },
+     onClickCancelarGuiaProveedor:function(){
+        l = Ext.ComponentQuery.query('#wContenedorGuias')[0];
+        if(l){
+            p = l.getLayout() ;
+        }else{
+            l =  Ext.ComponentQuery.query('#wContenedorOrdenCompra')[0];
+            p = l.getLayout() ;
+        }
+        
+        f = this.lookupReference('frmGuiaIngresoProveedor');
+        s = this.lookupReference('dgvOrdenCompraConfirDetalle').getStore();
+        f.reset();
+        s.removeAll();
+        p.setActiveItem(0);
      },
 
      onClickBuscarOrdenCompraConfirmadasPorFechas: function (btn) {
@@ -155,7 +177,57 @@ Ext.define('sisfacturaelectronica.view.compras.AccionesGuia', {
                 id : record.get('id')
             }
         });
+    },
+    mostrarIngresoGuias:function(b){
+        try {
+            me =  Ext.ComponentQuery.query('#wContenedorGuias')[0]; 
+            _rec = b.getWidgetRecord(); 
+            if (_rec) {
+              l = me.getLayout();
+              l.setActiveItem(1);         
+              Ext.ComponentQuery.query('#dgvOrdenCompraConfirDetalle')[0].mask('..cargando');
+              _store = Ext.ComponentQuery.query('#dgvOrdenCompraConfirDetalle')[0].getStore();
+              _store.removeAll();
+              Ext.Ajax.request({
+                url: sisfacturaelectronica.util.Rutas.OrdenCompraConfirmadaDetalle,
+                params: {
+                  id: _rec.get('id')
+                },
+                success: function (response) {
+                  _data = sisfacturaelectronica.util.Util.decodeJSON(response.responseText);
+                  _id = 0;
+                  Ext.each(_data.data, function (row, i) {
+                    _id = row.idordencompra;
+                    _data = {
+                      'idordencompra': row.idordencompra,
+                      'item': row.item,
+                      'idprod': row.idprod,
+                      'producto': row.producto,
+                      'cantidad': row.cantidad,
+                      'preciocompra': row.preciocompra,
+                      'cantidadrecibida': row.saldo,
+                      'saldo': row.saldo,
+                      // 'numeroguia': row.numeroguia,
+                      'vencimiento': null,
+                      // 'pasestock' : row.pasestock,
+                      'total': row.total,
+                      'genserie': true
+                    };
+                    _store.insert(0, _data);
+                  });
+                  Ext.ComponentQuery.query('#dgvOrdenCompraConfirDetalle')[0].unmask();
+                  Ext.ComponentQuery.query('#idordencompra')[0].setValue(_id);
+      
+                }
+              });
+              Ext.ComponentQuery.query('#txtIdProveedor')[0].setValue(_rec.get('idprov'));
+              Ext.ComponentQuery.query('#txtNombreProveedor')[0].setValue(_rec.get('razonsocial'));
+            }
+          } catch (e) {
+            alert(e);
+          }
     }
+
 
 
 

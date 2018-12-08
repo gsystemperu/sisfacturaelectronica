@@ -44,7 +44,7 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
             bbar: [
                 '->',
                 { xtype: 'button', text: 'CANCELAR', handler: 'onClickCancelarInventario' },
-                { xtype: 'button', text: 'GUARDAR', handler: 'onClickGuardarInventario' }
+                { xtype: 'button', text: 'GUARDAR BORRADOR', handler: 'onClickGuardarInventario' }
             ]
         });
         this.callParent();
@@ -56,8 +56,6 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                 type: 'vbox',
                 align: 'stretch'
             },
-            bodyPadding: 20,
-            flex: 1,
             items: [
                 {
                     xtype: 'hiddenfield',
@@ -71,7 +69,17 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                     name: 'jsondetalle',
                     reference: 'jsondetalle',
                     itemId : 'jsondetalle'
-
+                 },
+                {
+                    xtype: 'hiddenfield',
+                    name: 'usuario',
+                    reference: 'usuario',
+                },
+                {
+                    xtype: 'hiddenfield',
+                    name: 'config',
+                    itemId: 'config',
+                    value : 0
                 },
                 {
                     xtype: 'label',
@@ -79,10 +87,10 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                     itemId: 'lblTituloProducto',
                     padding: '5 0 5 0',
                     style: {
-                        color: '#775c80',
+                        color: '#2d5f87',
                         textAlign: 'left',
                         fontWeight: 'bold',
-                        fontSize: '20px'
+                        fontSize: '30px'
                     }
 
                 },
@@ -93,14 +101,14 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                         align: 'stretch'
                     },
                     defaults: {
-                        flex: 1
+                        flex: 2
                     },
                     items: [
                         {
                             xtype: 'label',
                             text: 'Referencia',
                             style: {
-                                color: '#775c80',
+                                color: '#2d5f87',
                                 textAlign: 'left',
                                 fontWeight: 'bold',
                                 fontSize: '20px'
@@ -111,8 +119,9 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                         {
                             xtype: 'label',
                             text: 'Fecha',
+                            flex :1,
                             style: {
-                                color: '#775c80',
+                                color: '#2d5f87',
                                 textAlign: 'left',
                                 fontWeight: 'bold',
                                 fontSize: '20px'
@@ -127,7 +136,7 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                         align: 'stretch'
                     },
                     defaults: {
-                        flex: 1
+                        flex: 2
                     },
                     items: [
                         {
@@ -136,14 +145,16 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                             itemId: 'referencia',
                             fieldStyle: 'font-size:20px;font-weight:bold;',
                             allowBlank: false,
-                            readOnly:true
+                            readOnly:false,
+                            padding  : '0 5 0 0'
                         },
                         {
                             xtype: 'datefield',
                             name: 'fechainventario',
                             itemId: 'fechainventario',
+                            flex: 1,
                             value: new Date(),
-                            readOnly:true
+                            readOnly:false
 
                         }
                     ]
@@ -166,23 +177,36 @@ Ext.define('sisfacturaelectronica.view.almacen.InventarioInicialEditar', {
                     itemId: 'dgvInvEditar',
                     store: st,
                     sortableColumns: false,
-                    plugins: [rowEditing],
-                    plugins: {
-                        ptype: 'cellediting',
-                        clicksToEdit: 1
-                    },
+                    //plugins: [rowEditing],
+                    plugins: [
+                         {
+                            ptype: 'cellediting',
+                            clicksToEdit: 1
+                        },
+                        {
+                            ptype : 'gridfilters'
+                        }
+                    ],
                     selModel: 'cellmodel',
                     columns: [
                         {
                             text: 'Producto',
                             dataIndex: 'nombre',
                             flex: 2.5,
-                            align: 'left'
+                            align: 'left',
+                            filter: {
+                                type: 'string',
+                                itemDefaults: {
+                                  emptyText : 'Ingresar nombre del producto',
+                                  width : 500
+                                }
+                              }
                         }, {
                             text: 'Stock',
                             dataIndex: 'stockfisico',
                             flex: 1,
                             align: 'right',
+                            filter: 'number',
                             editor: {
                                 xtype: 'numberfield'
                             },

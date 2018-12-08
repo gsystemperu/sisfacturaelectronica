@@ -13,18 +13,12 @@ Ext.define('sisfacturaelectronica.view.almacen.Proveedor', {
       pack: 'start',
       align: 'stretch'
     },
-    bodyPadding: 5,
-    defaults: {
-      frame: false,
-      bodyPadding: 5
-    },
     controller :'acciones-proveedor',
     initComponent: function () {
      storeProveedores = Ext.create('sisfacturaelectronica.store.Proveedores');
       me = this;
       Ext.apply(this, {
         items: [{
-            title: 'Registros',
             flex: 3,
             margin: '0 3 0 0',
             layout: 'fit',
@@ -34,6 +28,7 @@ Ext.define('sisfacturaelectronica.view.almacen.Proveedor', {
               reference: 'dgvProveedores',
               store: storeProveedores,
               sortableColumns: false,
+              emptyText :'NO EXISTE DATOS SEGÚN EL CRITERIO DE BUSQUEDA',
               columns: [
                 {
                   text: 'Razon Social',
@@ -72,21 +67,19 @@ Ext.define('sisfacturaelectronica.view.almacen.Proveedor', {
                 }
               ],
               tbar: [{
-                  xtype: 'fieldset',
-                  title: '<b>Buscar Por</b>',
+                  xtype: 'container',
                   layout: 'hbox',
                   flex: 1,
-                  padding: '0 5 10 5',
                   defaults: {
                     labelWidth: 120
                   },
                   items: [{
                       xtype: 'textfield',
+                      fieldStyle: 'font-size:18px;height:30px;',
                       reference: 'txtBuscarRazonSocial',
-                      fieldLabel: 'Razon Social',
                       flex: 1,
                       enableKeyEvents: true,
-                      emptyText :'-----  RAZON SOCIAL NOMBRE -----',
+                      emptyText :'Digital Razon Social ',
                       listeners: {
                         keypress: 'onKeyPressTextoDeBusquedaProveedor'
                       }
@@ -104,14 +97,14 @@ Ext.define('sisfacturaelectronica.view.almacen.Proveedor', {
               }
 
             }]
-          }, {
-            title: 'Informacion',
+          }, 
+          {
             flex: 2,
-            margin: '0 10 0 0',
-            autoScroll: true,
-            items: [{
+            items: [
+            {
               xtype: 'form',
               reference: 'frmProveedor',
+              bodyPadding : 10,
               url: sisfacturaelectronica.util.Rutas.proveedorGuardar,
               defaults:{
                 xtype:'textfield'
@@ -155,40 +148,60 @@ Ext.define('sisfacturaelectronica.view.almacen.Proveedor', {
                         value : 0
                     },
                     {
-                        fieldLabel:'Razon Social',
                         allowBlank : false,
                         name : 'razonsocial',
-                        itemId :'txtRazonSocial'
+                        itemId :'txtRazonSocial',
+                        fieldStyle: 'font-size:21px;height:30px;background-color:#F9F7D8',
+                        emptyText : 'Razón Social : Empresa S.A.'
                     },
                     {
-                      fieldLabel:'R.U.C.',
+                      xtype:'label',
+                      text : 'R.U.C.' 
+                    },
+                    {
                       name :'numrucprov'
                     },
                     {
-                      fieldLabel: 'Correo',
+                      xtype:'label',
+                      text : 'Correo' 
+                    },
+                    {
                       type:'mail',
                       name : 'correo'
                   
                     },
                     {
-                        fieldLabel:'Contacto',
+                      xtype:'label',
+                      text : 'Contacto' 
+                    },
+                    {
                         name :'contacto'
 
                     },
                     {
-                        fieldLabel:'Telefono',
+                      xtype:'label',
+                      text : 'Telefono Fijo / Movil ' 
+                    },
+                    {
+                      
                         name :'telefono'
 
                     },
                     {
+                      xtype:'label',
+                      text : 'Dirección' 
+                    },
+                    {
                         xtype:'textarea',
-                        fieldLabel:'Direccion',
                         name :'direccion'
 
                     },
                     {
+                      xtype:'label',
+                      text : 'Dirección Fiscal',
+                    },
+                    {
                         xtype:'textarea',
-                        fieldLabel:'Direccion Fiscal',
                         name :'direccionfiscal'
 
                     }

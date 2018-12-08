@@ -550,5 +550,29 @@ Ext.define('sisfacturaelectronica.view.conf.AccionesRegConfig', {
                 }
              });
     },
+    onClickTipoProdRefrescar:function(){
+        this.lookupReference('dgvTipoProducto').getStore().load();
+    },
+    onClickPreseRefrescar:function(){
+        this.lookupReference('dgvPresentacion').getStore().load();
+    },
+    onClickFormaPagRefrescar:function(){
+        this.lookupReference('dgvFormaPago').getStore().load();
+    },
+    onClickMarcaRefrescar:function(){
+        this.lookupReference('dgvMarca').getStore().load();
+    },
+    onClickModeloRefrescar:function(){
+        this.lookupReference('dgvModelo').getStore().load();
+    },
+    onClickFormaRefrescar:function(){
+        this.lookupReference('dgvForma').getStore().load();
+    },
+    onClickModoEnRefrescar:function(){
+        this.lookupReference('dgvModoEntrega').getStore().load();
+    }
+    
+    
+
 
 });

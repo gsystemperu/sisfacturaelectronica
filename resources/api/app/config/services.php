@@ -269,7 +269,6 @@ $di->set('router',function() {
      $router->add('/listar_cotizaciones', array('controller'=>'cotizacion','action'=>'cotizacioneslista'));
      $router->add('/cotizacion_detalle', array('controller'=>'cotizacion','action'=>'cotizacionesdetalle'));
      $router->add('/cotizacion_detalle_vista', array('controller'=>'cotizacion','action'=>'cotizacionesdetallevista'));
-
      $router->add('/listar_forma_pago', array('controller'=>'cotizacion','action'=>'formapago'));
      $router->add('/listar_modo_entrega', array('controller'=>'cotizacion','action'=>'modoentrega'));
      $router->add('/listar_vendedores', array('controller'=>'cotizacion','action'=>'vendedores'));
@@ -277,11 +276,9 @@ $di->set('router',function() {
      $router->add('/listar_presentacion', array('controller'=>'cotizacion','action'=>'presentacionlista'));
      $router->add('/listar_categorias', array('controller'=>'cotizacion','action'=>'categorialista'));
      $router->add('/buscar_plantilla', array('controller'=>'cotizacion','action'=>'buscarplantilla'));
-
-     
+     //$router->add('/cotizaciones_cliente', array('controller'=>'cotizacion','action'=>'listarcotizacionescliente'));
 
      //$router->add('/guardar_producto', array('controller'=>'cotizacion','action'=>'productoguardar'));
-
      $router->add('/buscar_cotizaciones_cliente', array('controller'=>'cotizacion','action'=>'cotizacionesclientebuscar'));
 
      //@Mantenimiento eliminar

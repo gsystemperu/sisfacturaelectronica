@@ -69,17 +69,23 @@ class ProductoController extends Controller
          $util           = new FuncionesHelpers();
          if($request->isGet() ==true)
          {
-                if(strlen($request->get('nombre'))==0)
-                {
-                  $data =array($request->get('idprov'));
-                  $jsonData = Producto::buscarOrdenCompra($data);
-                }else{
-                  $data = array(
-                    $util->esNumeroCero($request->get('idprov')),
-                    $request->get('nombre')
-                  );
-                  $jsonData = Producto::buscarProductoOrdenCompra($data);
-                }
+              if(strlen($request->get('query'))>0){
+                    $data     = array($request->get('query'));
+                    $jsonData = Producto::buscarProductoOrdenCompraFiltro($data);
+              }else{
+                    if(strlen($request->get('nombre'))==0)
+                    {
+                         $data =array($request->get('idprov'));
+                         $jsonData = Producto::buscarOrdenCompra($data);
+                    }else{
+                         $data = array(
+                              $util->esNumeroCero($request->get('idprov')),
+                              $request->get('nombre')
+                         );
+                         $jsonData = Producto::buscarProductoOrdenCompra($data);
+                    }
+              }
+                
 
               $response->setContentType('application/json', 'UTF-8');
               $response->setContent($jsonData);
@@ -365,7 +371,7 @@ class ProductoController extends Controller
             $data = array($request->get('idinventario'));
             $jsonData = Producto::BuscarInventario($data);
          }else{
-           $data = array($request->get('nombre'));
+            $data = array($request->get('nombre'));
             $jsonData = Producto::listarInventario($data);
          }
          $response->setContentType('application/json', 'UTF-8');
@@ -396,8 +402,8 @@ class ProductoController extends Controller
              $request->getPost('id'),
              $request->getPost('referencia'),
              $request->getPost('jsondetalle'),
-             'desarrollo'
-             //$request->getPost('usuario')
+             $request->getPost('usuario'),
+             $request->getPost('config')
          );
          $jsonData = Producto::inventarioAgregar($data);
          $response->setContentType('application/json', 'UTF-8');
@@ -413,8 +419,7 @@ class ProductoController extends Controller
     {
          $data = array(
              $request->getPost('id'),
-             'EERAZO'
-             //$request->getPost('usuario')
+             $request->getPost('usuario')
          );
          $jsonData = Producto::inventarioAnular($data);
          $response->setContentType('application/json', 'UTF-8');

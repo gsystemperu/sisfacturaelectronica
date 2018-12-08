@@ -9,6 +9,7 @@ Ext.define('sisfacturaelectronica.store.Productos', {
     extend: 'Ext.data.Store',
     requiere:['sisfacturaelectronica.model.DataModels'],
     model   :'sisfacturaelectronica.model.Producto',
+    storeId : 'stproducto',
     autoLoad: false,
     remoteSort: true,
     autoSync  : true,

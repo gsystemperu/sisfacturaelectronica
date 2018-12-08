@@ -9,7 +9,8 @@ Ext.define('sisfacturaelectronica.view.compras.ContenedorOrdenCompra', {
     'sisfacturaelectronica.view.compras.AccionesContenedorOrdenCompra',
     'sisfacturaelectronica.view.compras.IngresarOrdenCompra',
     'sisfacturaelectronica.view.compras.EditarOrdenCompra',
-    'sisfacturaelectronica.util.Rutas'
+    'sisfacturaelectronica.util.Rutas',
+    'sisfacturaelectronica.view.compras.IngresoGuia'
   ],
   layout: {
     type: 'card',
@@ -36,6 +37,10 @@ Ext.define('sisfacturaelectronica.view.compras.ContenedorOrdenCompra', {
       , {
         id: 'ordencompra-2',
         xtype:'weditarordencompra'
+      },
+      {
+        id: 'ordencompra-3',
+        xtype:'wIngresoGuia'
       }
     ],
     tbar: me.getToolBar()
@@ -65,7 +70,7 @@ Ext.define('sisfacturaelectronica.view.compras.ContenedorOrdenCompra', {
       },
       {
         xtype:'button',
-        text :'CONFIRMAR ORDEN',
+        text :'CONFIRMAR - INGRESAR',
         handler:'onClickConfirmarOrdenCompra'
       }
 
