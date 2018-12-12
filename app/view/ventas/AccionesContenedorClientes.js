@@ -6,6 +6,10 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
     },
     onClickNuevoCliente:function(btn){
       try {
+        c = document.getElementById("cliCotizaciones");
+        c.textContent = '0';
+        f = document.getElementById("cliFacturacion");
+        f.textContent = '0';
         var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    //this;
         var l = me.getLayout();
         l.setActiveItem(1);
@@ -20,7 +24,10 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
         var l = me.getLayout();
         l.setActiveItem(0);
         this.onClickRefrescarListado();
-
+        c = document.getElementById("cliCotizaciones");
+        c.textContent = '0';
+        f = document.getElementById("cliFacturacion");
+        f.textContent = '0';
       } catch (e) {
         console.log("Ver clientes");
       }
@@ -31,6 +38,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
       l.setActiveItem(2);
       s = Ext.ComponentQuery.query('#dgvVentas')[0].getStore();
       r = Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
+      Ext.ComponentQuery.query('#idcliente')[0].setValue(r.get('idper'));
       s.load({
         params : {
           vIdper : r.get('idper')
@@ -45,45 +53,19 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorClientes', {
        console.log("test");
     },
     onClickVerFacturacionCliente:function(){
-      var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    //this;
+      var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];    
       var l = me.getLayout();
       l.setActiveItem(3);
-
-      __registro = Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
-      __store    = Ext.ComponentQuery.query('#dgvVentasFacturarCliente2')[0].getStore();
-      if(__registro){
-        __store.load({
+      r = Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
+      s = Ext.ComponentQuery.query('#dgvVentasFacturarCliente2')[0].getStore();
+      Ext.ComponentQuery.query('#idclientefac')[0].setValue(r.get('idper'));
+      if(r){
+        s.load({
           params:{
-            idper :__registro.get('idper')
+            idper :r.get('idper')
           }
         })
       }
     },
-    //@@Reportes Cliente
-    onClickImprimirCC:function(){
-      var _record =  Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
-      if (_record) {
-          __nombre = _record.get('nombreper');
-          __id     = _record.get('idper');
-          var objrpt = window.open( sisfacturaelectronica.util.Rutas.rptClienteImprimirPagosCC+ 'idper='+ __id+"&persona="+__nombre, "", "width=700,height=900");
-          //setTimeout(function(){ objrpt.close(); }, 1000);
-      } else {
-          Ext.Msg.alert("SisFacturaElectronica", "Seleccionar al cliente para imprimir");
-          return false;
-      }
-
-    },
-    onClickImprimirListadoCC:function(){
-      var _record =  Ext.ComponentQuery.query('#dgvClientes')[0].getSelectionModel().getSelection()[0];
-      if (_record) {
-          __nombre = _record.get('nombreper');
-          __id     = _record.get('idper');
-          var objrpt = window.open( sisfacturaelectronica.util.Rutas.rptClienteImprimirCC+ 'idper='+ __id+"&persona="+__nombre, "", "width=700,height=900");
-          //setTimeout(function(){ objrpt.close(); }, 1000);
-      } else {
-          Ext.Msg.alert("SisFacturaElectronica", "Seleccionar al cliente para imprimir");
-          return false;
-      }
-
-    }
+    
   });

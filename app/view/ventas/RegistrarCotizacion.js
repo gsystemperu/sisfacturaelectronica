@@ -18,7 +18,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
         });
 
         storeClientes = Ext.create('sisfacturaelectronica.store.Clientes');
-        storeProductos = Ext.create('sisfacturaelectronica.store.Productos');
+        storeProductos = Ext.create('sisfacturaelectronica.store.ProductosFiltroPrecioPersona');   //('sisfacturaelectronica.store.Productos');
         storeDetCotizacion = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
         storeFormaPago = Ext.create('sisfacturaelectronica.store.FormaPago');
         storeModoEntrega = Ext.create('sisfacturaelectronica.store.ModoEntrega');
@@ -60,478 +60,552 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                         value: 0
                     },
                     {
-                        xtype: 'container',
-                        layout: 'hbox',
-                        margin: '5 0 5 0',
-                        columnWidth: 0.5,
-                        items: [{
-                            xtype: 'combobox',
-                            itemId: 'cboDatosCliente',
-                            name: 'idper',
-                            fieldLabel: 'Nombre / Razon Social',
-                            flex: 2,
-                            fieldStyle: 'text-transform:uppercase',
-                            labelWidth: 150,
-                            allowBlank: false,
-                            editable: true,
-                            forceSelection: true,
-                            store: storeClientes,
-                            queryMode: 'local',
-                            displayField: 'nombreper',
-                            valueField: 'idper'
-                        },
-                        {
-                            xtype: 'button',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickNuevoCliente'
-                        },
-
-                        {
-
-                            xtype: 'textfield',
-                            fieldLabel: 'Referencia',
-                            labelAlign: 'right',
-                            flex: 1,
-                            itemId: 'txtReferencia',
-                            name: 'vreferencia',
-                            hidden: true
-
-                        }
-
-
-                        ]
-
-
-                    },
-                    {
-                        xtype: 'container',
+                        xtype: 'fieldset',
+                        title: 'Datos Principales',
                         layout: {
-                            type: 'hbox',
-                            anchor: 'strech'
-                        },
-                        paddingTop: 10,
-                        paddingBotton: 10,
-                        defaults: {
-                            labelWidth: 120,
-                        },
-                        items: [{
-                            xtype: 'combo',
-                            fieldLabel: 'Forma Pago',
-                            store: storeFormaPago,
-                            displayField: 'descripcion',
-                            valueField: 'idfopag',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            name: 'vformapago',
-                            editable: false,
-                            itemId: 'idfopag',
-                            flex: 1
-
-                        },
-                        {
-                            xtype: 'button',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickMantenimiento'
-                        },
-                        {
-                            xtype: 'combo',
-                            fieldLabel: 'Modo de Entrega',
-                            store: storeModoEntrega,
-                            displayField: 'descripcion',
-                            valueField: 'idmodo',
-                            queryMode: 'local',
-                            allowBlank: false,
-                            name: 'vmodoentrega',
-                            labelAlign: 'right',
-                            editable: false,
-                            itemId: 'vmodoentrega',
-                            value: 1,
-                            flex: 1
-                        },
-                        {
-                            xtype: 'button',
-                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                            handler: 'onClickMantenimiento'
-                        },
-
-                        ]
-
-
-                    },
-                    {
-                        xtype: 'container',
-                        layout: {
-                            type: 'hbox',
-                            anchor: 'strech'
+                            type: 'vbox',
+                            align: 'stretch'
                         },
                         defaults: {
-                            labelWidth: 120,
-                            padding: '5 0 5 0'
+                            flex: 1
                         },
                         items: [
                             {
-
-                                xtype: 'datefield',
-                                fieldLabel: 'Fecha Venta',
-                                value: new Date(),
-                                labelAlign: 'left',
-                                flex: 1,
-                                itemId: 'dtFechaVenta',
-                                name: 'vfecha'
-
-                            },
-                            {
-                                xtype: 'datefield',
-                                fieldLabel: 'Válido Hasta',
-                                labelAlign: 'right',
-                                editable: false,
-                                name: 'fechavalidohasta',
-                                value: new Date(),
-                                flex: 1
-                            },
-                            {
-                                xtype: 'combo',
-                                fieldLabel: 'Moneda',
-                                store: storeMonedas,
-                                displayField: 'descripcion',
-                                valueField: 'id',
-                                queryMode: 'local',
-                                allowBlank: true,
-                                name: 'idmoneda',
-                                labelAlign: 'right',
-                                editable: false,
-                                flex: 1,
-                                value: 1,
-                                labelWidth: 128
-                            },
-                            {
-                                xtype: 'combo',
-                                fieldLabel: 'Asignar a Vendedor',
-                                store: storeVendedores,
-                                displayField: 'completo',
-                                valueField: 'idvend',
-                                queryMode: 'local',
-                                allowBlank: true,
-                                name: 'vvendedor',
-                                labelAlign: 'right',
-                                editable: false,
-                                itemId: 'vvendedor',
-                                hidden: true
-
-                            },
-                            {
-                                xtype: 'button',
-                                glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                handler: 'onClickMantenimiento'
-                            },
-                            {
-                                xtype: 'checkboxfield',
-                                boxLabel: 'Precio incluye el I.G.V.',
-                                labelAlign: 'right',
-                                name: 'incluyeigv',
-                                reference: 'incluyeigv',
-                                itemId: 'incluyeigv',
-                                readOnly: false,
-                                value: 1,
-                                flex: 1,
-                                listeners: {
-                                    change: {
-                                        fn: 'onSelectedIncluyeIGV'
+                                xtype: 'container',
+                                layout: {
+                                    type: 'hbox',
+                                    align: 'stretch'
+                                },
+                                margin: '5 0 5 0',
+                                columnWidth: 0.5,
+                                items: [
+                                    {
+                                        xtype: 'combobox',
+                                        itemId: 'cboDatosCliente',
+                                        name: 'idper',
+                                        emptyText: 'Nombre o Razón Social ',
+                                        fieldStyle: 'font-size:35px;height:40px;text-transform:uppercase;',
+                                        allowBlank: false,
+                                        editable: true,
+                                        store: storeClientes,
+                                        queryMode: 'local',
+                                        displayField: 'nombreper',
+                                        valueField: 'idper',
+                                        flex: 1
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                        handler: 'onClickNuevoCliente',
+                                        height: 35
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Referencia',
+                                        labelAlign: 'right',
+                                        itemId: 'txtReferencia',
+                                        name: 'vreferencia',
+                                        hidden: true
                                     }
-                                }
-                            }
-
-                        ]
-
-
-                    },
-                    {
-                        xtype: 'container',
-                        layout: {
-                            type: 'hbox',
-                            anchor: 'strech'
-                        },
-                        defaults: {
-                            labelWidth: 120,
-                            padding: '4 0 4 0'
-                        },
-                        items: [
-                            {
-                                xtype: 'textarea',
-                                fieldLabel: 'Lugar de entrega',
-                                name: 'lugarentrega',
-                                flex: 1
+                                ]
                             },
                             {
-                                xtype: 'textarea',
-                                fieldLabel: 'Creditos y cobranzas',
-                                labelAlign: 'right',
-                                name: 'creditoscobranzas',
-                                flex: 1
+                                xtype: 'container',
+                                layout: {
+                                    type: 'hbox',
+                                    anchor: 'strech'
+                                },
+                                paddingTop: 10,
+                                paddingBotton: 10,
+                                defaults: {
+                                    labelWidth: 120,
+                                    emptyText: '-- Seleccionar --'
+                                },
+                                items: [{
+                                    xtype: 'combo',
+                                    fieldLabel: 'Forma Pago',
+                                    store: storeFormaPago,
+                                    displayField: 'descripcion',
+                                    valueField: 'idfopag',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    name: 'vformapago',
+                                    editable: false,
+                                    itemId: 'idfopag',
+                                    flex: 1
+
+
+                                },
+                                {
+                                    xtype: 'button',
+                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                    handler: 'onClickMantenimiento'
+                                },
+                                {
+                                    xtype: 'combo',
+                                    fieldLabel: 'Modo de Entrega',
+                                    store: storeModoEntrega,
+                                    displayField: 'descripcion',
+                                    valueField: 'idmodo',
+                                    queryMode: 'local',
+                                    allowBlank: false,
+                                    name: 'vmodoentrega',
+                                    labelAlign: 'right',
+                                    editable: false,
+                                    itemId: 'vmodoentrega',
+                                    flex: 1
+                                },
+                                {
+                                    xtype: 'button',
+                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                    handler: 'onClickMantenimiento'
+                                },
+
+                                ]
+
+
+                            },
+                            {
+                                xtype: 'container',
+                                layout: {
+                                    type: 'hbox',
+                                    anchor: 'strech'
+                                },
+                                padding: '5 0 0 0',
+                                defaults: {
+                                    labelWidth: 120,
+                                    flex: 1.5
+                                },
+                                items: [
+                                    {
+
+                                        xtype: 'datefield',
+                                        fieldLabel: 'Fecha Venta',
+                                        value: new Date(),
+                                        labelAlign: 'left',
+                                        itemId: 'dtFechaVenta',
+                                        name: 'vfecha'
+
+                                    },
+                                    {
+                                        xtype: 'datefield',
+                                        fieldLabel: 'Válido Hasta',
+                                        labelAlign: 'right',
+                                        editable: false,
+                                        name: 'fechavalidohasta',
+                                        value: new Date(),
+
+                                    },
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Moneda',
+                                        store: storeMonedas,
+                                        displayField: 'descripcion',
+                                        valueField: 'id',
+                                        queryMode: 'local',
+                                        allowBlank: true,
+                                        name: 'idmoneda',
+                                        labelAlign: 'right',
+                                        editable: false,
+                                        value: 1,
+                                        labelWidth: 128,
+                                        flex: 2
+                                    },
+                                    {
+                                        xtype: 'combo',
+                                        fieldLabel: 'Asignar a Vendedor',
+                                        store: storeVendedores,
+                                        displayField: 'completo',
+                                        valueField: 'idvend',
+                                        queryMode: 'local',
+                                        allowBlank: true,
+                                        name: 'vvendedor',
+                                        labelAlign: 'right',
+                                        editable: false,
+                                        itemId: 'vvendedor',
+                                        hidden: true
+
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                        handler: 'onClickMantenimiento',
+                                        flex: 0
+                                    },
+                                    {
+                                        xtype: 'checkboxfield',
+                                        boxLabel: '<b style="color:#2d5f87">Precios Incluye I.g.v. </b>',
+                                        
+                                        padding: '3 0 0 20',
+                                        labelAlign: 'right',
+                                        name: 'incluyeigv',
+                                        reference: 'incluyeigv',
+                                        itemId: 'incluyeigv',
+                                        readOnly: false,
+                                        flex: 1,
+                                        value : true,
+                                        listeners: {
+                                            change: {
+                                                fn: 'onSelectedIncluyeIGV'
+                                            }
+                                        }
+                                    },
+                                    {
+                                        xtype: 'checkboxfield',
+                                        boxLabel: '<b style="color:#2d5f87">Precios Solo Mayorista </b>',
+                                        padding: '3 0 0 20',
+                                        labelAlign: 'right',
+                                        name: 'precioMayorista',
+                                        reference: 'precioMayorista',
+                                        itemId: 'precioMayorista',
+                                        readOnly: false,
+                                        value : true,
+                                        flex: 1
+                                       
+                                    }
+
+                                ]
+
+
+                            },
+                            {
+                                xtype: 'container',
+                                layout: {
+                                    type: 'hbox',
+                                    anchor: 'strech'
+                                },
+                                defaults: {
+                                    labelWidth: 120,
+                                    padding: '4 0 4 0'
+                                },
+                                items: [
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Lugar de entrega',
+                                        name: 'lugarentrega',
+                                        flex: 1
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Creditos y cobranzas',
+                                        labelAlign: 'right',
+                                        name: 'creditoscobranzas',
+                                        flex: 1,
+                                        labelWidth: 150
+                                    }
+                                ]
                             }
                         ]
-
-
                     },
-
-
                     {
                         xtype: 'fieldset',
                         columnWidth: 0.1,
                         defaultType: 'textfield',
-                        padding: 5,
-                        items: [{
-                            xtype: 'container',
-                            margin: '0 0 0 -5',
-                            layout: 'fit',
-                            frame: true,
-                            border: false,
-                            items: [
-
-
-                                {
-                                    xtype: 'container',
-                                    layout: 'hbox',
-                                    padding: '0 5 5 0',
-                                    items: [
-                                        {
-                                            xtype: 'label',
-                                            text: 'Buscar Producto',
-                                            width: 120,
-                                            height: 23,
-                                            style: {
-                                                paddingTop: '3px',
-                                                background: '#6a4b5a',
-                                                color: 'white',
-                                                textAlign: 'center',
-                                                fontWeight: 'bold',
-                                                fontSize: '13px'
-                                            }
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                                            handler: 'onClickBuscarProducto',
-                                            tooltip: 'Accion para buscar los productos ingresados'
-                                        },
-                                        {
-                                            xtype: 'container',
-                                            layout: 'hbox',
-                                            padding: '0 10 0 0',
-                                            items: [
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Nro. Cotizacion :',
-                                                    width: 120,
-                                                    height: 23,
-                                                    style: {
-                                                        paddingTop: '3px',
-                                                        background: '#6A4B5A',
-                                                        color: 'white',
-                                                        textAlign: 'center',
-                                                        fontWeight: 'bold',
-                                                        fontSize: '13px'
-                                                    }
-                                                },
-                                                {
-                                                    xtype: 'textfield',
-                                                    flex: 1,
-                                                    readOnly: true,
-                                                    fieldStyle: 'text-align: center;font-size:15px;font-weight:bold; ',
-                                                    value: 'CT000000000000',
-                                                    name: 'ctcodigo'
-                                                }
-                                            ]
-                                        }
-                                      
-
-                                    ]
-                                }
-
-
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'fit',
-                            margin: '0 0 5 0',
-                            items: [{
-                                xtype: 'grid',
-                                flex: 1,
-                                reference: 'dgvDetalleVenta',
-                                itemId: 'dgvDetalleVenta',
-                                store: storeDetCotizacion,
-                                plugins: [rowEditing],
-                                selModel: 'cellmodel',
-                                plugins: {
-                                    ptype: 'cellediting',
-                                    clicksToEdit: 1
-                                },
-                                scrollable: true,
-                                columns: [{
-                                    text: 'Descripción',
-                                    dataIndex: 'descripcion',
-                                    flex: 3
-                                },
-                                {
-                                    xtype: 'numbercolumn',
-                                    text: 'Cantidad',
-                                    dataIndex: 'cantidad',
-                                    flex: 0.5,
-                                    align: 'center',
-                                    editor: {
-                                        xtype: 'numberfield',
-                                        value: 0,
-                                        //maxValue: 1000,
-                                        minValue: 0,
-                                        itemId: 'txtCantidadUnidad'
-
-                                    }
-                                },
-                                {
-                                    //xtype:'numbercolumn',
-                                    text: 'Precio',
-                                    dataIndex: 'precio',
-                                    flex: 0.6,
-                                    align: 'right',
-                                    renderer: Ext.util.Format.numberRenderer('0.00'),
-                                    editor: {
-                                        xtype: 'numberfield',
-                                        format: '0.00',
-                                        decimalPrecision: 5,
-                                        decimalSeparator: '.'
-                                    }
-                                },
-                                {
-                                    //xtype:'numbercolumn',
-                                    text: 'Total',
-                                    dataIndex: 'total',
-                                    flex: 0.5,
-                                    align: 'right',
-                                    renderer: Ext.util.Format.numberRenderer('0.00')
-
-                                },
-                                {
-                                    xtype: 'datecolumn',
-                                    dataIndex: 'vencimiento',
-                                    flex: 0.5,
-                                    format: 'd/m/Y',
-                                    text: 'Vencimiento',
-                                    editor: {
-                                        xtype: 'datefield',
-                                        format: 'd/m/Y',
-                                        value: new Date()
-                                    }
-                                },
-                                {
-                                    xtype: 'widgetcolumn',
-                                    flex: 0.2,
-                                    widget: {
-                                        xtype: 'button',
-                                        width: 24,
-                                        glyph: 0xf014,
-                                        listeners: {
-                                            click: 'onClickEliminarDetalle'
-                                        }
-                                    }
-
-                                }
-
-
-                                ],
-                                cls: '',
-                                height: 300,
-                                listeners: {
-                                    edit: 'onEditorCalcularTotal'
-                                }
-
-                            }]
-
-                        }
-                        ]
-
-                    }, // fin fieldset Detalle
-                    {
-                        xtype: 'panel',
-                        layout: 'hbox',
+                        padding: 10,
                         items: [
                             {
-                                xtype: 'textarea',
-                                flex: 1.5,
-                                height: 100,
-                                name: 'comentario',
-                                fieldStyle: 'font-size:12px;text-transform:uppercase;',
-                                //emptyText : 'Comentario Cotizacion :'
-                            },
-                            {
                                 xtype: 'panel',
-                                flex: 1,
-                                padding: '0 0 0 0',
-                                items: [{
-                                    xtype: 'textfield',
-                                    reference: 'Subtotalventas',
-                                    itemId: 'Subtotalventas',
-                                    name: 'valventacont',
-                                    fieldLabel: 'Sub Total',
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                    labelAlign: 'right'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Igv',
-                                    reference: 'igvventas',
-                                    itemId: 'igvventas',
-                                    name: 'valigvcont',
-                                    minValue: 0,
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                    labelAlign: 'right'
+                                layout: 'fit',
+                                tbar: [
+                                    {
+                                        xtype: 'combo',
+                                        flex: 13,
+                                        itemId: 'cboProducto',
+                                          store: storeProductos,
+                                        listConfig: {
+                                            itemTpl: '<b>{nombre}</b>  ->   <strong> {marca} </strong> <br> '
+                                                +'<label style="background-color:#03AA92;color:#FFFFFF;width:200px;height:30px;padding:5px 5px 5px 5px;  "> Unidad Medida </label> '
+                                                +'&nbsp;&nbsp;{unidadmedida}<br> '
+                                                +'<label style="background-color:#6A4B5A;color:#FFFFFF;width:300px;height:30px;padding:5px 5px 5px 5px;  "> Precio &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label> '
+                                                +'&nbsp;&nbsp; Precio Mayorista :&nbsp;&nbsp; {precioventa} &nbsp  -  &nbsp;&nbsp;Precio Minorista : &nbsp;&nbsp; {precioventafraccion} <br> '
+                                                + '<label style="background-color:#03AA92;color:#FFFFFF;width:250px;height:30px;padding:5px 5px 5px 5px;  "> Stock &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label> '
+                                                + '&nbsp;&nbsp; Stock : &nbsp;&nbsp;{entero}  &nbsp;&nbsp;-  &nbsp;&nbsp; Fracción :&nbsp;&nbsp; {fraccion} '
+                                        },
+                                        typeAhead: true,
+                                        minChars: 4,
+                                        typeAheadDelay: 200,
+                                        queryDelay: 500,
+                                        queryCaching: false,
+                                        emptyText: ' DIGITAR NOMBRE DEL PRODUCTO',
+                                        valueField: 'id',
+                                        queryMode: 'remote',
+                                        fieldStyle: 'font-size:20px;',
+                                        listeners: {
+                                            beforequery: 'onBeforeQueryProducto',
+                                            select: 'onSelectProducto'
+                                        }
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
+                                        handler: 'onClickNuevoProd',
+                                        height: 33
+                                    },
 
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Total General ',
-                                    labelAlign: 'right',
-                                    reference: 'TotalGeneral',
-                                    itemId: 'TotalGeneral',
-                                    name: 'valtotalcont',
-                                    minValue: 0,
-                                    readOnly: true,
-                                    width: 280,
-                                    labelWidth: 120,
-                                    fieldStyle: 'text-align: right;font-size:16px;'
-                                }
+                                    '->',
+                                    {
+                                        xtype: 'textfield',
+                                        name: 'ctcodigo',
+                                        value: '** Generando',
+                                        readOnly: true,
+                                        fieldStyle: 'font-size:25px;text-align:center;',
+                                        fieldLabel: 'Nro. Cotización',
+                                        labelWidth: 160,
+                                        labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
+
+                                    }
+                                ],
+                                bbar: [
+                                    {
+                                        xtype: 'textarea',
+                                        flex: 2,
+                                        height: 100,
+                                        name: 'comentario',
+                                        fieldStyle: 'font-size:12px;text-transform:uppercase;',
+                                        toolTip: 'Ingresar un comentario a la cotización, se mostrara en el reporte.'
+                                        //emptyText : 'Comentario Cotizacion :'
+                                    },
+                                    '|',
+                                    {
+                                        text: 'Cancelar',
+                                        scale: 'large',
+                                        handler: 'onClickSalirCotizacion'
+                                    },
+                                    {
+                                        text: 'Guardar',
+                                        scale: 'large',
+                                        handler: 'onClickGuardarCotizacion'
+                                    },
+                                    '->',
+                                    {
+                                        xtype: 'container',
+                                        layout: {
+                                            type: 'vbox',
+                                            align: 'stretch'
+                                        },
+                                        defaults: {
+                                            fieldStyle: 'text-align: right;font-size:20px;',
+                                            labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;',
+                                            labelAlign: 'left',
+                                            value: "0.00",
+                                            minValue: 0,
+                                            step: 0.01,
+                                            readOnly: true,
+                                            width: 280,
+                                            labelWidth: 120,
+                                        },
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                reference: 'Subtotalventas',
+                                                itemId: 'Subtotalventas',
+                                                name: 'valventacont',
+                                                fieldLabel: 'Sub Total',
+
+
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                fieldLabel: 'I.g.v.',
+                                                reference: 'igvventas',
+                                                itemId: 'igvventas',
+                                                name: 'valigvcont'
+
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                fieldLabel: 'Total General',
+                                                reference: 'TotalGeneral',
+                                                itemId: 'TotalGeneral',
+                                                name: 'valtotalcont',
+
+                                            }
+                                        ]
+                                    }
+                                ],
+
+                                items: [
+                                    {
+                                        xtype: 'grid',
+                                        flex: 1,
+                                        reference: 'dgvDetalleVenta',
+                                        itemId: 'dgvDetalleVenta',
+                                        store: storeDetCotizacion,
+                                        plugins: [rowEditing],
+                                        selModel: 'cellmodel',
+                                        plugins: {
+                                            ptype: 'cellediting',
+                                            clicksToEdit: 1
+                                        },
+                                        scrollable: true,
+                                        columns: [
+                                            {
+                                                text: 'Descripción',
+                                                dataIndex: 'descripcion',
+                                                flex: 3.5
+                                            },
+                                            {
+                                                text: 'Unidad Medida',
+                                                dataIndex: 'presentacion',
+                                                flex: 1
+                                            },
+                                            {
+                                                xtype: 'numbercolumn',
+                                                text: 'Cantidad',
+                                                dataIndex: 'cantidad',
+                                                flex: 0.5,
+                                                align: 'center',
+                                                editor: {
+                                                    xtype: 'numberfield',
+                                                    value: 0,
+                                                    //maxValue: 1000,
+                                                    minValue: 0,
+                                                    itemId: 'txtCantidadUnidad'
+
+                                                }
+                                            },
+                                            {
+                                                //xtype:'numbercolumn',
+                                                text: 'Precio',
+                                                dataIndex: 'precio',
+                                                flex: 0.6,
+                                                align: 'right',
+                                                renderer: Ext.util.Format.numberRenderer('0.00'),
+                                                editor: {
+                                                    xtype: 'numberfield',
+                                                    format: '0.00',
+                                                    decimalPrecision: 5,
+                                                    decimalSeparator: '.'
+                                                }
+                                            },
+                                            {
+                                                //xtype:'numbercolumn',
+                                                text: 'Total',
+                                                dataIndex: 'total',
+                                                flex: 0.5,
+                                                align: 'right',
+                                                renderer: Ext.util.Format.numberRenderer('0.00')
+
+                                            },
+                                            {
+                                                xtype: 'datecolumn',
+                                                dataIndex: 'vencimiento',
+                                                flex: 0.5,
+                                                format: 'd/m/Y',
+                                                text: 'Vencimiento',
+                                                editor: {
+                                                    xtype: 'datefield',
+                                                    format: 'd/m/Y',
+                                                    value: new Date()
+                                                },
+                                                hidden:true
+                                            },
+                                            {
+                                                xtype: 'widgetcolumn',
+                                                flex: 0.2,
+                                                widget: {
+                                                    xtype: 'button',
+                                                    width: 24,
+                                                    glyph: 0xf014,
+                                                    listeners: {
+                                                        click: 'onClickEliminarDetalle'
+                                                    }
+                                                }
+
+                                            }
+                                        ],
+                                        cls: '',
+                                        height: 300,
+                                        listeners: {
+                                            edit: 'onEditorCalcularTotal'
+                                        }
+
+                                    }
                                 ]
-                            }
+                            }]
 
-                        ]
-
-                    },
-                    {
-                        xtype: 'panel',
-                        buttons: [
-                            '->',
-                            {
-                                text: 'Cancelar',
-                                scale: 'medium',
-                                handler: 'onClickSalirCotizacion'
-                            },
-                            {
-                                text: 'Guardar',
-                                scale: 'medium',
-                                handler: 'onClickGuardarCotizacion'
-                            }
-
-
-                        ]
-
-
-                    }
+                    }, // fin fieldset Detalle
+                        /*{
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            items: [
+                                {
+                                    xtype: 'textarea',
+                                    flex: 1.5,
+                                    height: 100,
+                                    name: 'comentario',
+                                    fieldStyle: 'font-size:12px;text-transform:uppercase;',
+                                    //emptyText : 'Comentario Cotizacion :'
+                                },
+                                {
+                                    xtype: 'panel',
+                                    flex: 1,
+                                    padding: '0 0 0 0',
+                                    items: [{
+                                        xtype: 'textfield',
+                                        reference: 'Subtotalventas',
+                                        itemId: 'Subtotalventas',
+                                        name: 'valventacont',
+                                        fieldLabel: 'Sub Total',
+                                        readOnly: true,
+                                        width: 280,
+                                        labelWidth: 120,
+                                        fieldStyle: 'text-align: right;font-size:16px;',
+                                        labelAlign: 'right'
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Igv',
+                                        reference: 'igvventas',
+                                        itemId: 'igvventas',
+                                        name: 'valigvcont',
+                                        minValue: 0,
+                                        readOnly: true,
+                                        width: 280,
+                                        labelWidth: 120,
+                                        fieldStyle: 'text-align: right;font-size:16px;',
+                                        labelAlign: 'right'
+    
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        fieldLabel: 'Total General ',
+                                        labelAlign: 'right',
+                                        reference: 'TotalGeneral',
+                                        itemId: 'TotalGeneral',
+                                        name: 'valtotalcont',
+                                        minValue: 0,
+                                        readOnly: true,
+                                        width: 280,
+                                        labelWidth: 120,
+                                        fieldStyle: 'text-align: right;font-size:16px;'
+                                    }
+                                    ]
+                                }
+    
+                            ]
+    
+                        },*/
+                        /*  {
+                              xtype: 'panel',
+                              buttons: [
+                                  '->',
+                                  {
+                                      text: 'Cancelar',
+                                      scale: 'medium',
+                                      handler: 'onClickSalirCotizacion'
+                                  },
+                                  {
+                                      text: 'Guardar',
+                                      scale: 'medium',
+                                      handler: 'onClickGuardarCotizacion'
+                                  }
+      
+      
+                              ]
+      
+      
+                          }*/
                     ]
 
                 }

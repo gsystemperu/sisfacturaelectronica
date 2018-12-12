@@ -91,7 +91,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 }
              },
             columns: [
-               {xtype: 'rownumberer'},
+               {xtype: 'rownumberer',flex:0.3,align:'center'},
               {
                     text: 'F.Cotizacion',
                     dataIndex: 'fechacoti',

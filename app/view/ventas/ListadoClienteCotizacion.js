@@ -8,7 +8,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         'Ext.grid.column.*',
         'Ext.form.field.*',
         'Ext.panel.Panel',
-        'sisfacturaelectronica.store.DataTemp'
+        'sisfacturaelectronica.store.DataTemp',
+        'sisfacturaelectronica.view.ventas.AccionesListadoClienteCotizacion'
     ],
     layout: {
         type: 'vbox',
@@ -19,7 +20,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         bodyPadding: 0,
         border: false
     },
-    controller : 'acciones-regcotizacion',
+    controller : 'acciones-listadoclientecotizacion',
     initComponent: function () {
         var storeCoti    = Ext.create('sisfacturaelectronica.store.Cotizaciones');
         var storeCotiDet = Ext.create('sisfacturaelectronica.store.CotizacionesDetalle');
@@ -30,7 +31,14 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
         });
 
         Ext.apply(this, {
-            items: [{
+            items: [
+                {
+                    xtype:'hiddenfield',
+                    itemId : 'idcliente',
+                    reference: 'idcliente',
+                    value : 0
+                },
+                {
                 xtype: 'panel',
                 flex: 1,
                 margin: '0 3 0 0',
@@ -93,68 +101,63 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
 
 
                 }],
-                tbar: [{
+                tbar: [
+                    {
                     xtype: 'container',
                     bodyPadding: 0,
-                    layout: 'hbox',
-                    columnWidth: 10,
-                    items: [{
-                            xtype: 'label',
-                            text: 'Fecha Desde',
-                            padding: '5px 0 0 0',
-                            border: true,
-                            width: 100,
-                            height: 25,
-                            style: {
-                                background: '#6a4b5a',
-                                color: 'white',
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                                fontSize: '13px'
-                            }
-                        }, {
+                    layout:{
+                        type:'hbox',
+                        align :'stretch'
+                    },
+                    defaults : {
+                        fieldStyle: 'text-align: right;font-size:15px;',
+                        labelStyle: 'padding : 5px 5px 5px 10px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 13px; font-weight: bold; ',
+                        padding : '0 5 0 0'
+                       
+                    },
+                    items: [
+                        {
                             xtype: 'datefield',
                             value: new Date(),
+                            flex:1,
                             reference: 'dfDesdeCotizacionesCliente',
                             itemId: 'dfDesde',
-                            width: 100
+                            fieldLabel : 'Fecha Desde',
+                           
                         },
                         {
-                            xtype: 'label',
-                            text: 'Fecha Hasta',
-                            padding: '5px 0 0 0',
-                            border: true,
-                            width: 100,
-                            height: 25,
-                            style: {
-                                background: '#6a4b5a',
-                                color: 'white',
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                                fontSize: '13px'
-                            }
-                        }, {
                             xtype: 'datefield',
                             value: new Date(),
+                            flex:1,
                             reference: 'dfHastaCotizacionesCliente',
                             itemId: 'dfHasta',
-                            width: 100
+                            fieldLabel : 'Fecha Hasta'
                         },
                         {
                             xtype: 'button',
+                            padding :0,
                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
                             tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
-                            handler: 'onClickBuscarCotizacionesPorFechas'
-                        },
+                            handler: 'onClickBuscarFechas'
+                        }
 
                     ]
                 }]
-            }, {
+                }, 
+                {
                 xtype: 'panel',
                 layout: 'fit',
                 collapseDirection: 'right',
                 border: false,
                 flex: 0.7,
+                bbar : [
+                    '->',
+                    { 
+                        text : 'Salir',
+                        scale : 'large',
+                        handler : 'onClickSalir'
+                    }
+                ],
                 items: [{
                     xtype: 'grid',
                     reference: 'dgvDetalleCotizacionCliente',
@@ -179,18 +182,21 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
                             align: 'left'
                         },
                         {
+                            xtype : 'numbercolumn',
                             text: 'Precio',
                             dataIndex: 'precio',
                             flex: 0.5,
                             align: 'right'
                         },
                         {
+                            xtype : 'numbercolumn',
                             text: 'Cantidad',
                             dataIndex: 'cantidad',
                             flex: 0.5,
                             align: 'right'
                         },
                         {
+                            xtype : 'numbercolumn',
                             text: 'Total',
                             dataIndex: 'total',
                             flex: 0.5,
@@ -202,7 +208,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteCotizacion', {
 
 
 
-            }]
+                }
+            ]
         });
         this.callParent();
    }

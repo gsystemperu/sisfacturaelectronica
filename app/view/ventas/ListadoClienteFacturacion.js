@@ -8,7 +8,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
         'Ext.grid.column.*',
         'Ext.form.field.*',
         'Ext.panel.Panel',
-        'sisfacturaelectronica.store.DataTemp'
+        'sisfacturaelectronica.store.DataTemp',
+        'sisfacturaelectronica.view.ventas.AccionesListadoClienteFacturacion'
     ],
     layout: {
         type: 'vbox',
@@ -19,7 +20,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
         bodyPadding: 0,
         border: false
     },
-    //controller: 'acciones-regcotizacionfacturar',
+    controller: 'acciones-listadoclientefacturacion',
     initComponent: function () {
         var storeCotiFacturar = Ext.create('sisfacturaelectronica.store.ClienteVentasFacturacion');
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
@@ -31,20 +32,62 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
             items: [
                 me.getListadoCotizacionesAfacturar(storeCotiFacturar, rowEditing)
             ],
-            //bbar:me.getBarraTotales()
+            bbar:me.getBarraTotales()
         });
         this.callParent();
     },
     getBarraTotales: function () {
         return obj = [
+            
             '->',
             {
-                xtype: 'label',
-                text: 'TOTAL'
-            }, {
-                xtype: 'numberfield',
-                padding: '0 50 0 15'
-            }
+                xtype:'button',
+                text : 'Salir',
+                scale : 'large',
+                handler :'onClickSalir'
+            },
+         /*   {
+                xtype: 'container',
+                flex:1,
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                defaults:{
+                    fieldStyle: 'text-align: right;font-size:20px;',
+                    labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;',
+                    labelAlign: 'left',
+                    value: "0.00",
+                    minValue: 0,
+                    step: 0.01,
+                    readOnly: true,
+                    width: 180,
+                    labelWidth: 120,
+                },
+                items: [
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'Total',
+                        itemId: 'txtTotalGeneral',
+                
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'Total Acuenta',
+                        itemId: 'txtTotalAcuenta',
+                        
+
+                       
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: 'Total Saldo',
+                        itemId: 'txtTotalSaldo',
+                        
+                       
+                    }
+                ]
+            }*/
         ];
     },
     getListadoCotizacionesAfacturar: function (storeCotiFacturar, rowEditing) {
@@ -53,7 +96,14 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
             flex: 1,
             margin: '0 3 0 0',
             layout: 'fit',
-            items: [{
+            items: [
+                {
+                    xtype:'hiddenfield',
+                    itemId :'idclientefac',
+                    reference :'idclientefac',
+                    value : 0
+                },
+                {
                 xtype: 'grid',
                 itemId: 'dgvVentasFacturarCliente2',
                 reference: 'dgvVentasFacturarCliente2',
@@ -80,7 +130,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
                  },
                 emptyText: 'NO HAY REGISTROS PARA MOSTRAR SEGUN EL RANGO DE FECHAS',
                 columns: [
-                    { xtype: 'rownumberer' },
                     {
                         text: 'Fecha',
                         dataIndex: 'fechafact',
@@ -112,10 +161,11 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
                         dataIndex: 'totalcoti',
                         flex: 0.7,
                         align: 'right'
+                      
                     },
                     {
                         xtype: 'numbercolumn',
-                        text: 'Acuenta',
+                        text: 'Pagos',
                         dataIndex: 'pagoacuenta',
                         flex: 0.7,
                         align: 'right'
@@ -143,68 +193,53 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClienteFacturacion', {
                 ]
             }],
             tbar: [
+                {
+                    xtype: 'container',
+                    bodyPadding: 0,
+                    layout:{
+                        type:'hbox',
+                        align :'stretch'
+                    },
+                    defaults : {
+                        fieldStyle: 'text-align: right;font-size:15px;',
+                        labelStyle: 'padding : 5px 5px 5px 10px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 13px; font-weight: bold; ',
+                        padding : '0 5 0 0'
+                       
+                    },
+                    items: [
+                        {
+                            xtype: 'datefield',
+                            value: new Date(),
+                            flex:1,
+                            reference: 'dfDesdeCotizacionesFactura',
+                            itemId: 'dfDesde',
+                            fieldLabel : 'Fecha Desde',
+                           
+                        },
+                        {
+                            xtype: 'datefield',
+                            value: new Date(),
+                            flex:1,
+                            reference: 'dfHastaCotizacionesFactura',
+                            itemId: 'dfHasta',
+                            fieldLabel : 'Fecha Hasta'
+                        },
+                        {
+                            xtype: 'button',
+                            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
+                            tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
+                            handler: 'onClickBuscarFechas',
+                            padding:'0 5 0 0'
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'IMPRIMIR LISTADO',
+                            handler: 'onClickImprimirListadoCC'
+                        }
 
-                {
-                    xtype: 'label',
-                    text: 'Fecha Desde',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    width: 100,
-                    height: 25,
-                    style: {
-                        background: '#6a4b5a',
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: '13px'
-                    }
-                }, {
-                    xtype: 'datefield',
-                    value: new Date(),
-                    reference: 'dfDesdeCotizacionesFactura',
-                    itemId: 'dfDesde',
-                    width: 110
-                },
-                {
-                    xtype: 'label',
-                    text: 'Fecha Hasta',
-                    padding: '5px 0 0 0',
-                    border: true,
-                    width: 100,
-                    height: 25,
-                    style: {
-                        background: '#6a4b5a',
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: '13px'
-                    }
-                }, {
-                    xtype: 'datefield',
-                    value: new Date(),
-                    reference: 'dfHastaCotizacionesFactura',
-                    itemId: 'dfHasta',
-                    width: 110
-                },
-                {
-                    xtype: 'button',
-                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                    tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
-                    handler: 'onClickBuscarCotizacionesPorFechas'
-                },
-                {
-                    xtype: 'button',
-                    text: 'IMPRIMIR CUENTA',
-                    handler: 'onClickImprimirCC'
-                },
-                {
-                    xtype: 'button',
-                    text: 'IMPRIMIR LISTADO',
-                    handler: 'onClickImprimirListadoCC'
+                    ]
                 }
-
-
             ]
-        };//Fin Objeto
+        };
     }
 });

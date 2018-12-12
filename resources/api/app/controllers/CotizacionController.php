@@ -48,9 +48,21 @@ class CotizacionController extends Controller
               $response->setContentType('application/json', 'UTF-8');
               $response->setContent($jsonData);
               return $response;
-
          }
     }
+    public function productofiltroporclienteAction(){
+     $request        = new Phalcon\Http\Request();
+     $response       = new \Phalcon\Http\Response();
+     if($request->isGet() ==true)
+     {
+          $vquery   = $request->get('query');
+          $data     = array($vquery);
+          $jsonData = Cotizacion::productoFiltroPorCliente($data);
+          $response->setContentType('application/json', 'UTF-8');
+          $response->setContent($jsonData);
+          return $response;
+     }
+}
 
     public function productoeliminarAction(){
         $request        = new Phalcon\Http\Request();
@@ -80,13 +92,12 @@ class CotizacionController extends Controller
               if($vquery!='')
                 $vDatos=  $vquery;
               else
-                $vDatos=  $request->get('vDatos' );
+                $vDatos=  $request->get('vDatos');
 
               $data       = array(
                 $vDocumento,
                 $vRuc,
                 $vDatos);
-
               $jsonData   = Cotizacion::clienteListar($data);
               $response->setContentType('application/json', 'UTF-8');
               $response->setContent($jsonData);
@@ -156,11 +167,12 @@ class CotizacionController extends Controller
               $vluegarentregra     =$request->getPost('lugarentrega');
               $vcreditoscobranzas     =$request->getPost('creditoscobranzas');
               $vPlantilla     =$request->getPost('plantilla');
+              $vPMayorista    =$request->getPost('precioMayorista');
               
               $data = array($vId,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle,
                $vFormaPago,$vModoEntrega,$vVendedor,$vIncluyeIgv,$vReferencia,
                $vFechaValidoHasta,$vComentario,$vidMoneda,$vluegarentregra,$vcreditoscobranzas,
-              $vPlantilla);
+               $vPlantilla,$vPMayorista);
              // print_r($data);die();
               $jsonData             = Cotizacion::agregarCotizacion($data);
               $response->setContentType('application/json', 'UTF-8');
@@ -288,11 +300,18 @@ class CotizacionController extends Controller
               {
                 if($vCodigo!='')
                 {
-                  $data =array($vCodigo);
-                  $jsonData    = Cotizacion::cotizacionesBuscarCodigo($data);
+                    $data =array($vCodigo);
+                    $jsonData    = Cotizacion::cotizacionesBuscarCodigo($data);
+                  
                 }else if($vIdper!=''){
-                    $data =array($vIdper);
-                    $jsonData  = Cotizacion::buscarCotizacionesCliente($data);
+                    if($vDesde!='' && $vHasta!='' ){
+                         $data =array($vIdper,$vDesde,$vHasta);
+                         $jsonData    = Cotizacion::buscarCotizacionesCliente($data);     
+                    }else{  
+                         $data =array($vIdper);
+                         $jsonData  = Cotizacion::buscarCotizacionesCliente($data);
+                    }
+                  
                   }else{
                     $jsonData  = Cotizacion::cotizacionesListar($data);
                   }

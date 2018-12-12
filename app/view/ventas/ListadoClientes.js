@@ -72,59 +72,36 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoClientes', {
                             }
                         ],
                         tbar: [{
-                            xtype: 'fieldset',
+                            xtype: 'container',
                             layout: 'hbox',
+                            padding : 0,
                             flex: 1,
-                            padding: '0 5 10 5',
                             items: [
-
-                                {
-                                    xtype: 'label',
-                                    text: 'Nombre/Razon Social',
-                                    padding: '5px 0 0 0',
-                                    border: false,
-                                    width: 150,
-                                    height: 25,
-                                    style: {
-                                      background: '#6a4b5a',
-                                      color: 'white',
-                                      textAlign: 'center',
-                                      fontWeight: 'bold',
-                                      fontSize: '13px'
-                                    }
-                                  },
-                                {
+                               {
                                     xtype: 'textfield',
                                     flex: 3,
                                     labelAlign: 'right',
                                     itemId:'txtQueryBuscar',
                                     enableKeyEvents: true,
+                                    padding : '0 5 0 0',
                                     listeners:{
-                                      //focus:'onFocusTextoDeBusquedaCliente'
+                                       //focus:'onFocusTextoDeBusquedaCliente'
                                         keypress: 'onKeyPressTextoNombreCliente'
-                                     
-                                    }
+                                    },
+                                    emptyText: 'Razón Social : Proveedor S.A.',
+                                    fieldStyle: 'font-size:20px;height:35px;',
                                 },
-                                {
-                                    xtype: 'label',
-                                    text: 'R.U.C.',
-                                    padding: '5px 0 0 0',
-                                    border: false,
-                                    width: 50,
-                                    height: 25,
-                                    style: {
-                                      background: '#6a4b5a',
-                                      color: 'white',
-                                      textAlign: 'center',
-                                      fontWeight: 'bold',
-                                      fontSize: '13px'
-                                    }
-                                  },
                                 {
                                     xtype: 'textfield',
                                     flex: 1,
                                     labelAlign: 'right',
-                                    reference:'txtRucBuscar',
+                                    itemId:'txtRucBuscar',
+                                    emptyText: 'Número R.U.C. : 20448667010',
+                                    fieldStyle: 'font-size:20px;height:35px;',
+                                    enableKeyEvents :true,
+                                    listeners : {
+                                        keypress: 'onKeyPressTextoRuc'
+                                    }
                                 }
 
                             ]

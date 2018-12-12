@@ -9,16 +9,16 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
         'sisfacturaelectronica.view.ventas.AccionesRegCotizacion',
     ],
     reference : 'myFormClienteListado',
-    margin: 30,
     autoScroll: true,
     controller:'acciones-regcotizacion',
     submitEmptyText : false,
     url : sisfacturaelectronica.util.Rutas.clienteGuardarViaListado,
     layout: {
       type: 'vbox',
-      pack: 'start',
+      //pack: 'start',
       align: 'stretch'
     },
+    padding : 50,
     initComponent: function()
     {
         me = this;
@@ -26,7 +26,14 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
         Ext.apply(me,
         {
           items :me.getFormularioCliente(storeTipoDoc),
+
           bbar: ['->',
+              {
+                  text : 'Cancelar',
+                  scale: 'medium',
+                  handler: 'onClickCancelarViaListado'
+
+              },
               {
                   xtype: 'button',
                   text: 'Grabar',
@@ -40,19 +47,6 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
     getFormularioCliente: function (storeTipoDoc)
     {
       var obj = [
-         {
-            xtype: 'label',
-            text :'Cliente: Contacto',
-            padding:0,
-            border: false,
-            style: {
-              color: '#775c80',
-              textAlign: 'left',
-              fontWeight: 'bold',
-              fontSize: '15px'
-            },
-            hidden:true
-          },
             {
                 xtype: 'hiddenfield',
                 name: 'idper',
@@ -74,14 +68,6 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
                 //readOnly: true
 
             },
-            ///
-            // Este campo sera para guardar a la persona de contacto de la empresa
-            //
-            /*{
-                xtype: 'label',
-                text: 'Contacto/Referencia',
-
-            },*/
             {
                 xtype: 'textfield',
                 name: 'maternoper',
@@ -91,7 +77,7 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
 
             },
 
-            {
+           /* {
                 xtype: 'label',
                 text :'Nombres o Razon Social',
                 padding:0,
@@ -102,15 +88,16 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
                   color: '#775c80',
                   textAlign: 'left',
                   fontWeight: 'bold',
-                  fontSize: '15px'
+                  fontSize: '20px'
                 }
-              },
+            },*/
             {
                 xtype: 'textfield',
                 name: 'nombreper',
                 allowBlank: false,
                 reference:'nombreper',
-                fieldStyle:'text-transform:uppercase;font-size:20px;',
+                fieldStyle:'text-transform:uppercase;font-size:35px;',
+                emptyText : 'Razón Social '
                 //readOnly: true
             },
 
@@ -128,7 +115,8 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
                       valueField: 'idtipdoc',
                       value: 1,
                       editable: false,
-                      flex: 1.5
+                      flex: 1.5,
+                      padding : '0 5 0 0'
                   },
                   {
                     
@@ -150,21 +138,45 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
                 reference: 'domiciper'
             },
             {
-                xtype: 'label',
-                text: 'Telefono'
+                xtype:'fieldcontainer',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
+                },
+                items:[
+                    {
+                        xtype: 'label',
+                        text: 'Telefono',
+                        flex:1
+                    },
+                    {
+                        xtype: 'label',
+                        text: 'Celular',
+                        flex:1
+                    },
+                ]
             },
             {
-                xtype: 'textfield',
-                name: 'telefper'
-            },
-
-            {
-                xtype: 'label',
-                text: 'Celular'
-            },
-            {
-                xtype: 'textfield',
-                name: 'celper'
+                xtype:'fieldcontainer',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
+                },
+                items:[
+                    {
+                        xtype: 'textfield',
+                        name: 'telefper',
+                        flex:1,
+                        padding : '0 5 0 0'
+                    },
+        
+                    
+                    {
+                        xtype: 'textfield',
+                        name: 'celper',
+                        flex:1
+                    },
+                ]
             },
             {
                 xtype: 'label',
@@ -186,6 +198,7 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
             {
               xtype:'radiogroup',
               fieldLabel: 'Precio',
+              hidden : true,
               columns: 3,
               items: [
                   {
@@ -251,6 +264,7 @@ Ext.define('sisfacturaelectronica.view.ventas.FormCliente', {
                   }
               ]
             }
+            
       ];
       return obj;
     }

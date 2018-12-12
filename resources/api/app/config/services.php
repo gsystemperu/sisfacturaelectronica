@@ -257,6 +257,7 @@ $di->set('router',function() {
      $router->add('/listar_documentos', array('controller'=>'cotizacion','action'=>'tipodocumentolista'));
      $router->add('/buscar_producto', array('controller'=>'cotizacion','action'=>'productolista'));
      $router->add('/buscar_producto_por_persona', array('controller'=>'cotizacion','action'=>'productolistaporcliente'));
+     $router->add('/filtro_producto_por_persona', array('controller'=>'cotizacion','action'=>'productofiltroporcliente'));
      $router->add('/eliminar_producto', array('controller'=>'cotizacion','action'=>'productoeliminar'));
      $router->add('/buscar_cliente', array('controller'=>'cotizacion','action'=>'clientelista'));
      $router->add('/eliminar_cliente', array('controller'=>'cotizacion','action'=>'clienteeliminar'));

@@ -58,11 +58,11 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                      },
                     emptyText: 'NO HAY REGISTROS PARA MOSTRAR SEGUN EL RANGO DE FECHAS',
                     columns: [
-                       {xtype: 'rownumberer'},
+                       {xtype: 'rownumberer',flex:0.3,align:'center'},
                       {
                             text: 'Fecha ',
                             dataIndex: 'vfecha',
-                            flex: 0.5,
+                            flex: 1,
                             align: 'center'
                         },
                         {
@@ -74,12 +74,12 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         {
                             text: 'Nombre / Razon Social',
                             dataIndex: 'nomcompleto',
-                            flex: 2
+                            flex: 4
                         },
                         {
                             text: 'RUC',
                             dataIndex: 'numrucper',
-                            flex: 0.7,
+                            flex: 1,
                             align: 'right',
 
                         },
@@ -141,8 +141,13 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                 tbar: [{
                     xtype: 'container',
                     bodyPadding: 0,
+                    flex:1,
                     layout: {
                         type: 'hbox',
+                        align:'stretch'
+                    },
+                    defaults:{
+                        flex: 1
                     },
                     columnWidth: 10,
                     items: [{
@@ -150,7 +155,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             text: 'Fecha Desde',
                             padding: '5px 0 0 0',
                             border: true,
-                            width: 100,
                             height: 25,
                             style: {
                                 background: '#6a4b5a',
@@ -164,14 +168,13 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             value: new Date(),
                             reference: 'dfDesdeCotizaciones',
                             itemId: 'dfDesdeCotizaciones',
-                            width: 100
+                            
                         },
                         {
                             xtype: 'label',
                             text: 'Fecha Hasta',
                             padding: '5px 0 0 0',
                             border: true,
-                            width: 100,
                             height: 25,
                             style: {
                                 background: '#6a4b5a',
@@ -185,7 +188,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             value: new Date(),
                             reference: 'dfHastaCotizaciones',
                             itemId: 'dfHastaCotizaciones',
-                            width: 100
+                            
                         },
                         {
                             xtype: 'button',
@@ -198,7 +201,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             text: 'Codigo Cotización',
                             padding: '5px 0 0 0',
                             border: true,
-                            width: 150,
                             height: 25,
                             style: {
                                 background: '#664a5a',
@@ -224,7 +226,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             text: 'Cliente',
                             padding: '5px 0 0 0',
                             border: true,
-                            width: 90,
                             height: 25,
                             style: {
                                 background: '#664a5a',
@@ -237,7 +238,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         {
                             xtype:'textfield',
                             itemId : 'txtBuscarNombreCliente',
-                            flex:  5
+                            flex: 3
+                            
                         },
                         {
                             xtype:'button',
@@ -266,7 +268,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         'Ext.grid.plugin.Clipboard'
                     ],
                     columns: [
-                        {xtype: 'rownumberer'},
                         {
                             text: 'Producto',
                             dataIndex: 'descripcion',

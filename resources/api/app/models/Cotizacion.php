@@ -24,6 +24,12 @@ class Cotizacion extends \Phalcon\Mvc\Model
             $sql     =  $obj->executarJson('ventas','sp_producto_listar_por_cliente',$param);
             return $sql;
       }
+      public static function productoFiltroPorCliente($data){
+            $obj     = new SQLHelpers();
+            $param   =  $data;
+            $sql     =  $obj->executarJson('ventas','sp_producto_filtro_por_cliente',$param);
+            return $sql;
+      }
 
       public static function guardarProducto($data){
       
@@ -88,6 +94,7 @@ class Cotizacion extends \Phalcon\Mvc\Model
             $sql     =  $obj->executarJson('ventas','sp_cotizacion_buscar_codigo',$param);
             return $sql;
       }
+      
       public static function detalleCotizacion($data){
             $obj     = new SQLHelpers();
             $param   = $data;
@@ -346,6 +353,7 @@ class Cotizacion extends \Phalcon\Mvc\Model
       $sql     =  $obj->executarJson('ventas','sp_cotizaciones_cliente_buscar',$param);
       return $sql;
       }
+     
       /**
        * [buscarCotizacionPorId description]
        * @param  [type] $data [description]

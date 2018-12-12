@@ -9,10 +9,6 @@ Ext.define('sisfacturaelectronica.store.Clientes', {
     requiere:['sisfacturaelectronica.model.DataModelVentas'],
     model   :'sisfacturaelectronica.model.Cliente',
     autoLoad: true,
-    remoteSort: true,
-    autoSync  : true,
-    autoDestroy: true,
-    sorters: [{property: 'idper',direction: 'ASC'}],
     extraParams: { vDocumento: '', vRuc: '', vDatos: ''},
     proxy: {
         type: 'ajax',
@@ -51,15 +47,26 @@ Ext.define('sisfacturaelectronica.store.ProductosPorPrecioPersona', {
     requiere:['sisfacturaelectronica.model.DataModelVentas'],
     model   :'sisfacturaelectronica.model.ProductoPorCliente',
     autoLoad: false,
-    remoteSort: true,
-    autoSync  : true,
-    autoDestroy: true,
     //groupField: 'categoria',
     sorters: [{property: 'idprod',direction: 'ASC'}],
     extraParams: { vCodigo: '', vDescripcion: '', vCategoria : null,vIdCliente:0},
     proxy: {
         type: 'ajax',
         api: {read: 'resources/api/buscar_producto_por_persona'},
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+        }
+    }
+});
+Ext.define('sisfacturaelectronica.store.ProductosFiltroPrecioPersona', {
+    extend: 'Ext.data.Store',
+    requiere:['sisfacturaelectronica.model.DataModel'],
+    model   :'sisfacturaelectronica.model.Producto',
+    autoLoad: false,
+    proxy: {
+        type: 'ajax',
+        api: {read: 'resources/api/filtro_producto_por_persona'},
         reader: {
             type: 'json',
             rootProperty: 'data',
@@ -375,6 +382,7 @@ Ext.define('sisfacturaelectronica.store.ClienteVentasFacturacion', {
     extend: 'Ext.data.Store',requiere:['sisfacturaelectronica.model.DataModelVentas'],
     model   :'sisfacturaelectronica.model.CotizacionesFacturar',
     autoLoad: false,
+    //groupField: 'fechafact',
     extraParams: {idper : 0},
     proxy: {
         type: 'ajax',

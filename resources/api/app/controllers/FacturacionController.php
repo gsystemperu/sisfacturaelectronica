@@ -158,8 +158,16 @@ class FacturacionController extends Controller
       if($request->isGet() ==true)
       {
            $vIdper        = $request->get('idper');
-           $data          = array($vIdper);
-           $jsonData      = Facturacion::buscarVentasCliente($data);
+           $vDesde        = $request->get('vdesde');
+           $vHasta        = $request->get('vhasta');
+           if($vDesde !='' && $vHasta !='' ){
+               $data          = array($vIdper,$vDesde,$vHasta);
+               $jsonData      = Facturacion::buscarVentasCliente($data);
+           }else{
+               $data          = array($vIdper);
+               $jsonData      = Facturacion::buscarVentasCliente($data);
+           }
+           
            $response->setContentType('application/json', 'UTF-8');
            $response->setContent($jsonData);
            return $response;

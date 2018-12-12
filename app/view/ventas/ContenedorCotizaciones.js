@@ -43,7 +43,7 @@ Ext.define('sisfacturaelectronica.view.ventas.ContenedorCotizaciones', {
   getBotonesERP:function(){
     return obj = [
           {
-              text: 'COTIZACIONES',
+              text: 'TODOS',
               itemId: 'btnVerCotizaciones',
               handler: "onClickVerCotizaciones",
           },

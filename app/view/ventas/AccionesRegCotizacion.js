@@ -16,10 +16,15 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
 
     onSelectedClienteERP:function( grid, record, index, eOpts ){
       try {
-          _txt  = Ext.String.format('Pedidos  : {0}',record.get('cotizaciones'));
-          _txtf = Ext.String.format('Facturación  : {0}',record.get('ventas'));
-          Ext.ComponentQuery.query('#btnCotizaciones')[0].setText(_txt);
-          Ext.ComponentQuery.query('#btnFacturasBoletas')[0].setText(_txtf);
+          //_txt  = Ext.String.format('Pedidos  : {0}',record.get('cotizaciones'));
+          //_txtf = Ext.String.format('Facturación  : {0}',record.get('ventas'));
+          c = document.getElementById("cliCotizaciones");
+          c.textContent = record.get('cotizaciones');
+          f = document.getElementById("cliFacturacion");
+          f.textContent = record.get('ventas');
+
+          //Ext.ComponentQuery.query('#btnCotizaciones')[0].setText(_txt);
+          //Ext.ComponentQuery.query('#btnFacturasBoletas')[0].setText(_txtf);
       } catch (e) {
         console.log('Select ERP cliente');
       }
@@ -143,6 +148,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
                               "descripcion": record.descripcion,
                               "precio": record.precio,
                               "total": record.total,
+                              "presentacion": record.presentacion,
                               "vencimiento": Ext.Date.format(record.vencimiento, 'd/m/Y')   //(record.vencimiento==null? null:  Ext.Date.format(record.vencimiento, 'd/m/Y') )
                           };
                           x++;
@@ -454,6 +460,11 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
             sisfacturaelectronica.util.Util.showErrorMsg('Ingresar los datos para la cotización!');
         }
     },
+    onClickCancelarViaListado:function(){
+        var me =  Ext.ComponentQuery.query('#wContenedorCliente')[0];
+        var l = me.getLayout();
+        l.setActiveItem(0);
+    },
     onClickGuardarClienteViaListado: function () {
 
         try {
@@ -570,7 +581,6 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
         _store = me.lookupReference('dgvProductos').getStore();
         _store.getProxy().extraParams = {vCodigo: null,vDescripcion: null,vCategoria : record.get('idcate')};
         _store.load(1);
-
     },
 
     onSelectedDetalleCotizacion: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
@@ -728,17 +738,37 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
         };
         store.load(1);
     },
-    onKeyPressTextoNombreCliente:function(texto, e, eOpts){ //eddy
+    onKeyPressTextoNombreCliente:function(texto, e, eOpts){ 
+        if(e.charCode == 13){
+            txtQuery =  Ext.ComponentQuery.query('#txtQueryBuscar')[0];
+            var store = Ext.ComponentQuery.query('#dgvClientes')[0].getStore();
+            store.getProxy().extraParams = {
+                vDocumento: null,
+                vRuc: null,
+                query: (txtQuery.getValue().trim() == '' ? null : txtQuery.getValue().trim())
+            };
+            store.load();
+            c = document.getElementById("cliCotizaciones");
+            c.textContent = '0';
+            f = document.getElementById("cliFacturacion");
+            f.textContent = '0';
+        }
+    },
+    onKeyPressTextoRuc:function(texto, e, eOpts){  
 
         if(e.charCode == 13){
-        txtQuery =  Ext.ComponentQuery.query('#txtQueryBuscar')[0];
-        var store = Ext.ComponentQuery.query('#dgvClientes')[0].getStore();
-        store.getProxy().extraParams = {
-            vDocumento: null,
-            vRuc: null,
-            query: (txtQuery.getValue().trim() == '' ? null : txtQuery.getValue().trim())
-        };
-        store.load(1);
+            txtQuery =  Ext.ComponentQuery.query('#txtRucBuscar')[0];
+            var store = Ext.ComponentQuery.query('#dgvClientes')[0].getStore();
+            store.getProxy().extraParams = {
+                vDocumento: null,
+                vRuc: txtQuery.getValue(),
+                query: ''
+            };
+            store.load();
+            c = document.getElementById("cliCotizaciones");
+            c.textContent = '0';
+            f = document.getElementById("cliFacturacion");
+            f.textContent = '0';
         }
     },
 
@@ -900,6 +930,51 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
                 }
             });
         }
+    },
+    onBeforeQueryProducto:function(queryPlan, eOpts ){
+        if(queryPlan.query.length>2){
+             p = Ext.ComponentQuery.query('#cboDatosCliente')[0];
+             if(p.getValue()!=null){
+                 queryPlan.query = p.getValue() +'|'+ queryPlan.query;
+             }
+             else {
+                 queryPlan.cancel = true;
+                 sisfacturaelectronica.util.Util.showErrorMsg('Seleccionar o buscar al cliente!');
+             }
+        }
+    },
+    onSelectProducto:function(grid, record, index, eOpts){
+         me = this;
+         gs = Ext.ComponentQuery.query('#dgvDetalleVenta')[0];
+         s = gs.getStore();
+         p = 0;
+         ps = Ext.ComponentQuery.query('#posicion')[0];
+         i = ps.getValue();
+         chp = Ext.ComponentQuery.query('#precioMayorista')[0].getValue();
+         if(chp){
+            p = record.get('precioventa');
+         }else{
+            p = record.get('precioventafraccion');
+         }
+
+
+         d = {
+             idprod: parseInt(record.get('id')),
+             descripcion: record.get('nombre'),
+             cantidad: 1,
+             precio: parseFloat(p),
+             total: parseInt(1) * parseFloat(p),
+             presentacion: record.get('unidadmedida')
+         };
+         if (s.findRecord('idprod', parseInt(record.get('id')))) {
+             Ext.Msg.alert("Error", "Producto ya se encuentra cargada");
+             return false;
+         }
+         i = i + 1;
+         s.insert(i, d);
+         ps.setValue(i);
+         gs.getView().refresh();
+         this.onCalcularTotalVentaPorBusqueda();
     }
 
 });
