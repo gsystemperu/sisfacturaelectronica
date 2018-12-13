@@ -24,7 +24,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
     controller: 'acciones-regcotizacionfacturar',
     initComponent: function () {
         var storeCotiFacturar    = Ext.create('sisfacturaelectronica.store.CotizacionesFacturar');
-
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false

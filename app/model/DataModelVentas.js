@@ -96,7 +96,8 @@ Ext.define('sisfacturaelectronica.model.Cotizacion', {
         { name: 'incluyeigv', type: 'boolean' },
         { name: 'fechavalidohasta', type: 'string' },
         { name: 'comentario', type: 'string' },
-        { name: 'idmoneda', type: 'integer' }
+        { name: 'idmoneda', type: 'integer' },
+        { name: 'preciomayorista', type: 'boolean' }
     ]
 });
 
@@ -267,7 +268,8 @@ Ext.define('sisfacturaelectronica.model.CotizacionesFacturar', {
         { name: 'totalcotianulado', type: 'float' },
         { name: 'cierrecaja', type: 'int' },
         { name: 'enviadosunat', type: 'int' },
-        { name: 'estadosunat', type: 'string' }
+        { name: 'estadosunat', type: 'string' },
+        { name: 'preciomayorista', type: 'boolean' }
     ]
 });
 

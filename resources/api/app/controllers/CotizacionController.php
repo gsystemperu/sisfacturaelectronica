@@ -167,7 +167,7 @@ class CotizacionController extends Controller
               $vluegarentregra     =$request->getPost('lugarentrega');
               $vcreditoscobranzas     =$request->getPost('creditoscobranzas');
               $vPlantilla     =$request->getPost('plantilla');
-              $vPMayorista    =$request->getPost('precioMayorista');
+              $vPMayorista    =$request->getPost('preciomayorista');
               
               $data = array($vId,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle,
                $vFormaPago,$vModoEntrega,$vVendedor,$vIncluyeIgv,$vReferencia,
@@ -306,7 +306,7 @@ class CotizacionController extends Controller
                 }else if($vIdper!=''){
                     if($vDesde!='' && $vHasta!='' ){
                          $data =array($vIdper,$vDesde,$vHasta);
-                         $jsonData    = Cotizacion::buscarCotizacionesCliente($data);     
+                         $jsonData    = Cotizacion::listarCotizacionesParaFacturar($data);     
                     }else{  
                          $data =array($vIdper);
                          $jsonData  = Cotizacion::buscarCotizacionesCliente($data);

@@ -113,7 +113,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                 xtype: 'container',
                                 layout: {
                                     type: 'hbox',
-                                    anchor: 'strech'
+                                    anchor: 'stretch'
                                 },
                                 paddingTop: 10,
                                 paddingBotton: 10,
@@ -169,7 +169,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                 xtype: 'container',
                                 layout: {
                                     type: 'hbox',
-                                    anchor: 'strech'
+                                    anchor: 'stretch'
                                 },
                                 padding: '5 0 0 0',
                                 defaults: {
@@ -255,9 +255,9 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                         boxLabel: '<b style="color:#2d5f87">Precios Solo Mayorista </b>',
                                         padding: '3 0 0 20',
                                         labelAlign: 'right',
-                                        name: 'precioMayorista',
-                                        reference: 'precioMayorista',
-                                        itemId: 'precioMayorista',
+                                        name: 'preciomayorista',
+                                        reference: 'preciomayorista',
+                                        itemId: 'preciomayorista',
                                         readOnly: false,
                                         value : true,
                                         flex: 1
@@ -272,7 +272,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                 xtype: 'container',
                                 layout: {
                                     type: 'hbox',
-                                    anchor: 'strech'
+                                    anchor: 'stretch'
                                 },
                                 defaults: {
                                     labelWidth: 120,

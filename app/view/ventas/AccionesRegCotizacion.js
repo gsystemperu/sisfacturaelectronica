@@ -950,13 +950,12 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
          p = 0;
          ps = Ext.ComponentQuery.query('#posicion')[0];
          i = ps.getValue();
-         chp = Ext.ComponentQuery.query('#precioMayorista')[0].getValue();
+         chp = Ext.ComponentQuery.query('#preciomayorista')[0].getValue();
          if(chp){
             p = record.get('precioventa');
          }else{
             p = record.get('precioventafraccion');
          }
-
 
          d = {
              idprod: parseInt(record.get('id')),
