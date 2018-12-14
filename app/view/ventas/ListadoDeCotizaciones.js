@@ -194,7 +194,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                             xtype: 'button',
                             glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
                             tooltip: 'Buscador por rangos de fechas : { Desde , Hasta }',
-                            handler: 'onClickBuscarCotizacionesPorFechas'
+                            handler: 'onClickBuscarCotizacionesPorFechas',
+                            flex: 0
                         },
                         {
                             xtype: 'label',
@@ -218,7 +219,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         {
                             xtype:'button',
                             glyph :sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                            handler:'onClickBuscarCodigoCotizacion'
+                            handler:'onClickBuscarCodigoCotizacion',
+                            flex: 0
                         },
 
                         {
@@ -244,7 +246,8 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizaciones', {
                         {
                             xtype:'button',
                             glyph :sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
-                            handler:'onClickBuscarNombreCliente'
+                            handler:'onClickBuscarNombreCliente',
+                            flex: 0
                         }      
                                             
 

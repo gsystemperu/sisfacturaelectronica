@@ -13,8 +13,8 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
     controller: 'acciones-guiaremision',
     initComponent: function () {
         me = this;
-        __storeGuiaRemisionDetalle = Ext.create('sisfacturaelectronica.store.GuiaRemisionDetalle');
-        __storeMotivosTranslado = Ext.create('sisfacturaelectronica.store.MotivosTranslados');
+        sgr = Ext.create('sisfacturaelectronica.store.GuiaRemisionDetalle');
+        smt = Ext.create('sisfacturaelectronica.store.MotivosTranslados');
         Ext.applyIf(me, {
             items: [
                 {
@@ -25,8 +25,8 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                     url: sisfacturaelectronica.util.Rutas.guiaRemisionActualizar,
                     items: [
                         {
-                            xtype: 'panel',
-                            border: false,
+                            xtype: 'fieldset',
+                            title : 'Datos Principales',
                             flex: 1,
                             items: [
                                 {
@@ -138,8 +138,13 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                             },
                                             items: [
                                                 {
+                                                    xtype:'label',
+                                                    text :'Razon Social del DESTINATARIO',
+                                                    flex:1
+                                                },
+                                                {
                                                     xtype: 'textfield',
-                                                    fieldLabel: 'Razon Social del DESTINATARIO',
+                                                    //fieldLabel: 'Razon Social del DESTINATARIO',
                                                     flex: 1,
                                                     allowBlank: false,
                                                     name: 'razonsocialdestinatario'
@@ -365,7 +370,7 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                             {
                                                 xtype: 'combobox',
                                                 labelHide: true,
-                                                store: __storeMotivosTranslado,
+                                                store: smt,
                                                 displayField: 'descripcion',
                                                 valueField: 'id',
                                                 editable: true,
@@ -398,13 +403,7 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                             flex: 1,
                                             reference: 'dgvDetalleGuiaRemision',
                                             itemId: 'dgvDetalleGuiaRemision',
-                                            store: __storeGuiaRemisionDetalle,
-                                            //plugins: [rowEditing],
-                                            //selModel: 'cellmodel',
-                                            /*plugins: {
-                                                ptype: 'cellediting',
-                                                clicksToEdit: 1
-                                            },*/
+                                            store: sgr,
                                             columns: [
                                                 {
                                                     text: 'Cantidad',
@@ -417,10 +416,8 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                                     dataIndex: 'descripcion',
                                                     flex: 3
                                                 },
-
                                                 {
-                                                    //xtype: 'numbercolumn',
-                                                    text: 'Presentacion',
+                                                    text: 'Unidad Medida',
                                                     dataIndex: 'unidadmedida',
                                                     flex: 1,
                                                     align: 'center',
@@ -431,112 +428,18 @@ Ext.define('sisfacturaelectronica.view.ventas.GuiaRemision', {
                                                     text: 'Peso Total',
                                                     dataIndex: 'pesototal',
                                                     flex: 1,
-                                                    align: 'center'
+                                                    align: 'center',
+                                                    hidden:true
                                                 }
-
-
                                             ],
                                             cls: '',
-                                            height: 200,
+                                            height: 250,
                                         }]
 
                                     }
                                 ]
 
                             }, // fin fieldset Detalle
-                            /*  {
-                                  xtype: 'panel',
-                                  layout: 'hbox',
-                                  items: [
-                                    {
-                                          xtype: 'panel',
-                                          frame : false,
-                                          flex: 1,
-                                          padding: '5 10 5 5',
-                                          html: '<div style="text-aling:center;"> <img src="resources/images/lgsis.png" width="100" height="50"> </div>',
-                                          items: [{
-                                              xtype: 'container',
-                                              layout: 'hbox',
-                                              items: [{
-                                                  xtype: 'checkboxfield',
-                                                  boxLabel: 'Precio incluye el I.G.V.',
-                                                  name: 'vincluyeigv',
-                                                  itemId: '_incluyeigv',
-                                                  readOnly:true,
-                                                  value: 1,
-                                                  hidden:true
-                                              }]
-                                          }]
-                                      },
-                                      {
-                                          xtype:'textarea',
-                                          flex: 1.5,
-                                          height : 100,
-                                          name : 'comentario',
-                                          fieldStyle : 'font-size:12px;text-transform:uppercase;'
-
-                                      },
-                                      {
-                                          xtype: 'panel',
-                                          flex: 1,
-                                          padding: '0 0 0 0',
-                                          defaults :{
-                                                  labelAlign :'right'
-                                          },
-                                          items: [{
-                                                  xtype: 'numberfield',
-                                                  itemId: 'txtSubtotalGuiaRemision',
-                                                  name: 'valventacont',
-                                                  value: "0.00",
-                                                  fieldLabel: 'Sub Total',
-                                                  decimalPrecision: 2,
-                                                  // maxValue: 9999,
-                                                  minValue: 0,
-                                                  step: 0.01,
-                                                  decimalSeparator: '.',
-                                                  readOnly: true,
-                                                  width: 280,
-                                                  labelWidth: 120,
-                                                  fieldStyle: 'text-align: right;',
-
-                                              },
-                                              {
-                                                  xtype: 'textfield',
-                                                  fieldLabel: 'Igv',
-                                                  itemId: 'txtIgvGuiaRemision',
-                                                  name: 'valigvcont',
-                                                  value: "0.00",
-                                                  fieldStyle: 'text-align: right;',
-                                                  minValue: 0,
-                                                  readOnly: true,
-                                                  enableKeyEvents: true,
-                                                  width: 280,
-                                                  labelWidth: 120,
-
-                                              },
-                                              {
-                                                  xtype: 'textfield',
-                                                  fieldLabel: 'Total General ',
-                                                  itemId: 'txtTotalGeneralGuiaRemision',
-                                                  value: "0.00",
-                                                  name: 'valtotalcont',
-                                                  //   decimalPrecision: 3,
-                                                  //  maxValue: 9999,
-                                                  minValue: 0,
-                                                  //                                            step: 0.01,
-                                                  //                                            decimalSeparator: '.',
-                                                  readOnly: true,
-                                                  width: 280,
-                                                  labelWidth: 120,
-                                                  fieldStyle: 'text-align: right;font-size:16px;'
-                                              }
-                                          ]
-                                      }
-
-                                  ]
-
-                              },
-                              */
                             {
                                 xtype: 'panel',
                                 buttons: [{

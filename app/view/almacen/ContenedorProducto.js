@@ -41,7 +41,7 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorProducto', {
         xtype: 'wRegMaestros'
       }
       ],
-      tbar: me.getBotonesERP()
+      dockedItems: me.getBotonesERP()
 
     });
     this.callParent();
@@ -49,31 +49,39 @@ Ext.define('sisfacturaelectronica.view.almacen.ContenedorProducto', {
   getBotonesERP: function () {
     return obj = [
       {
-        text: 'Lista',
-        iconCls: 'fa  fa-dropbox  fa-2x',
-        iconAlign: 'top',
-        scale: 'large',
-        itemId: 'btnProductos',
-        handler: 'onClickVerProductos'
-      },
-      {
-
-        text: 'Crear',
-        iconCls: 'fa  fa-dropbox  fa-2x',
-        iconAlign: 'top',
-        scale: 'large',
-        handler: 'onClickNuevoProducto'
-      },
-      {
-        text: 'Regresar Producto',
-        iconCls: 'fa fa-mail-reply-all  fa-2x',
-        textAlign: 'right',
-        iconAlign: 'left',
-        scale: 'large',
-        hidden: true,
-        itemId: 'btnRegresarIngresoProducto',
-        handler: 'onClickRegresarIngresoProducto'
+        xtype: 'toolbar',
+        width: 100,
+        dock: 'left',
+        items: [
+          {
+            text: 'Todos',
+            iconCls: 'fa  fa-dropbox  fa-2x',
+            iconAlign: 'top',
+            scale: 'large',
+            itemId: 'btnProductos',
+            handler: 'onClickVerProductos'
+          },
+          {
+  
+            text: 'Nuevo',
+            iconCls: 'fa  fa-dropbox  fa-2x',
+            iconAlign: 'top',
+            scale: 'large',
+            handler: 'onClickNuevoProducto'
+          },
+          {
+            text: 'Regresar Producto',
+            iconCls: 'fa fa-mail-reply-all  fa-2x',
+            textAlign: 'right',
+            iconAlign: 'left',
+            scale: 'large',
+            hidden: true,
+            itemId: 'btnRegresarIngresoProducto',
+            handler: 'onClickRegresarIngresoProducto'
+          }
+        ]
       }
+       
     ];
   },
 

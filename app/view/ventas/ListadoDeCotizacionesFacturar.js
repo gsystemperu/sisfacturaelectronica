@@ -262,7 +262,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
             {
                 xtype: 'label',
                 text: 'Fecha Desde',
-                padding: '5px 0 0 0',
                 border: true,
                 width: 100,
                 height: 25,
@@ -283,7 +282,6 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
             {
                 xtype: 'label',
                 text: 'Fecha Hasta',
-                padding: '5px 0 0 0',
                 border: true,
                 width: 100,
                 height: 25,
@@ -312,10 +310,19 @@ Ext.define('sisfacturaelectronica.view.ventas.ListadoDeCotizacionesFacturar', {
                 text  :'Reportes',
                 tooltip: 'Listado de reportes de venta',
                 menu: [
-                {
-                    text:'Resumen',
-                    handler : 'onClickResumenVentasAdmin'
-                }]
+                    {
+                        text:'Pdf Resumen de ventas',
+                        handler : 'onClickResumenVentasAdmin',
+                        glyph : 0xf1c1
+                        
+                    },
+                    {
+                        text:'Excel Resumen ventas',
+                        handler : 'onClickResumenVentasExcel',
+                        glyph : 0xf1c3
+                        
+                    }
+                ]
             },
            
             {

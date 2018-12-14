@@ -547,12 +547,19 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacion', {
         p = 0;
         ps = Ext.ComponentQuery.query('#posicion')[0];
         i = ps.getValue();
+        chp = Ext.ComponentQuery.query('#preciomayorista')[0].getValue();
+        if(chp){
+           p = record.get('precioventa');
+        }else{
+           p = record.get('precioventafraccion');
+        }
         d = {
             idprod: parseInt(record.get('id')),
             descripcion: record.get('nombre'),
             cantidad: 1,
-            precio: parseFloat(record.get('precioprod')),
-            total: parseInt(1) * parseFloat(record.get('precioprod'))
+            precio: parseFloat(p),
+            total: parseInt(1) * parseFloat(record.get('precioprod')),
+            presentacion : record.get('presentacion')
         };
         if (s.findRecord('idprod', parseInt(record.get('id')))) {
             Ext.Msg.alert("Error", "Producto ya se encuentra cargada");

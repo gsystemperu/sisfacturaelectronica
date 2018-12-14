@@ -50,14 +50,9 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProducto', {
                         {
                             text: 'Unida Medida',
                             flex: 1,
-                            dataIndex: 'unidadmedida',
-                        },
-                        {
-                            text: 'Presentacion',
-                            flex: 1,
                             dataIndex: 'presentacion',
                         },
-                        {
+                        /*{
                             xtype: 'numbercolumn',
                             text: 'Stock',
                             flex: 0.5,
@@ -72,14 +67,22 @@ Ext.define('sisfacturaelectronica.view.ventas.BuscarProducto', {
                                     return value;
                                 }
                             }
+                        },*/
+                        {
+                            text: 'Precio Mayorista',
+                            flex: 0.5,
+                            dataIndex: 'precioventa',
+                            align: 'right',
+                            renderer: Ext.util.Format.numberRenderer('0.00'),
                         },
                         {
-                            text: 'Precio',
+                            text: 'Precio Minorista',
                             flex: 0.5,
-                            dataIndex: 'precioprod',
+                            dataIndex: 'precioventafraccion',
                             align: 'right',
                             renderer: Ext.util.Format.numberRenderer('0.00'),
                         }
+
 
                     ],
                     listeners: {

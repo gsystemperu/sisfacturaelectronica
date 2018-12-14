@@ -361,6 +361,11 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegCotizacionesFacturar', 
         objrpt = window.open( sisfacturaelectronica.util.Rutas.listadoVentasAdmin+ 
         '?desde='+ d.toString() +'&hasta='+ h.toString(), "", "width=700,height=900");  
     },
+    onClickResumenVentasExcel:function(){
+        d = Ext.ComponentQuery.query('#dfDesde')[0].getRawValue();
+        h = Ext.ComponentQuery.query('#dfHasta')[0].getRawValue();
+        objrpt = window.open( sisfacturaelectronica.util.Rutas.listadoVentasExcel+ '?desde='+ d.toString() +'&hasta='+ h.toString()  );  
+    },
     onClickGenTxtfact:function(b){
         g =Ext.ComponentQuery.query('#dgvVentasFacturar')[0];
         st= g.getStore();

@@ -337,8 +337,8 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCotizacion', {
                                     },
                                     {
                                         xtype: 'button',
-                                        glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                        handler: 'onClickNuevoProd',
+                                        text  :'Ventana Productos',
+                                        handler: 'onClickBuscarProducto',
                                         height: 33
                                     },
 

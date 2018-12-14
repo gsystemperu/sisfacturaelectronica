@@ -4,12 +4,14 @@ Ext.define('sisfacturaelectronica.view.seguridad.LoginController', {
     init: function () {
         l = this.lookupReference('logo');
         w = Ext.ComponentQuery.query('#wlogin')[0];
+        p = this.lookupReference('nomempresa');
         me = this;
         Ext.Ajax.request({
             url: sisfacturaelectronica.util.Rutas.empresaDatos,
             success: function (response) {
                 ob = Ext.JSON.decode(response.responseText).data[0];
-                w.setTitle(ob.razonsocial);
+                w.setTitle('Iniciar Sesión');
+                p.setHtml('<span style="color:#F5F5F5;font-size:15px;height:20px;">'+ob.razonsocial+'</span>');
                 if (ob.imagen == '0') {
                     l.setSrc(
                         sisfacturaelectronica.util.Rutas.srcimagenes + 'P-00.jpg?_=' + (new Date().getTime())

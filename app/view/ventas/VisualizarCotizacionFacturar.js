@@ -11,16 +11,16 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
     bodyPadding: 5,
     controller: 'acciones-regcotizacionfacturar',
     initComponent: function () {
-        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToMoveEditor: 1,
             autoCancel: false
         });
-        var storeClientes       = Ext.create('sisfacturaelectronica.store.Clientes');
-        var storeDetCotizacion  = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
-        var storeFormaPago      = Ext.create('sisfacturaelectronica.store.FormaPago');
-        var storeModoEntrega    = Ext.create('sisfacturaelectronica.store.ModoEntrega');
-        var storeDocumentoVenta = Ext.create('sisfacturaelectronica.store.DocumentoVenta');
-        var storeMonedas        = Ext.create('sisfacturaelectronica.store.Monedas');
+        storeClientes       = Ext.create('sisfacturaelectronica.store.Clientes');
+        storeDetCotizacion  = Ext.create('sisfacturaelectronica.store.DetalleCotizacion');
+        storeFormaPago      = Ext.create('sisfacturaelectronica.store.FormaPago');
+        storeModoEntrega    = Ext.create('sisfacturaelectronica.store.ModoEntrega');
+        storeDocumentoVenta = Ext.create('sisfacturaelectronica.store.DocumentoVenta');
+        storeMonedas        = Ext.create('sisfacturaelectronica.store.Monedas');
         me = this;
         Ext.applyIf(me, {
             items: [{
@@ -53,26 +53,30 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                 {
                                     xtype: 'fieldset',
                                     defaultType: 'textfield',
-                                    title: 'Datos Generales',
-                                    layout: 'fit',
+                                    title: 'Datos Principales',
+                                    layout: {
+                                        type: 'vbox',
+                                        align: 'stretch'
+                                    },
+                                    defaults: {
+                                          flex: 1
+                                    },
                                     items: [
                                          {
                                             xtype: 'container',
-                                            layout: 'hbox',
-                                            margin: '0 0 5 6',
-                                            columnWidth: 0.5,
-                                            defaults:{
-                                                labelWidth:100,
-                                                labelAlign: 'right'
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'stretch'
                                             },
+                                            margin: '5 0 5 0',
+                                            columnWidth: 0.5,
                                             items: [{
                                                     xtype: 'combobox',
                                                     itemId: 'cboDatosClienteFact',
                                                     name : 'idper',
-                                                    fieldLabel: 'Nombre / Razon Social',
-                                                    flex: 3,
-                                                    fieldStyle: 'text-transform:uppercase',
-                                                    labelWidth: 150,
+                                                    emptyText: 'Nombre o Razón Social ',
+                                                    fieldStyle: 'font-size:35px;height:40px;text-transform:uppercase;',
+                                                    flex: 1,
                                                     allowBlank: false,
                                                     editable: true,
                                                     forceSelection : true,
@@ -80,31 +84,10 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                     queryMode: 'local',
                                                     displayField: 'nombreper',
                                                     valueField :'idper',
-                                                    readOnly:true,
-                                                    fieldStyle :'font-size:20px;'
+                                                    readOnly:true
+                                                    
                                                 },
-                                                {
-
-                                                    xtype: 'datefield',
-                                                    fieldLabel: 'Fecha Venta',
-                                                    value: new Date(),
-                                                    flex: 1,
-                                                    itemId: 'dtFechaVenta',
-                                                    name: 'fechacoti',
-                                                    allowBlank:false
-
-                                                },
-                                                {
-                                                  xtype:'datefield',
-                                                  fieldLabel :'Válido Hasta',
-                                                  labelAlign :'right',
-                                                  editable:false,
-                                                  name : 'fechavalidohasta',
-                                                  value : new Date(),
-                                                  flex: 1,
-                                                  readOnly:true,
-                                                  name :'validohasta'
-                                                },
+                                               
                                                 {
 
                                                     xtype: 'textfield',
@@ -122,60 +105,18 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                         },//fin panel
                                         {
                                             xtype: 'container',
-                                            layout: 'hbox',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'stretch'
+                                            },
+                                            paddingTop: 10,
+                                            paddingBotton: 10,
                                             defaults: {
-                                                labelWidth: 155,
-                                                labelAlign:'right'
+                                                labelWidth: 120,
+                                                emptyText: '-- Seleccionar --'
                                             },
                                             items: [
                                                 {
-                                                    xtype: 'combo',
-                                                    fieldLabel: 'Documento',
-                                                    store: storeDocumentoVenta,
-                                                    displayField: 'descripcion',
-                                                    valueField: 'id',
-                                                    queryMode: 'local',
-                                                    allowBlank: false,
-                                                    name: 'documentoventa',
-                                                   
-                                                    editable:false,
-                                                    itemId:'documentoventa',
-                                                    value : 2,
-                                                    flex:1
-                                                },
-                                                {
-                                                    xtype: 'button',
-                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                                    handler: 'onClickMantenimiento'
-                                                },
-                                                {
-                                                  xtype:'textfield',
-                                                  fieldLabel :'Serie/Número',
-                                                  labelAlign :'right',
-                                                  name : 'seriedoc',
-                                                  value : '001',
-                                                  flex : 0.5,
-                                                  allowBlank:false
-                                                },
-                                                {
-                                                  xtype:'textfield',
-                                                  labelAlign :'right',
-                                                  name : 'numerodoc',
-                                                  flex : 0.5,
-                                                  allowBlank:false
-                                                },
-                                            ]
-        
-        
-                                        },
-                                        {
-                                            xtype: 'container',
-                                            layout: 'hbox',
-                                            defaults: {
-                                                labelAlign:'right'
-                                                
-                                            },
-                                            items: [{
                                                     xtype: 'combo',
                                                     fieldLabel: 'Forma Pago',
                                                     store: storeFormaPago,
@@ -186,15 +127,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                     name: 'idfopag',
                                                     editable:false,
                                                     itemId:'idfopag',
-                                                    value : 1,
-                                                    flex:1.05,
-                                                    labelWidth: 155
-        
-                                                },
-                                                {
-                                                    xtype: 'button',
-                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                                    handler: 'onClickMantenimiento'
+                                                    flex: 1
                                                 },
                                                 {
                                                     xtype: 'combo',
@@ -207,14 +140,24 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                     name: 'idmodo',
                                                     editable:false,
                                                     itemId:'vmodoentrega',
-                                                    value : 1,
-                                                    flex:1,
-                                                    labelWidth: 155
+                                                    flex : 1,
+                                                    labelAlign: 'right'
+                                                    
                                                 },
                                                 {
-                                                    xtype: 'button',
-                                                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('nuevo'),
-                                                    handler: 'onClickMantenimiento'
+                                                    xtype: 'combo',
+                                                    fieldLabel: 'Moneda',
+                                                    store: storeMonedas,
+                                                    displayField: 'descripcion',
+                                                    valueField: 'id',
+                                                    queryMode: 'local',
+                                                    labelAlign: 'right',
+                                                    allowBlank: false,
+                                                    name: 'idmoneda',
+                                                    editable:false,
+                                                    itemId:'idmoneda',
+                                                    value : 1,
+                                                    flex: 1.5
                                                 }
                                             ]
         
@@ -222,67 +165,197 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                         },
                                         {
                                             xtype: 'container',
-                                            layout: 'hbox',
+                                            layout: {
+                                                type: 'hbox',
+                                                anchor: 'stretch'
+                                            },
+                                            padding: '5 0 0 0',
                                             defaults: {
-                                                labelWidth: 155,
-                                                labelAlign:'right'
+                                                 labelWidth: 120
                                             },
                                             items: [
-                                                  {
-                                                      xtype: 'combo',
-                                                      fieldLabel: 'Moneda',
-                                                      store: storeMonedas,
-                                                      displayField: 'descripcion',
-                                                      valueField: 'id',
-                                                      queryMode: 'local',
-                                                      allowBlank: false,
-                                                      name: 'idmoneda',
-                                                      editable:false,
-                                                      itemId:'idmoneda',
-                                                      value : 1,
-                                                      flex: 1
-                                                  },
-                                                  {
+                                                 {
+                                                    xtype: 'datefield',
+                                                    fieldLabel: 'Fecha Venta',
+                                                    value: new Date(),
+                                                    itemId: 'dtFechaVenta',
+                                                    name: 'fechacoti',
+                                                    allowBlank:false
+                                                },
+                                                {
+                                                  xtype:'datefield',
+                                                  fieldLabel :'Válido Hasta',
+                                                  labelAlign :'right',
+                                                  name : 'fechavalidohasta',
+                                                  value : new Date(),
+                                                  name :'validohasta',
+                                                  labelWidth: 158
+                                                },
+                                                {
                                                     xtype: 'checkboxfield',
-                                                    boxLabel: 'Precio incluye el I.G.V.',
+                                                    boxLabel: '<b style="color:#2d5f87">Precios Incluye I.g.v. </b>',
                                                     hidden : false,
-                                                    labelStyle :'font-size:15px;',
+                                                    padding: '3 0 0 20',
                                                     name: 'incluyeigv',
                                                     reference: 'incluyeigv',
                                                     itemId: 'incluyeigvfacturacion',
-                                                    readOnly:false,
-                                                    value: 0,
+                                                    readOnly:false
+                                                    
                                                 },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    boxLabel: '<b style="color:#2d5f87">Precios Mayorista </b>',
+                                                    padding: '3 0 0 20',
+                                                    labelAlign: 'right',
+                                                    name: 'preciomayorista',
+                                                    reference: 'preciomayorista',
+                                                    itemId: 'preciomayorista',
+                                                    readOnly: false,
+                                                    value: true,
+                                                }
+
+                                            ]
+        
+        
+                                        },
+                                        {
+                                            xtype: 'container',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'stretch'
+                                            },
+                                            padding: '2 0 5 0',
+                                            defaults: {
+                                                labelWidth: 120,
+                                                flex: 1
+                                            },
+                                            items: [
                                                   {
+                                                    xtype: 'combo',
+                                                    fieldLabel: 'Documento',
+                                                    store: storeDocumentoVenta,
+                                                    displayField: 'descripcion',
+                                                    valueField: 'id',
+                                                    queryMode: 'local',
+                                                    allowBlank: false,
+                                                    name: 'documentoventa',
+                                                    editable:false,
+                                                    itemId:'documentoventa',
+                                                    flex:2
+                                                },
+                                                {
+                                                  xtype:'textfield',
+                                                  fieldLabel :'Serie/Número',
+                                                  labelAlign :'right',
+                                                  name : 'seriedoc',
+                                                  allowBlank:false,
+                                                  padding : '0 5 0 0'
+                                                },
+                                                {
+                                                  xtype:'textfield',
+                                                  labelAlign :'right',
+                                                  name : 'numerodoc',
+                                                  allowBlank:false
+                                                },
+                                                {
                                                     xtype:'numberfield',
                                                     fieldLabel :'A Cuenta',
                                                     name : 'pagoacuenta',
                                                     value : 0,
-                                                    labelWidth : 95,flex :1
-                                                  }
+                                                    labelWidth: 75,
+                                                    labelAlign: 'right'
+                                                }
                                             ]
                                         },
         
                                     ]
                                 },//fin fieldset
-                                
-                               
-                               
-
                                 {
                                     xtype: 'fieldset',
                                     columnWidth: 0.1,
-                                    title: 'Detalle',
                                     defaultType: 'textfield',
-                                    items: [{
-                                            xtype: 'container',
-                                            margin: '0 0 0 -5',
+                                    padding: 10,
+                                    items: [
+                                        {
+                                            xtype: 'panel',
                                             layout: 'fit',
-                                            frame: true,
-                                            border: false,
-                                            items: [
+                                            tbar: [
+                                               '->',
+                                               {
+                                                xtype: 'textfield',
+                                                name: 'idcotitxt',
+                                                readOnly: true,
+                                                fieldStyle: 'font-size:25px;text-align:center;',
+                                                fieldLabel: 'Nro. Cotización',
+                                                labelWidth: 160,
+                                                labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;'
+                                               }
+                                              
+                                           ],   
+                                           bbar: [
+                                            {
+                                                xtype: 'textarea',
+                                                flex: 2.5,
+                                                height: 100,
+                                                name: 'comentario',
+                                                fieldStyle: 'font-size:12px;text-transform:uppercase;',
+                                                emptyText: 'Comentario facturación :'
+                            
+                                            },
+                                            '|',
+                                            {
+                                                text: 'Cancelar',
+                                                scale: 'large',
+                                                handler: 'onClickSalirCotizacionFacturar'
+                                            },
+                                            '->',
+                                            {
+                                                xtype: 'container',
+                                                layout: {
+                                                    type: 'vbox',
+                                                    align: 'stretch'
+                                                },
+                                                defaults: {
+                                                    fieldStyle: 'text-align: right;font-size:20px;',
+                                                    labelStyle: 'padding : 10px 5px 5px 5px ;background-color:#6A4B5A;border:false;color:#FFFFFF;font-size: 15px;',
+                                                    labelAlign: 'left',
+                                                    value: "0.00",
+                                                    minValue: 0,
+                                                    step: 0.01,
+                                                    readOnly: true,
+                                                    width: 280,
+                                                    labelWidth: 120,
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'textfield',
+                                                        reference: 'SubtotalventasfacturacionVi',
+                                                        itemId: 'SubtotalventasfacturacionVi',
+                                                        name: 'valventacont',
+                                                        fieldLabel: 'Sub Total',
 
 
+                                                    },
+                                                    {
+                                                        xtype: 'textfield',
+                                                        fieldLabel: 'I.g.v.',
+                                                        reference: 'igvventasfacturacionVi',
+                                                        itemId: 'igvventasfacturacionVi',
+                                                        name: 'valigvcont',
+
+                                                    },
+                                                    {
+                                                        xtype: 'textfield',
+                                                        fieldLabel: 'Total General',
+                                                        reference: 'TotalGeneralfacturacionVi',
+                                                        itemId: 'TotalGeneralfacturacionVi',
+                                                        name: 'valtotalcont',
+
+                                                    }
+                                                ]
+                                            }
+                                           ],    
+                                            /* items: [
                                                 {
                                                     xtype: 'container',
                                                     layout: 'hbox',
@@ -319,7 +392,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                                             hidden:true
                                                             //flex: 0.5
                                                         },
-                                                        {
+                                                       /* {
                                                           xtype:'container',
                                                           layout:'hbox',
                                                           items:[
@@ -358,7 +431,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                         {
                                             xtype: 'panel',
                                             layout: 'fit',
-                                            margin: '0 0 5 0',
+                                            margin: '0 0 5 0',*/
                                             items: [{
                                                 xtype: 'grid',
                                                 flex: 1,
@@ -474,92 +547,7 @@ Ext.define('sisfacturaelectronica.view.ventas.VisualizarCotizacionFacturar', {
                                     ]
 
                                 }, // fin fieldset Detalle
-                                {
-                                    xtype: 'panel',
-                                    layout: 'hbox',
-                                    items: [
-
-                                        {
-                                            xtype:'panel',
-                                            flex: 2,
-                                            frame:false,
-                                            layout : 'fit',
-                                            items:[
-                                              {
-                                                xtype:'textarea',
-                                                name : 'comentario',
-                                                fieldStyle : 'font-size:15px;',
-                                                emptyText : 'Comentario de Cotización'
-                                              }
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'panel',
-                                            flex: 1,
-                                            padding: '0 0 15 0',
-                                            items: [
-                                                {
-                                                    xtype: 'textfield',
-                                                    reference: 'SubtotalventasfacturacionVi',
-                                                    itemId: 'SubtotalventasfacturacionVi',
-                                                    name: 'valventacont',
-                                                    value: "0.00",
-                                                    fieldLabel: 'Sub Total',
-                                                    readOnly: true,
-                                                    width: 280,
-                                                    labelWidth: 120,
-                                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                                    labelAlign :'right',
-                                                    labelStyle : 'font-size:15px;',
-
-                                                },
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Igv',
-                                                    reference: 'igvventasfacturacionVi',
-                                                    itemId: 'igvventasfacturacionVi',
-                                                    name: 'valigvcont',
-                                                    value: "0.00",
-                                                    minValue: 0,
-                                                    readOnly: true,
-                                                    width: 280,
-                                                    labelWidth: 120,
-                                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                                    labelStyle : 'font-size:15px;',
-                                                    labelAlign :'right'
-
-                                                },
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Total General ',
-                                                    value: "0.00",
-                                                    reference: 'TotalGeneralfacturacionVi',
-                                                    itemId: 'TotalGeneralfacturacionVi',
-                                                    name: 'valtotalcont',
-                                                    minValue: 0,
-                                                    readOnly: true,
-                                                    width: 280,
-                                                    labelWidth: 120,
-                                                    fieldStyle: 'text-align: right;font-size:16px;',
-                                                    labelAlign :'right',
-                                                    labelStyle : 'font-size:15px;',
-                                                }
-                                            ]
-                                        }
-
-                                    ]
-
-                                },
-                                {
-                                    xtype: 'panel',
-                                    buttons: [{
-                                            xytpe: 'button',
-                                            text: 'Cancelar',
-                                            scale: 'medium',
-                                            handler: 'onClickSalirCotizacionFacturar'
-                                        }
-                                   ]
-                                }
+                              
                             ]
 
                         }

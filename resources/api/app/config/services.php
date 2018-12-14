@@ -309,6 +309,8 @@ $di->set('router',function() {
      $router->add('/listado_ventas', array('controller'=>'impresion','action'=>'impresiondeventas'));
      $router->add('/cerrar_caja', array('controller'=>'facturacion','action'=>'cerrarcaja'));
      $router->add('/reporte_ventas_admin', array('controller'=>'impresion','action'=>'impresiondeventasfacturacion'));
+     $router->add('/reporte_ventas_excel', array('controller'=>'impresion','action'=>'impresiondeventasfacturacionexcel'));
+
      $router->add('/generar_txt_facturador', array('controller'=>'facturacion','action'=>'generartxtfacturador'));
      $router->add('/tipo_nota_credito', array('controller'=>'facturacion','action'=>'tiponotacredito'));
      $router->add('/agregar_nota', array('controller'=>'facturacion','action'=>'actualizarnota'));

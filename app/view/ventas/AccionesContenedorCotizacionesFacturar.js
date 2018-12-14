@@ -200,10 +200,10 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
     try {
       var _record = Ext.ComponentQuery.query('#dgvVentasFacturar')[0].getSelectionModel().getSelection()[0];
       console.log(_record);
-      if (
-        _record.get('idguia') == 0) {
-        var me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0]; //this;
-        var l = me.getLayout();
+      if (_record.get('idguia') == 0) 
+      {
+        me = Ext.ComponentQuery.query('#wContenedorCotizacionesFacturar')[0]; //this;
+        l = me.getLayout();
         l.setActiveItem(2);
         Ext.ComponentQuery.query('#frmRegGuiaRemision')[0].mask('...cargando');
         Ext.ComponentQuery.query('#frmRegGuiaRemision')[0].reset();
@@ -218,9 +218,7 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesContenedorCotizacionesFact
         dg = Ext.ComponentQuery.query('#dgvDetalleGuiaRemision')[0];
         sgd = dg.getStore();
         sgd.removeAll();
-
         if (_record.get('idfacturacion') == 0) {
-
           Ext.Ajax.request({
             url: (_record.get('idfacturacion') == 0 ? sisfacturaelectronica.util.Rutas.cotizacionDetalle : sisfacturaelectronica.util.Rutas.facturacionDetalle),
             params: {

@@ -353,7 +353,8 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                         labelAlign: 'right',
                         name: 'serie',
                         readOnly: true,
-                        emptyText: '**GENERANDO**'
+                        emptyText: '**GENERANDO**',
+                        padding : '0 5 0 0'
                     },
                     {
                         xtype: 'textfield',
@@ -390,7 +391,7 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                         xtype: 'combo',
                         flex: 13,
                         itemId: 'cboProducto',
-                       //   store: storeProductos,
+                        store: storeProductos,
                         listConfig: {
                             itemTpl: '<b>{nombre}</b>  ->   <strong> {marca} </strong> <br> '
                                 +'<label style="background-color:#03AA92;color:#FFFFFF;width:200px;height:30px;padding:5px 5px 5px 5px;  "> Unidad Medida </label> '
@@ -418,9 +419,9 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                   '->',
                   {
                     xtype: 'button',
-                    glyph: sisfacturaelectronica.util.Glyphs.getGlyph('buscar'),
                     handler: 'onClickBuscarProducto',
-                    text : 'Ver Productos',
+                    text : 'Ventana Productos',
+                    height: 33,
                     tooltip: 'Accion para buscar los productos ingresados'
 
                   }
@@ -495,38 +496,6 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarFacturaBoleta', {
                 }
             ],
             items: [
-                /*  {
-                  xtype: 'container',
-                  layout: 'hbox',
-                  padding: '0 0 5 0',
-                  items: [
-                  {
-                    xtype: 'label',
-                    text: 'Buscar Producto',
-                    width: 120,
-                    height: 23,
-                    style: {
-                      paddingTop: '3px',
-                      background: '#6a4b5a',
-                      color: 'white',
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      fontSize: '13px'
-                    }
-                  },
-                 
-
-                  ]
-                }
-
-
-              ]
-            },
-            {
-              xtype: 'panel',
-              layout: 'fit',
-              margin: '0 0 5 0',
-              items: [*/
               {
                 xtype: 'grid',
                 flex: 1,

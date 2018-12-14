@@ -6,8 +6,8 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCliente', {
     'sisfacturaelectronica.util.Rutas'
 
   ],
-  width: 700,
-  height: 500,
+  width: 900,
+  height: 380,
   modal: true,
   floating: true,
   autoShow: true,
@@ -56,11 +56,10 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCliente', {
               hidden: true
             },
             {
-              fieldLabel: 'Razón Social',
-              maxLength: 100,
+              emptyText: 'Nombre o Razón Social ',
+              fieldStyle: 'font-size:25px;height:40px;text-transform:uppercase;',
               name: 'vnombre',
               reference: 'vnombre',
-              fieldStyle: 'text-transform:uppercase',
               allowBlank:false
             },
             {
@@ -80,16 +79,16 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCliente', {
               xtype: 'textfield',
               name: 'vnumruc',
               reference: 'vnumruc',
-              fieldLabel: 'RUC',
-              labelWidth: 145,
-              fieldStyle: 'text-transform:uppercase;text-align:right;font-size:15px;',
+              fieldLabel: 'Número',
+              fieldStyle: 'text-transform:uppercase;text-align:left;font-size:15px;',
               flex: 1,
               allowBlank:false
             },
             {
                 fieldLabel: 'Numero documento',
                 name: 'vnumdoc',
-                fieldStyle: 'text-transform:uppercase;text-align:right'
+                fieldStyle: 'text-transform:uppercase;text-align:right',
+                hidden:true
               },
             {
               fieldLabel: 'Dirección',
@@ -114,22 +113,27 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCliente', {
             {
               fieldLabel: 'Telefono',
               name: 'vtelefono',
-              fieldStyle: 'text-transform:uppercase;text-align:right'
+              fieldStyle: 'text-transform:uppercase;text-align:left'
             },
             {
               fieldLabel: 'Celular',
               name: 'vcelular',
-              fieldStyle: 'text-transform:uppercase;text-align:right'
+              fieldStyle: 'text-transform:uppercase;text-align:left'
             },
             {
               xtype: 'radiogroup',
               fieldLabel: 'Precio',
               columns: 3,
-              items: [{
+              defaults:{
+                hidden:true
+              },
+              items: [
+              {
                   boxLabel: 'Publico Lima',
                   inputValue: 1,
                   name: 'tipoprecioper',
-                  value: true
+                  value: true,
+                  hidden:false
 
                 }, {
                   boxLabel: 'Lima Especial 1',
@@ -186,34 +190,21 @@ Ext.define('sisfacturaelectronica.view.ventas.RegistrarCliente', {
           ]
         }]
       }],
-      dockedItems: [{
-        xtype: 'toolbar',
-        flex: 1,
-        dock: 'bottom',
-        ui: 'footer',
-        layout: {
-          pack: 'end',
-          type: 'hbox'
+      bbar:[
+        '->',
+        {
+          xtype: 'button',
+          text: 'Cancelar',
+          itemId: 'btnCancelar',
+          handler: 'onClickCancelarCliente'
         },
-        items: [{
-            xtype: 'button',
-            text: 'Cancelar',
-            itemId: 'btnCancelar',
-            scale: 'medium',
-            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('cancelar'),
-            handler: 'onClickCancelarCliente'
-          },
-          {
-            xtype: 'button',
-            text: 'Grabar',
-            itemId: 'btnGrabar',
-            iconCls: 'add',
-            scale: 'medium',
-            glyph: sisfacturaelectronica.util.Glyphs.getGlyph('guardar'),
-            handler: 'onClickGuardarCliente'
-          }
-        ]
-      }]
+        {
+          xtype: 'button',
+          text: 'Grabar',
+          itemId: 'btnGrabar',
+          handler: 'onClickGuardarCliente'
+        }
+      ]
     });
     me.callParent(arguments);
   },

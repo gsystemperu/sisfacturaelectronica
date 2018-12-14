@@ -254,13 +254,11 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         __objIgv      = this.lookupReference('igvventas');
         __objSubTotal = this.lookupReference('Subtotalventas');
         __objTotal    = this.lookupReference('TotalGeneral');
-        console.log("debug.....");
         s = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0].getStore();
         t = 0;
         s.each(function (r) {
             t = t + r.get('total');
         });
-        console.log(__objChk.getValue());
         if(__objChk.getValue()){
             s = t / 1.18;
             i = t -(t / 1.18);
@@ -452,7 +450,8 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
           descripcion: record.get('nombre'),
           cantidad: 1,
           precio: parseFloat(record.get('precioprod')),
-          total: parseInt(1) * parseFloat(record.get('precioprod'))
+          total: parseInt(1) * parseFloat(record.get('precioprod')),
+          presentacion : record.get('presentacion')
         };
 
         if (s.findRecord('idprod', parseInt(record.get('id')))) {
@@ -695,6 +694,51 @@ Ext.define('sisfacturaelectronica.view.ventas.AccionesRegFacturaBoleta', {
         Ext.create('Ext.window.Window',{title:'Nuevo Producto',modal:true,width:1100,height:700,autoShow:true,
            layout:'fit', itemId:'frmprodpopup', items:[ {xtype:'wContenedorProducto'} ]}
         );
+    },
+    onBeforeQueryProducto:function(queryPlan, eOpts ){
+        if(queryPlan.query.length>2){
+             p = Ext.ComponentQuery.query('#cboDatosCliente')[0];
+             if(p.getValue()!=null){
+                 queryPlan.query = p.getValue() +'|'+ queryPlan.query;
+             }
+             else {
+                 queryPlan.cancel = true;
+                 sisfacturaelectronica.util.Util.showErrorMsg('Seleccionar o buscar al cliente!');
+             }
+        }
+    },
+    onSelectProducto:function(grid, record, index, eOpts){
+         me = this;
+         gs = Ext.ComponentQuery.query('#dgvDetalleVentaFacturaBoleta')[0];
+         s = gs.getStore();
+         p = 0;
+         ps = Ext.ComponentQuery.query('#posicion')[0];
+         i = ps.getValue();
+         chp = Ext.ComponentQuery.query('#preciomayorista')[0].getValue();
+         if(chp){
+            p = record.get('precioventa');
+         }else{
+            p = record.get('precioventafraccion');
+         }
+
+         d = {
+             idprod: parseInt(record.get('id')),
+             descripcion: record.get('nombre'),
+             cantidad: 1,
+             precio: parseFloat(p),
+             total: parseInt(1) * parseFloat(p),
+             presentacion: record.get('presentacion')
+         };
+         if (s.findRecord('idprod', parseInt(record.get('id')))) {
+             Ext.Msg.alert("Error", "Producto ya se encuentra cargada");
+             return false;
+         }
+         i = i + 1;
+         s.insert(i, d);
+         ps.setValue(i);
+         gs.getView().refresh();
+         this.onCalcularTotalVentaPorBusqueda();
     }
+
    
 });

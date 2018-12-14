@@ -12,7 +12,7 @@ class FacturacionController extends Controller
       {
            $vId           =  $request->getPost('idfacturacion');
            $vIdCoti       =  $request->getPost('idcoti');
-           $vFecha        =  $request->getPost('fechacoti');
+           $vFecha        =  $request->getPost('vfecha');
            $vIdCliente    =  $request->getPost('idper');
            $vUsuario      =  $request->getPost('vusuario');
            $vJsonDetalle  =  $request->getPost('vjsondetalle');
@@ -25,9 +25,9 @@ class FacturacionController extends Controller
            $vNumeroDoc    = $request->getPost('numerodoc');
            $vPagoAcuenta  = $request->getPost('pagoacuenta');
            $vIdmoneda     = $request->getPost('idmoneda');
-           $vpMayorista   = $request->getPost('preciomayorista');
-           $data = array($vId,$vIdCoti,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle, $vFormaPago,$vModoEntrega,$vDocVenta,$vIncluyeIgv,$vFechaValidoHasta,$vSerieDoc,$vNumeroDoc,$vPagoAcuenta,$vIdmoneda,$vpMayorista);
-           $jsonData             = Facturacion::actualizar($data);
+           $vpMayorista   = ($request->getPost('preciomayorista')=='on'? 1:0); 
+           $data          = array($vId,$vIdCoti,$vFecha,$vIdCliente,$vUsuario,$vJsonDetalle, $vFormaPago,$vModoEntrega,$vDocVenta,$vIncluyeIgv,$vFechaValidoHasta,$vSerieDoc,$vNumeroDoc,$vPagoAcuenta,$vIdmoneda,$vpMayorista);
+           $jsonData      = Facturacion::actualizar($data);
            $response->setContentType('application/json', 'UTF-8');
            $response->setContent(json_encode($jsonData[0], JSON_NUMERIC_CHECK));
            return $response;

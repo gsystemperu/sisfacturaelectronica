@@ -198,42 +198,58 @@ Ext.define('sisfacturaelectronica.view.main.Main', {
       defaults: { bodyPadding: 0 },
       scrollable: true,
       layout: 'fit',
-      items: [
+     /* items: [
         {
           title: 'Nosotros',
-          bodyPadding: 200,
-          //layout:'fit',
-          layout: 'vbox',
+          layout:{
+            type:'hbox',
+            align:'stretch'
+          },
           items: [
             {
               xtype: 'image',
-              src: 'resources/images/lgsis.png',
+              src: 'resources/images/kalak.jpg',
+              flex:1,
               width: 300,
               height: 80,
-              hidden: false
-            },
-            {
-              xtype: 'label',
-              text: '       Asesoria en tecnologíca para tu negocio       '
-            },
-            {
-              xtype: 'label',
-              text: 'Sr. : Cesar Leyva'
-            },
-            {
-              xtype: 'label',
-              text: 'Telefono : 992 913 895 / 999 874 314'
-            },
-            {
-              xtype: 'label',
-              text: 'Ing. : Eddy Erazo'
-            },
-            {
-              xtype: 'label',
-              text: 'Telefono : 925 183 347'
+              //hidden: false
+            },{
+              xtype:'panel',
+              flex:2,
+              layout:{
+                type:'vbox',
+                align:'stretch'
+              },
+              defaults:{
+                flex :1,
+                fieldStyle: 'font-size:35px;height:40px;text-transform:uppercase;',
+              },
+              items:[
+                 {
+                    xtype: 'label',
+                    text: '       Asesoria en tecnologíca para tu negocio       '
+                  },
+                  {
+                    xtype: 'label',
+                    text: 'Sr. : Cesar Leyva'
+                  },
+                  {
+                    xtype: 'label',
+                    text: 'Telefono : 992 913 895 / 999 874 314'
+                  },
+                  {
+                    xtype: 'label',
+                    text: 'Ing. : Eddy Erazo'
+                  },
+                  {
+                    xtype: 'label',
+                    text: 'Telefono : 925 183 347'
+                  }
+              ]
             }
+           
           ]
-        }]
+        }]*/
     }
   ]
 

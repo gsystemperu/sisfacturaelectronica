@@ -5,7 +5,7 @@ include __DIR__ .'/../library/fpdf/fpdf.php';
 include __DIR__ .'/../library/fpdf/exfpdf.php';
 include __DIR__ .'/../library/fpdf/jspdf.php';
 include __DIR__ .'/../library/phpqrcode/qrlib.php';
-
+include __DIR__ .'/../library/export-xls.class.php';
 
 class ImpresionController extends Controller
 {
@@ -1162,6 +1162,204 @@ class ImpresionController extends Controller
       $pdf->Cell(0,5,pinta('TOTAL GENERAL '),0,1,'L');
       $pdf->Cell(38,5,pinta(number_format($ttg, 2, '.',' ')),$borde,1,'R');
       $pdf->output();
+    }
+    public function impresiondeventasfacturacionexcelAction(){
+      $request     = new Phalcon\Http\Request();
+      $response    = new \Phalcon\Http\Response();
+      $desde       =  $request->get('desde');
+      $hasta       = $request->get('hasta');
+      
+     // $data     = array($ano,$mes,$tipo);
+     // $jsonData  = json_decode(Paciente::reporteInformeExcel($data));
+      ini_set('memory_limit', '512M');
+      ob_clean();
+      $filename = 'reporte_de_ventas.xls';
+      $xls = new ExportXLS($filename);
+      $header = "REGISTRO DE VENTAS"; 
+      $xls->addHeader($header);
+      $header = NULL;
+      $xls->addHeader($header);
+      $header = NULL;
+      $header[] = "DEL";
+      $header[] = $desde;
+      $header[] = "AL";
+      $header[] = $hasta;
+      $xls->addHeader($header);
+
+
+      $header = null;
+      $xls->addHeader($header);
+      $header[] = "NRO.";
+      $header[] = "FECHA";
+      $header[] = "SERIE";
+      $header[] = "NUMERO";
+      $header[] = "RUC";
+      $header[] = "CLIENTE";
+      $header[] = "SUB TOTAL";
+      $header[] = "IGV";
+      $header[] = "TOTAL GENERAL";
+      $header[] = " ";
+      $header[] = "ESTADO";
+      $xls->addHeader($header);
+      $index = 1;
+
+      $data = array($desde,$hasta);
+      $jsonData     = json_decode(Cotizacion::listarCotizacionesParaFacturarPorFechas($data))->data;
+     
+      if($jsonData){
+        foreach ($jsonData as $item) {
+          $row[] = array(
+            $index,
+            $item->fechafact,
+            $item->seriedoc,
+            $item->numerodoc,
+            $item->numrucper,
+            utf8_decode( $item->nomcompleto),
+            $item->subtotalcoti,
+            $item->igvcoti,
+            $item->totalcoti,
+            '',
+            $item->estadosunat
+          );
+         $index++;
+        }
+     }else{
+       $row[]=array();
+     }
+     $xls->addRow($row); 
+     $xls->sendFile();
+
+
+
+     /* $request    = new Phalcon\Http\Request();
+      $desde = $request->get("desde");
+      $hasta = $request->get("hasta");
+      if(strlen($desde)=='' && strlen($hasta)==''){ $data       = array();}
+      else{ $data   = array($desde,$hasta);}
+      $detalle      = json_decode(Cotizacion::listarCotizacionesParaFacturarPorFechas($data));
+      $resumen      = json_decode(Facturacion::resumenVentas($data));
+      $resumenco    = json_decode(Facturacion::resumenVentasCotizacion($data));
+      
+      $pdf = new  ReporteVentas('P','mm','A4');
+      $borde = 0;
+      $wg = 100 ;//Ancho total
+      $in = 4; //Interlineado
+      $font = 'Arial';
+      $tam = 9;
+      $pdf->SetMargins(15,10,10,10);
+      $pdf->AddPage();
+      $pdf->SetFont($font,'B',16);
+      $pdf->Ln();
+      $pdf->MultiCell(186,$in,"REPORTE VENTAS",0,'L');
+      $pdf->Ln(5);
+  
+      $fila = $pdf->GetY();
+      $pdf->SetFont($font,'B',$tam);
+      $pdf->Cell(30,5,pinta('Fecha Inicio  :'),0,0,'l');
+      $pdf->SetFont($font,'',$tam);
+      $pdf->Cell(30,5,pinta($desde),0,0,'l');
+      $pdf->SetFont($font,'B',$tam);
+      $pdf->Cell(30,5,pinta('Fecha Termino :'),0,0,'l');
+      $pdf->SetFont($font,'',$tam);
+      $pdf->Cell(30,5,pinta($hasta),0,1,'l');
+      $pdf->Ln(4);
+      $pdf->SetFont($font,'B',$tam);
+      $pdf->Cell(8,5,pinta('Item'),'B',0,'C');
+      $pdf->Cell(18,5,pinta('Fecha'),'B',0,'C');
+      $pdf->Cell(20,5,pinta('Documento'),'B',0,'C');
+      $pdf->Cell(10,5,pinta('Serie'),'B',0,'C');
+      $pdf->Cell(20,5,pinta('Nro.'),'B',0,'C');
+      $pdf->Cell(60,5,pinta('Cliente'),'B',0,'L');
+      $pdf->Cell(30,5,pinta('Total'),'B',0,'R');
+      $pdf->Cell(0,5,pinta('Est.Sunat'),'B',1,'C');
+      $item = 1;
+      $total= 0;
+      $pdf->SetFont($font,'',$tam);
+      $borde='B';
+      //print_r($detalle);die();
+      if($detalle->data!=''){
+        foreach($detalle->data as $row){
+              $pdf->SetFont($font,'',8);
+              $pdf->Cell(8,5,pinta($item++),$borde,0,'C'); 
+              $pdf->Cell(18,5,pinta($row->fechafact),$borde,0,'C');
+              $pdf->Cell(20,5,pinta($row->tipodoc),$borde,0,'C');
+              $pdf->Cell(10,5,pinta($row->seriedoc),$borde,0,'C');
+              $pdf->Cell(20,5,pinta($row->docinterno),$borde,0,'C');
+              $pdf->Cell(60,5,pinta($row->nomcompleto),$borde,0,'L');
+              $pdf->Cell(30,5,pinta(number_format($row->totalcoti, 2, '.',' ')),$borde,0,'R');
+              $pdf->SetFont($font,'',6);
+              $pdf->Cell(0,5,pinta($row->estadosunat),$borde,1,'C');
+              IF($row->descripcion!='VD ANULADO')
+                  $total += $row->totalcoti;
+        }
+      }
+      $pdf->Ln(1.5);
+      $pdf->SetFont($font,'',8);
+      $pdf->Cell(145,5,pinta('TOTAL'),0,0,'R');
+      $pdf->Cell(21,5,pinta(number_format($total, 2, '.',' ')),'T',1,'R');
+      $pdf->Ln(2);
+      $pdf->SetFont($font,'B',9);
+      $borde =1;
+      $pdf->Cell(0,5,pinta('RESUMEN ORIGEN ( COTIZACIONES/FACTURACIÓN  )'),0,1,'L');
+      $pdf->Cell(18,5,pinta('Fecha'),$borde,0,'C');
+      $pdf->Cell(50,5,pinta('Estado'),$borde,0,'R');
+      $pdf->Cell(30,5,pinta('Total'),$borde,1,'R');
+      $tc = 0;
+      $pdf->SetFont($font,'',8);
+      $ttg =0;
+      if($resumenco->data!=''){
+          foreach($resumenco->data as $row2){
+            $pdf->Cell(18,5,pinta($row->fechacoti),$borde,0,'C');
+             $pdf->Cell(50,5,pinta($row->descripcion),$borde,0,'R');
+             $pdf->Cell(30,5,pinta(number_format($row->totalcoti, 2, '.',' ')),$borde,1,'R');
+              $tc +=$row->totalcoti;
+              if($row->descripcion =='CT FACTURADA' || $row->descripcion =='VD FACTURADA' || $row->descripcion =='CT CONFIRMADA')
+              {
+                $ttg += $row->totalcoti;
+              }
+          
+          } 
+      }
+      $pdf->Cell(18,5,pinta(''),0,0,'C');
+      $pdf->Cell(50,5,'',0,0,'R');
+      $pdf->Cell(30,5,pinta(number_format($tc, 2, '.',' ')),$borde,1,'R');
+      
+
+      $pdf->Ln(5);
+      $pdf->SetFont($font,'B',9);
+      $pdf->Cell(0,5,pinta('RESUMEN ORIGEN ( PUNTO DE VENTA )'),0,1,'L');
+      $pdf->Cell(18,5,pinta('Fecha'),$borde,0,'C');
+      $pdf->Cell(20,5,pinta('Total Dia'),$borde,0,'R');
+      $pdf->Cell(30,5,pinta('Apertura'),$borde,0,'R');
+      $pdf->Cell(30,5,pinta('Total'),$borde,1,'R');
+
+      $pdf->SetFont($font,'',8);
+      $td=0;
+      $ta=0;
+      $tg=0;
+      if($resumen->data!=''){
+        foreach($resumen->data as $row){
+            
+            $pdf->Cell(18,5,pinta($row->fecha),$borde,0,'C');
+            $pdf->Cell(20,5,pinta(number_format($row->subtotal, 2, '.',' ')),$borde,0,'R');
+            $pdf->Cell(30,5,pinta(number_format($row->apertura, 2, '.',' ')),$borde,0,'R');
+            $pdf->Cell(30,5,pinta(number_format($row->total, 2, '.',' ')),$borde,1,'R');
+            $td +=$row->subtotal;
+            $ta +=$row->apertura;
+            $tg +=$row->total;      
+          }   
+      }
+      $ttg = $ttg + $tg;
+      $pdf->Cell(18,5,pinta(''),0,0,'C');
+      $pdf->Cell(20,5,pinta(number_format($td, 2, '.',' ')),$borde,0,'R');
+      $pdf->Cell(30,5,pinta(number_format($ta, 2, '.',' ')),$borde,0,'R');
+      $pdf->Cell(30,5,pinta(number_format($tg, 2, '.',' ')),$borde,1,'R');
+      
+      $pdf->SetFont($font,'B',9);
+      $pdf->Ln();
+      $pdf->Cell(0,5,pinta('TOTAL GENERAL '),0,1,'L');
+      $pdf->Cell(38,5,pinta(number_format($ttg, 2, '.',' ')),$borde,1,'R');
+      $pdf->output();*/
     }
     public function imprimirresumenventaticketeraAction() {
 
